@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/
+
+# NuGet packages
+packages/
+
+# SQL Server database files
+*.mdf
+*.ldf
+
+# Temporary files
+*.tmp
+*.log

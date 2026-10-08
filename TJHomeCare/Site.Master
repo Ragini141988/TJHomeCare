@@ -1,0 +1,78 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TJHomeCare.SiteMaster" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">TJ Home Care</asp:ContentPlaceHolder></title>
+    <meta name="description" content="Professional home care services in Bangalore by TJ Homecare." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Content/Site.css") %>" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+     <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+<form id="mainForm" runat="server">
+
+    <header class="site-header">
+        <div class="container nav-wrap">
+           <a class="brand" href="<%= ResolveUrl("~/Default.aspx") %>" aria-label="TJ Homecare Home">
+    <img src="<%= ResolveUrl("~/Images/tjhomecare-logo.jpeg") %>"
+         alt="TJ Homecare"
+         class="brand-logo" />
+</a>
+
+            <button type="button" class="menu-toggle" aria-label="Open menu" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav id="mainNav" class="main-nav">
+                <a href="<%= ResolveUrl("~/Default.aspx") %>">Home</a>
+                <a href="<%= ResolveUrl("~/About.aspx") %>">About</a>
+                <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <div class="footer-brand">TJ HOMECARE</div>
+                <p>Professional and compassionate home care services designed around the comfort, safety and individual needs of your loved ones.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <a href="<%= ResolveUrl("~/Default.aspx") %>">Home</a>
+                <a href="<%= ResolveUrl("~/About.aspx") %>">About</a>
+                <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>
+            </div>
+            <div>
+                <h4>Home Care</h4>
+                <span>Caregivers</span>
+                <span>Patient Care</span>
+                <span>Baby Care</span>
+                <span>Home Nursing</span>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">© <%: DateTime.Now.Year %> TJ Homecare. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+</form>
+
+<script>
+    function toggleMenu() {
+        document.getElementById('mainNav').classList.toggle('open');
+    }
+</script>
+</body>
+</html>
