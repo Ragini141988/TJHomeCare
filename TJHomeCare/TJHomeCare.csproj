@@ -154,6 +154,16 @@
     <Content Include="Images\patientcaretaker02.jpeg" />
     <Content Include="Images\tjhomecare.jpeg" />
     <Content Include="Images\tjhomecare02.jpeg" />
+    <Content Include="Review.aspx" />
+    <Compile Include="Review.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Review.aspx.designer.cs" />
+    <Content Include="Thankyou.aspx" />
+    <Compile Include="Thankyou.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Thankyou.aspx.designer.cs" />
     <Content Include="viewcaregiverdetails.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
     <Content Include="WebForm1.aspx" />

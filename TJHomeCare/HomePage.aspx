@@ -55,7 +55,7 @@
    ========================================================= */
 
 .tj-recent-requirements {
-    padding: 70px 0;
+    padding: 10px 0;
     background: #f7faff;
 }
 
@@ -798,16 +798,63 @@
 </section>
 
 <!-- ========================================================= REVIEWS ========================================================= -->
+
 <section class="tj-section">
     <div class="tj-container">
-        <div class="tj-heading"><span class="tj-kicker">WHAT FAMILIES SAY</span><h2>Real families. Real experiences.</h2><p>Testimonials are hard-coded for now. Later this section can be connected directly to your review database.</p></div>
-        <div class="tj-reviews">
-            <article class="tj-review"><div class="tj-stars">★★★★★</div><p>“We found a suitable baby care taker through TJ Home Care. The online process was simple and the team helped us understand the options.”</p><div class="tj-user"><div class="tj-avatar">P</div><div><strong>Priya S.</strong><span>Electronic City, Bangalore</span></div></div></article>
-            <article class="tj-review"><div class="tj-stars">★★★★★</div><p>“The team helped us shortlist multiple candidates for patient care and explained the interview process clearly. Good experience.”</p><div class="tj-user"><div class="tj-avatar">R</div><div><strong>Rajesh K.</strong><span>HSR Layout, Bangalore</span></div></div></article>
-            <article class="tj-review"><div class="tj-stars">★★★★★</div><p>“We needed caring support for an elderly family member. Having different candidate options made the decision easier for us.”</p><div class="tj-user"><div class="tj-avatar">S</div><div><strong>Sunitha M.</strong><span>Miyapur, Hyderabad</span></div></div></article>
+
+        <div class="tj-heading">
+            <span class="tj-kicker">WHAT FAMILIES SAY</span>
+            <h2>Real families. Real experiences.</h2>
+            <p>Read reviews shared by families who have used our services.</p>
         </div>
+
+        <div class="tj-reviews">
+
+            <asp:Repeater ID="rptReviews" runat="server">
+                <ItemTemplate>
+
+                    <article class="tj-review">
+
+                        <div class="tj-stars">
+                            <%# GetStars(Eval("Rating")) %>
+                        </div>
+
+                        <p>
+                            “<%#: Eval("Remarks") %>”
+                        </p>
+
+                        <div class="tj-user">
+
+                            <div class="tj-avatar">
+                                <%# GetInitial(Eval("Name")) %>
+                            </div>
+
+                            <div>
+                                <strong>
+                                    <%#: Eval("Name") %>
+                                </strong>
+
+                                <span>
+                                    <%#: Eval("City") %>
+                                </span>
+
+                                <span class="tj-review-date">
+                                    <%#: Eval("ReviewDate", "{0:dd MMM yyyy}") %>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </ItemTemplate>
+            </asp:Repeater>
+
+        </div>
+
     </div>
 </section>
+```
 
 <!-- ========================================================= FAQ ========================================================= -->
 <section class="tj-section tj-soft">
