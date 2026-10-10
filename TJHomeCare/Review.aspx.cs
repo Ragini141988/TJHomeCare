@@ -16,7 +16,7 @@ namespace TJHomeCare
 
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void BtnSubmit_Click(object sender, EventArgs e)
         {
             SaveReview();
 
@@ -27,6 +27,8 @@ namespace TJHomeCare
         {
             string name = txtName.Text.Trim();
             string contact = txtContact.Text.Trim();
+            string city = txtCity.Text.Trim();
+            string email = txtEmail.Text.Trim();
             string remarks = txtRemarks.Text.Trim();
 
             int rating = 0;
@@ -47,9 +49,9 @@ namespace TJHomeCare
        .ConnectionString;
 
             string query = @"INSERT INTO Reviews
-                             (Name, ContactNo, Rating, Remarks)
+                             (Name, ContactNo, Rating, Remarks,City,Email)
                              VALUES
-                             (@Name, @ContactNo, @Rating, @Remarks)";
+                             (@Name, @ContactNo, @Rating, @Remarks,@City,@Email)";
 
             using (SqlConnection con = new SqlConnection(cs))
             {
@@ -57,6 +59,8 @@ namespace TJHomeCare
                 {
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@ContactNo", contact);
+                    cmd.Parameters.AddWithValue("@City", city);
+                    cmd.Parameters.AddWithValue("@Email", email);
                     cmd.Parameters.AddWithValue("@Rating", rating);
                     cmd.Parameters.AddWithValue("@Remarks",
                         string.IsNullOrEmpty(remarks)

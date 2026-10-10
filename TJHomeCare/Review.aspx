@@ -271,10 +271,7 @@
         align-items: center;
     }
 
-    /*
-       ASP.NET RadioButton generates
-       a wrapper around input + label.
-    */
+   
 
     .stars .star-radio {
         display: inline-block;
@@ -494,20 +491,15 @@
                     <span>♥</span>
                     Help us improve our service
                 </li>
-
             </ul>
-
         </div>
-
 
         <!-- ==============================
              RIGHT SIDE
              ============================== -->
 
         <div class="review-form">
-
             <div class="form-heading">
-
                 <h2>
                     Share Your Review
                 </h2>
@@ -520,9 +512,7 @@
 
 
             <!-- NAME -->
-
             <div class="form-group">
-
                 <label class="form-label">
                     Your Name
                     <span class="required">*</span>
@@ -585,23 +575,77 @@
             </div>
 
 
+          <%--  City --%>
+                            <label class="form-label">
+                    Your City
+                    <span class="required">*</span>
+                </label>
+
+               <asp:TextBox
+    ID="txtCity"
+    runat="server"
+    CssClass="review-input"
+    placeholder="Enter your City"
+    MaxLength="10">
+</asp:TextBox>
+
+<asp:RequiredFieldValidator
+    ID="rfvCity"
+    runat="server"
+    ControlToValidate="txtCity"
+    ErrorMessage="Please enter your city."
+    CssClass="validation-error"
+    Display="Dynamic">
+</asp:RequiredFieldValidator>
+
+<%--Email--%>
+            
+<label class="form-label">
+    Your Email
+    <span class="required">*</span>
+</label>
+
+<asp:TextBox
+    ID="txtEmail"
+    runat="server"
+    CssClass="review-input"
+    placeholder="Enter your Email"
+    MaxLength="100">
+</asp:TextBox>
+
+<asp:RequiredFieldValidator
+        ID="rfvEmail"
+        runat="server"
+        ControlToValidate="txtEmail"
+        ErrorMessage="Please enter your email."
+        CssClass="validation-error"
+        Display="Dynamic"
+        EnableClientScript="true">
+    </asp:RequiredFieldValidator>
+    <asp:RegularExpressionValidator
+        ID="revEmail"
+        runat="server"
+        ControlToValidate="txtEmail"
+        ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+        ErrorMessage="Please enter a valid email address."
+        CssClass="validation-error"
+        Display="Dynamic"
+        EnableClientScript="true">
+    </asp:RegularExpressionValidator>
+
             <!-- RATING -->
 
             <div class="form-group">
-
                 <label class="form-label">
                     Your Rating
                     <span class="required">*</span>
                 </label>
 
                 <div class="rating-box">
-
                     <div class="rating-text">
                         How would you rate your experience?
                     </div>
-
                     <div class="stars">
-
     <asp:RadioButton
         ID="rb1"
         runat="server"
@@ -646,26 +690,17 @@
     ValidationGroup="ReviewValidation">
 </asp:CustomValidator>
 
-
                     </div>
-
                 </div>
-
             </div>
 
 
             <!-- REMARKS -->
-
             <div class="form-group">
-
                 <label class="form-label">
-
                     Remarks
-
-                    <span class="optional">
-                        (Optional)
+                    <span class="required">*                       
                     </span>
-
                 </label>
 
                 <asp:TextBox
@@ -676,28 +711,27 @@
                     Rows="4"
                     placeholder="Tell us about your experience...">
                 </asp:TextBox>
-
+                <asp:RequiredFieldValidator
+        ID="rfvRemarks"
+        runat="server"
+        ControlToValidate="txtRemarks"
+        ErrorMessage="Please enter your remarks."
+        CssClass="validation-error"
+        Display="Dynamic">
+    </asp:RequiredFieldValidator>
             </div>
 
 
             <!-- SUBMIT -->
 
             <asp:Button
-                ID="btnSubmit"
+                ID="BtnSubmit"
                 runat="server"
                 Text="Submit Review"
                 CssClass="submit-btn"
-                OnClick="btnSubmit_Click" />
-
-
-            <div class="privacy-note">
-                Thank you for taking the time to share your feedback.
-            </div>
+                OnClick="BtnSubmit_Click" />          
 
         </div>
-
     </div>
-
 </section>
-
 </asp:Content>

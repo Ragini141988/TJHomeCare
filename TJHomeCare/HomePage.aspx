@@ -315,6 +315,77 @@
 @media(max-width:1000px){.tj-hero-top,.tj-how,.tj-why{grid-template-columns:1fr}.tj-hero-copy{text-align:center}.tj-hero p{margin:auto}.tj-actions{justify-content:center}.tj-services{grid-template-columns:repeat(2,1fr)}.tj-hero-bottom{grid-template-columns:repeat(3,1fr)}.tj-trust:nth-child(3){border-right:0}.tj-trust:nth-child(4),.tj-trust:nth-child(5){border-top:1px solid #e7eef7}.tj-how-img,.tj-why-img{max-width:760px;margin:auto}.tj-final-inner{flex-direction:column;align-items:flex-start}}
 @media(max-width:700px){.tj-container{width:calc(100% - 22px)}.tj-section{padding:48px 0}.tj-hero{padding-top:15px}.tj-hero h1{font-size:40px}.tj-heading h2,.tj-how-copy h2,.tj-why h2{font-size:28px}.tj-services,.tj-action-grid,.tj-city-grid,.tj-reviews,.tj-faq,.tj-benefits{grid-template-columns:1fr}.tj-hero-bottom{grid-template-columns:1fr 1fr}.tj-trust:nth-child(3),.tj-trust:nth-child(5){border-right:0}.tj-city{grid-template-columns:105px 1fr}.tj-stats{grid-template-columns:1fr 1fr}.tj-stat:nth-child(2){border-right:0}.tj-stat:nth-child(3),.tj-stat:nth-child(4){border-top:1px solid var(--border)}.tj-action-content{left:18px;right:15px}.tj-action-content h3{font-size:22px}.tj-final .tj-btn{width:100%}}
 @media(max-width:430px){.tj-hero h1{font-size:35px}.tj-actions{flex-direction:column}.tj-actions .tj-btn{width:100%}.tj-hero-art img{border-radius:17px}.tj-city{grid-template-columns:1fr}.tj-city-icon{height:100px}.tj-stats strong{font-size:22px}}
+
+/* HERO LAYOUT FIX: desktop text/image side-by-side; mobile image after requirements */
+.tj-recent-requirements .tj-container {
+    width: 100%;
+}
+
+@media (min-width: 1001px) {
+    .tj-hero-top {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .tj-hero-copy {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .tj-hero-art {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        padding-top: 8px;
+    }
+
+    .tj-recent-requirements {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .tj-hero-top {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .tj-hero-copy {
+        order: 1;
+        text-align: left;
+    }
+
+    .tj-hero-copy p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .tj-hero-copy .tj-actions {
+        justify-content: flex-start;
+    }
+
+    .tj-recent-requirements {
+        order: 2;
+        width: 100%;
+    }
+
+    .tj-hero-art {
+        order: 3;
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .tj-hero-art img {
+        width: 100%;
+        height: auto;
+        border-radius: 17px;
+    }
+}
+
 </style>
 </asp:Content>
 
@@ -324,6 +395,7 @@
 <!-- ========================================================= HERO ========================================================= -->
 <section class="tj-hero">
     <div class="tj-container tj-hero-top">
+        <!-- LEFT SIDE: HERO TEXT AND BUTTONS -->
         <div class="tj-hero-copy">
             <span class="tj-pill"><i class="fa-solid fa-house-medical"></i> India's Home Workforce Hiring Marketplace</span>
             <h1><span class="b">Find.</span> <span class="r">Interview.</span> <span class="g">Hire.</span><br />Trusted People for Your Home.</h1>
@@ -334,10 +406,110 @@
                 <a class="tj-btn tj-outline" href="<%= ResolveUrl("~/FindJobs.aspx") %>"><i class="fa-solid fa-magnifying-glass"></i> Find Jobs / Caregivers</a>
             </div>
         </div>
+
+        <!-- RIGHT SIDE ON DESKTOP; AFTER RECENT REQUIREMENTS ON MOBILE -->
         <div class="tj-hero-art">
             <img src="<%= ResolveUrl("~/Images/baby-care-taker.png") %>" alt="TJ Home Care family and caregiver" />
         </div>
+
+    <section class="tj-recent-requirements">
+    <div class="tj-container">
+
+        <div class="tj-section-heading">
+            <span class="tj-section-kicker">LATEST REQUIREMENTS</span>
+            <h2>Recent Home Care Requirements</h2>
+            <p>
+                Explore the latest requirements posted by families looking
+                for reliable home care professionals.
+            </p>
+        </div>
+
+       <div class="tj-requirements-grid">
+
+    <asp:Repeater ID="rptRecentRequirements"
+        runat="server">
+
+        <ItemTemplate>
+            <div class="tj-requirement-card">
+
+                <div class="tj-requirement-top">
+                    <span class="tj-requirement-badge tj-new"
+                        runat="server"
+                        visible='<%# IsNewRequirement(Eval("CreatedDate")) %>'>
+                        NEW
+                    </span>
+
+                    <span class="tj-posted-time">
+                        <%# GetPostedTime(Eval("CreatedDate")) %>
+                    </span>
+                </div>
+
+                <div class="tj-requirement-service">
+
+                    <div class='tj-requirement-icon <%# GetServiceClass(Eval("Service")) %>'>
+                        <i class='<%# GetServiceIcon(Eval("Service")) %>'></i>
+                    </div>
+
+                    <div>
+                        <h3><%#: Eval("Service") %></h3>
+                        <span><%#: Eval("Service") %></span>
+                    </div>
+
+                </div>
+
+                <div class="tj-requirement-details">
+
+                    <div>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>
+                            <%#: Eval("City") %>
+                            <%# HasValue(Eval("Area"))
+                                ? " · " + Server.HtmlEncode(Convert.ToString(Eval("Area")))
+                                : "" %>
+                        </span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-clock"></i>
+                        <span><%#: DisplayValue(Eval("DutyTime")) %></span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        <span><%#: DisplayValue(Eval("Budget")) %></span>
+                    </div>
+
+                </div>
+
+              <a class="tj-view-requirement"
+   href='<%# ResolveUrl("~/RequirementDetails.aspx?id=" +
+       Eval("RequirementID")) %>'>
+    View Requirement
+    <i class="fa-solid fa-arrow-right"></i>
+</a>
+
+            </div>
+        </ItemTemplate>
+
+    </asp:Repeater>
+
+</div>
+
+<div class="tj-requirements-footer">
+    <a href="<%= ResolveUrl("~/FindJobs.aspx") %>"
+       class="tj-view-all-requirements">
+        View All Requirements
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
+
+
+    
+
     </div>
+</section>
+    </div>
+
     <div class="tj-hero-bottom tj-container">
         <div class="tj-trust"><i class="fa-solid fa-shield-heart green"></i> Verified Candidates</div>
         <div class="tj-trust"><i class="fa-solid fa-video blue"></i> Online Interviews</div>
@@ -434,309 +606,7 @@
 
 
 
-    <!-- ==================== RECENT REQUIREMENTS ==================== -->
-<section class="tj-recent-requirements">
-    <div class="tj-container">
-
-        <div class="tj-section-heading">
-            <span class="tj-section-kicker">LATEST REQUIREMENTS</span>
-            <h2>Recent Home Care Requirements</h2>
-            <p>
-                Explore the latest requirements posted by families looking
-                for reliable home care professionals.
-            </p>
-        </div>
-
-        <div class="tj-requirements-grid">
-
-            <!-- Requirement 1 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-new">NEW</span>
-                    <span class="tj-posted-time">2 hours ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon baby">
-                        <i class="fa-solid fa-baby"></i>
-                    </div>
-
-                    <div>
-                        <h3>Baby Care Taker</h3>
-                        <span>Baby Care</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Bangalore · HSR Layout</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-clock"></i>
-                        <span>Full Time</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹18,000 – ₹22,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-
-            <!-- Requirement 2 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-urgent">URGENT</span>
-                    <span class="tj-posted-time">5 hours ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon elder">
-                        <i class="fa-solid fa-person-cane"></i>
-                    </div>
-
-                    <div>
-                        <h3>Elder Care</h3>
-                        <span>Elder Care</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Hyderabad · Kukatpally</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-house"></i>
-                        <span>Live-in</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹22,000 – ₹27,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-
-            <!-- Requirement 3 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-new">NEW</span>
-                    <span class="tj-posted-time">8 hours ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon patient">
-                        <i class="fa-solid fa-user-nurse"></i>
-                    </div>
-
-                    <div>
-                        <h3>Patient Care Taker</h3>
-                        <span>Patient Care</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Bangalore · Whitefield</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-sun"></i>
-                        <span>Day Shift</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹16,000 – ₹20,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-
-            <!-- Requirement 4 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-new">NEW</span>
-                    <span class="tj-posted-time">1 day ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon maid">
-                        <i class="fa-solid fa-broom"></i>
-                    </div>
-
-                    <div>
-                        <h3>Maid Services</h3>
-                        <span>Household Help</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Hyderabad · Banjara Hills</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-clock"></i>
-                        <span>Full Time</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹15,000 – ₹18,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-
-            <!-- Requirement 5 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-new">NEW</span>
-                    <span class="tj-posted-time">1 day ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon cook">
-                        <i class="fa-solid fa-utensils"></i>
-                    </div>
-
-                    <div>
-                        <h3>Home Cook</h3>
-                        <span>Cooking Services</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Bangalore · Koramangala</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-clock"></i>
-                        <span>Morning & Evening</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹17,000 – ₹21,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-
-            <!-- Requirement 6 -->
-            <div class="tj-requirement-card">
-
-                <div class="tj-requirement-top">
-                    <span class="tj-requirement-badge tj-urgent">URGENT</span>
-                    <span class="tj-posted-time">2 days ago</span>
-                </div>
-
-                <div class="tj-requirement-service">
-                    <div class="tj-requirement-icon nurse">
-                        <i class="fa-solid fa-user-nurse"></i>
-                    </div>
-
-                    <div>
-                        <h3>Home Nurse</h3>
-                        <span>Nursing Care</span>
-                    </div>
-                </div>
-
-                <div class="tj-requirement-details">
-
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Hyderabad · Jubilee Hills</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-house"></i>
-                        <span>Live-in</span>
-                    </div>
-
-                    <div>
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                        <span>₹25,000 – ₹30,000 / month</span>
-                    </div>
-
-                </div>
-
-                <a href="#" class="tj-view-requirement">
-                    View Requirement
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="tj-requirements-footer">
-            <a href="<%= ResolveUrl("~/FindJobs.aspx") %>"
-               class="tj-view-all-requirements">
-                View All Requirements
-                <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
-
-    </div>
-</section>
+   
 <!-- ========================================================= TWO LINK AREAS ========================================================= -->
 <section class="tj-section">
     <div class="tj-container">
@@ -881,3 +751,4 @@
 
 </div>
 </asp:Content>
+

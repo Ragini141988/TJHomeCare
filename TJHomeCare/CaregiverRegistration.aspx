@@ -366,6 +366,8 @@
                         CssClass="checkbox-list">
 
                         <asp:ListItem>Baby Caretaker</asp:ListItem>
+                        <asp:ListItem>Cook</asp:ListItem>
+                        <asp:ListItem>Driver</asp:ListItem>
                         <asp:ListItem>Patient Caretaker</asp:ListItem>
                         <asp:ListItem>Elder Caretaker</asp:ListItem>
                         <asp:ListItem>Home Nurse</asp:ListItem>

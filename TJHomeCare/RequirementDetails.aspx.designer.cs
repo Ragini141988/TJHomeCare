@@ -10,24 +10,33 @@
 namespace TJHomeCare {
     
     
-    public partial class HomePage {
+    public partial class RequirementDetails {
         
         /// <summary>
-        /// rptRecentRequirements control.
+        /// pnlDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecentRequirements;
+        protected global::System.Web.UI.WebControls.Panel pnlDetails;
         
         /// <summary>
-        /// rptReviews control.
+        /// fvRequirement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptReviews;
+        protected global::System.Web.UI.WebControls.FormView fvRequirement;
+        
+        /// <summary>
+        /// pnlNotFound control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNotFound;
     }
 }

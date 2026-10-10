@@ -330,7 +330,32 @@
         color: #ffffff !important;
     }
 
+      .home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 30px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.22);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
 
+.home-btn:hover {
+    transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(11, 94, 215, 0.30);
+        text-decoration: none;
+        color: #ffffff !important;
+}
+
+   
     /* ==============================
        SMALL NOTE
        ============================== */
@@ -342,7 +367,28 @@
         position: relative;
         z-index: 1;
     }
+    .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
 
+/* Mobile view */
+@media (max-width: 600px) {
+    .button-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .button-container a {
+        width: 100%;
+        max-width: 280px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+}
 
     /* ==============================
        MOBILE
@@ -374,6 +420,10 @@
         }
 
         .back-btn {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .home-btn {
             width: 100%;
             box-sizing: border-box;
         }
@@ -426,11 +476,16 @@
 
         <!-- BUTTON -->
 
+        <!-- BUTTONS -->
+        <div class="button-container">
+<a href="Homepage.aspx" class="home-btn">
+    Go To Home
+</a>
         <a href="Review.aspx" class="back-btn">
             Submit Another Review
         </a>
 
-
+            </div>
         <!-- NOTE -->
 
         <div class="small-note">

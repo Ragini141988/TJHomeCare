@@ -115,6 +115,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="FindJobs.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -154,7 +155,30 @@
     <Content Include="Images\patientcaretaker02.jpeg" />
     <Content Include="Images\tjhomecare.jpeg" />
     <Content Include="Images\tjhomecare02.jpeg" />
+    <Content Include="PostRequirement.aspx" />
+    <Content Include="RequirementDetails.aspx" />
     <Content Include="Review.aspx" />
+    <Compile Include="FindJobs.aspx.cs">
+      <DependentUpon>FindJobs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FindJobs.aspx.designer.cs">
+      <DependentUpon>FindJobs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PostRequirement.aspx.cs">
+      <DependentUpon>PostRequirement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostRequirement.aspx.designer.cs">
+      <DependentUpon>PostRequirement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RequirementDetails.aspx.cs">
+      <DependentUpon>RequirementDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RequirementDetails.aspx.designer.cs">
+      <DependentUpon>RequirementDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Review.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
