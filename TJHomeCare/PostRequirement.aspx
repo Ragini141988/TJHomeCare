@@ -4,6 +4,7 @@
     Post Your Requirement
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="head" runat="server">
 <style>
@@ -200,6 +201,47 @@
             font-size: 16px;
         }
     }
+
+    
+/* ===== AREA AUTOCOMPLETE ===== */
+.area-search {
+    position: relative;
+    width: 100%;
+}
+
+.area-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.area-item {
+    padding: 11px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #edf0f4;
+    color: #334155;
+    font-size: 14px;
+}
+
+.area-item:hover {
+    background: #f0fdf4;
+    color: #198754;
+}
+
+.selected-area {
+    margin-top: 6px;
+    color: #198754;
+    font-size: 13px;
+}
 </style>
 </asp:Content>
 
@@ -219,9 +261,7 @@
                 <label class="form-label">Service Requirement <span class="required">*</span></label>
                 <asp:DropDownList ID="ddlService" runat="server" CssClass="form-control">
                     <asp:ListItem Value="">Select Service</asp:ListItem>
-                    <asp:ListItem>Baby Caretaker</asp:ListItem>
-                        <asp:ListItem>Cook</asp:ListItem>
-                        <asp:ListItem>Driver</asp:ListItem>
+                       <asp:ListItem>Baby Caretaker</asp:ListItem>
                         <asp:ListItem>Patient Caretaker</asp:ListItem>
                         <asp:ListItem>Elder Caretaker</asp:ListItem>
                         <asp:ListItem>Home Nurse</asp:ListItem>
@@ -240,14 +280,18 @@
                 <asp:RequiredFieldValidator ID="rfvCity" runat="server" ControlToValidate="ddlCity" InitialValue="" ErrorMessage="Please select a city." CssClass="validation" Display="Dynamic" />
             </div>
 
-            <!-- AREA / LOCALITY -->
-            <div class="form-group full">
-                <label class="form-label">Area / Locality <span class="required">*</span></label>
-                <asp:TextBox ID="txtArea" runat="server" CssClass="form-control" placeholder="Enter your area or locality" MaxLength="100" />
-                <asp:RequiredFieldValidator ID="rfvArea" runat="server" ControlToValidate="txtArea" ErrorMessage="Please enter your area." CssClass="validation" Display="Dynamic" />
-            </div>
+         
+            <!-- AREA / LOCALITY --> 
+            <div class="form-group full"> 
+                <asp:HiddenField ID="hdnAreaID" runat="server" /> 
+                <label class="form-label"> Area / Locality <span class="required">*</span> </label> <div class="area-search">
+                    <asp:TextBox ID="txtArea" runat="server" CssClass="form-control" placeholder="Type area e.g. AR" autocomplete="off" /> 
+                    <div id="areaResults" class="area-results"></div> </div> <asp:RequiredFieldValidator ID="rfvArea" runat="server" ControlToValidate="txtArea" ErrorMessage="Please select an area from the suggestions." CssClass="validation" Display="Dynamic" /> 
+                <div id="selectedArea" class="selected-area">
 
-        </div>
+                </div> 
+                </div>
+            </div>
 
         <!-- DUTY & PREFERENCES -->
         <div class="section-title">Duty & Preferences</div>
@@ -267,6 +311,7 @@
                 </div>
                 <asp:RequiredFieldValidator ID="rfvDutyTime" runat="server" ControlToValidate="rblDutyTime" ErrorMessage="Please select duty time." CssClass="validation" Display="Dynamic" />
             </div>
+
 
             <!-- PREFERRED LANGUAGE -->
             <div class="form-group">
@@ -339,4 +384,130 @@
 
     </div>
 </section>
+    
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+
+    var areaTextBox = document.getElementById("<%= txtArea.ClientID %>");
+    var areaHidden = document.getElementById("<%= hdnAreaID.ClientID %>");
+    var areaResults = document.getElementById("areaResults");
+    var selectedArea = document.getElementById("selectedArea");
+    var cityDropdown = document.getElementById("<%= ddlCity.ClientID %>");
+    var timer = null;
+
+    if (!areaTextBox || !areaHidden || !areaResults) return;
+
+    areaTextBox.addEventListener("input", function () {
+
+        var searchText = areaTextBox.value.trim();
+
+        areaHidden.value = "";
+        selectedArea.textContent = "";
+        clearTimeout(timer);
+
+        if (searchText.length < 2) {
+            areaResults.innerHTML = "";
+            areaResults.style.display = "none";
+            return;
+        }
+
+        timer = setTimeout(function () {
+
+            var city = cityDropdown ? cityDropdown.value : "";
+
+            if (!city) {
+                areaResults.innerHTML = "";
+                var message = document.createElement("div");
+                message.className = "area-item";
+                message.textContent = "Please select a city first.";
+                areaResults.appendChild(message);
+                areaResults.style.display = "block";
+                return;
+            }
+
+            fetch("<%= ResolveUrl("~/PostRequirement.aspx/GetPlaces") %>", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    searchText: searchText,
+                    city: city
+                })
+            })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Area search request failed.");
+                }
+                return response.json();
+            })
+            .then(function (result) {
+
+                var places = result.d || [];
+                areaResults.innerHTML = "";
+
+                if (places.length === 0) {
+                    var noResult = document.createElement("div");
+                    noResult.className = "area-item";
+                    noResult.textContent = "No area found";
+                    areaResults.appendChild(noResult);
+                    areaResults.style.display = "block";
+                    return;
+                }
+
+                places.forEach(function (place) {
+
+                    var item = document.createElement("div");
+                    item.className = "area-item";
+                    item.textContent = place.PlaceName;
+
+                    item.addEventListener("click", function () {
+                        areaTextBox.value = place.PlaceName;
+                        areaHidden.value = place.PlaceID;
+                        selectedArea.textContent =
+                            "Selected Area: " + place.PlaceName;
+
+                        areaResults.innerHTML = "";
+                        areaResults.style.display = "none";
+                    });
+
+                    areaResults.appendChild(item);
+                });
+
+                areaResults.style.display = "block";
+            })
+            .catch(function (error) {
+                console.error("Area autocomplete error:", error);
+                areaResults.innerHTML = "";
+
+                var errorItem = document.createElement("div");
+                errorItem.className = "area-item";
+                errorItem.textContent =
+                    "Unable to load areas. Please try again.";
+
+                areaResults.appendChild(errorItem);
+                areaResults.style.display = "block";
+            });
+
+        }, 250);
+    });
+
+    if (cityDropdown) {
+        cityDropdown.addEventListener("change", function () {
+            areaTextBox.value = "";
+            areaHidden.value = "";
+            selectedArea.textContent = "";
+            areaResults.innerHTML = "";
+            areaResults.style.display = "none";
+        });
+    }
+
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".area-search")) {
+            areaResults.style.display = "none";
+        }
+    });
+
+});
+</script>
 </asp:Content>

@@ -63,6 +63,15 @@
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
 }
+.tj-recent-caregiver {
+    padding: 10px 0;
+    background: #f7faff;
+}
+
+.tj-recent-caregiver .tj-container {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+}
 
 .tj-section-heading {
     text-align: center;
@@ -117,6 +126,33 @@
 }
 
 .tj-requirement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 35px rgba(20, 60, 110, 0.12);
+}
+
+
+/* caregiverGRID */
+
+.tj-caregiver-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* CARD */
+
+.tj-caregiver-card {
+    position: relative;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e2eaf4;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(20, 60, 110, 0.06);
+    transition: all .2s ease;
+}
+
+.tj-caregiver-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 35px rgba(20, 60, 110, 0.12);
 }
@@ -283,6 +319,12 @@
     color: #fff;
     background: #0756c9;
 }
+.tj-caregiver-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.tj-caregiver-actions a { display:inline-flex; justify-content:center; align-items:center; padding:10px 12px; border-radius:8px; background:#0756c9; color:#fff; font-size:12px; font-weight:800; }
+.tj-caregiver-actions a.secondary { background:green; border:1px solid #0756c9; color:#f7fbff; }
+.tj-caregiver-footer { margin-top:28px; text-align:center; }
+.tj-caregiver-photo { width:100%; height:210px; object-fit:cover; display:block; background:#f1f5f9; }
+.tj-caregiver-photo-placeholder { height:210px; display:grid; place-items:center; background:#eef5ff; color:#0756c9; font-size:54px; }
 
 
 /* RESPONSIVE */
@@ -293,13 +335,21 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+@media (max-width: 1000px) {
+
+    .tj-caregiver-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 @media (max-width: 650px) {
 
     .tj-recent-requirements {
         padding: 50px 0;
     }
-
+    .tj-recent-caregiver {
+        padding: 50px 0;
+    }
     .tj-section-heading h2 {
         font-size: 28px;
     }
@@ -307,10 +357,23 @@
     .tj-requirements-grid {
         grid-template-columns: 1fr;
     }
+    .tj-requirements-grid {
+    grid-template-columns: 1fr;
+}
 
+/* Show one caregiver card per row on mobile */
+.tj-caregiver-grid {
+    grid-template-columns: 1fr;
+}
     .tj-requirement-card {
         padding: 18px;
     }
+    .tj-caregiver-card {
+    width: 100%;
+    min-width: 0;
+    padding: 18px;
+    box-sizing: border-box;
+}
 }
 @media(max-width:1000px){.tj-hero-top,.tj-how,.tj-why{grid-template-columns:1fr}.tj-hero-copy{text-align:center}.tj-hero p{margin:auto}.tj-actions{justify-content:center}.tj-services{grid-template-columns:repeat(2,1fr)}.tj-hero-bottom{grid-template-columns:repeat(3,1fr)}.tj-trust:nth-child(3){border-right:0}.tj-trust:nth-child(4),.tj-trust:nth-child(5){border-top:1px solid #e7eef7}.tj-how-img,.tj-why-img{max-width:760px;margin:auto}.tj-final-inner{flex-direction:column;align-items:flex-start}}
 @media(max-width:700px){.tj-container{width:calc(100% - 22px)}.tj-section{padding:48px 0}.tj-hero{padding-top:15px}.tj-hero h1{font-size:40px}.tj-heading h2,.tj-how-copy h2,.tj-why h2{font-size:28px}.tj-services,.tj-action-grid,.tj-city-grid,.tj-reviews,.tj-faq,.tj-benefits{grid-template-columns:1fr}.tj-hero-bottom{grid-template-columns:1fr 1fr}.tj-trust:nth-child(3),.tj-trust:nth-child(5){border-right:0}.tj-city{grid-template-columns:105px 1fr}.tj-stats{grid-template-columns:1fr 1fr}.tj-stat:nth-child(2){border-right:0}.tj-stat:nth-child(3),.tj-stat:nth-child(4){border-top:1px solid var(--border)}.tj-action-content{left:18px;right:15px}.tj-action-content h3{font-size:22px}.tj-final .tj-btn{width:100%}}
@@ -320,7 +383,9 @@
 .tj-recent-requirements .tj-container {
     width: 100%;
 }
-
+.tj-recent-caregiver .tj-container {
+    width: 100%;
+}
 @media (min-width: 1001px) {
     .tj-hero-top {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -344,6 +409,12 @@
         grid-row: 2;
         width: 100%;
     }
+     .tj-recent-caregiver {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        width: 100%;
+    }
+
 }
 
 @media (max-width: 700px) {
@@ -372,7 +443,10 @@
         order: 2;
         width: 100%;
     }
-
+    .tj-recent-caregiver {
+        order: 2;
+        width: 100%;
+    }
     .tj-hero-art {
         order: 3;
         width: 100%;
@@ -383,6 +457,138 @@
         width: 100%;
         height: auto;
         border-radius: 17px;
+    }
+}
+
+/* CAREGIVER PROFILE HEADER */
+.tj-caregiver-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 18px 16px;
+    background: linear-gradient(135deg, #f0f6ff, #ffffff);
+    border-bottom: 1px solid #e8eef7;
+}
+
+.tj-caregiver-avatar {
+    width: 65px;
+    height: 65px;
+    min-width: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #075bd3, #7654d8);
+    color: #fff;
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 15px rgba(7, 91, 211, .20);
+}
+
+.tj-caregiver-title {
+    min-width: 0;
+}
+
+.tj-caregiver-title h3 {
+    margin: 0 0 9px;
+    color: #092f6d;
+    font-size: 18px;
+    font-weight: 900;
+    overflow-wrap: anywhere;
+}
+
+.tj-caregiver-service-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e2f8ed;
+    color: #087a52;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* CAREGIVER DETAILS */
+.tj-caregiver-body {
+    padding: 18px;
+}
+
+.tj-caregiver-meta {
+    display: grid;
+    gap: 14px;
+}
+
+.tj-caregiver-meta > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    color: #53647c;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.tj-caregiver-meta > div > i {
+    width: 18px;
+    min-width: 18px;
+    margin-top: 3px;
+    color: #075bd3;
+    font-size: 15px;
+    text-align: center;
+}
+
+.tj-caregiver-meta > div span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.tj-caregiver-meta strong {
+    display: block;
+    margin-bottom: 2px;
+    color: #092f6d;
+    font-size: 11px;
+}
+
+/* CAREGIVER ACTION BUTTONS */
+.tj-caregiver-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #edf1f6;
+}
+
+.tj-caregiver-actions a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 11px 8px;
+    border: 1px solid #0756c9;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #075bd3, #0878ed);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.tj-caregiver-actions a.secondary {
+    background: green;
+    color: white;
+}
+
+.tj-caregiver-actions a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(7, 91, 211, .13);
+}
+
+@media (max-width: 560px) {
+    .tj-caregiver-actions {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -508,6 +714,104 @@
 
     </div>
 </section>
+
+<%--Section for caregiver--%>
+
+       <section class="tj-recent-caregiver">
+    <div class="tj-container">
+        <div class="tj-section-heading">
+            <span class="tj-section-kicker">MEET OUR CAREGIVERS</span>
+            <h2>Featured Caregiver Profiles</h2>
+            <p>Explore active caregiver profiles and send an inquiry to learn more.</p>
+        </div>
+
+        <div class="tj-caregiver-grid">
+            <asp:Repeater ID="rptRecentCaregivers" runat="server">
+                <ItemTemplate>
+                   
+<article class="tj-caregiver-card">
+
+    <div class="tj-caregiver-profile-header">
+
+        <div class="tj-caregiver-avatar">
+            <%# GetInitials(Eval("FullName")) %>
+        </div>
+
+        <div class="tj-caregiver-title">
+            <h3><%#: Eval("FullName") %></h3>
+
+            <span class="tj-caregiver-service-badge">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <%#: Eval("ServiceCategory") %>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="tj-caregiver-body">
+
+        <div class="tj-caregiver-meta">
+
+            <div>
+                <i class="fa-solid fa-location-dot"></i>
+                <span>
+                    <strong>Location</strong>
+                    <%#: Eval("City") %><%# HasValue(Eval("PresentArea"))
+                        ? " · " + Server.HtmlEncode(Convert.ToString(Eval("PresentArea")))
+                        : "" %>
+                </span>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-briefcase"></i>
+                <span>
+                    <strong>Experience</strong>
+                    <%#: DisplayValue(Eval("Experience")) %>
+                </span>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-language"></i>
+                <span>
+                    <strong>Languages</strong>
+                    <%#: DisplayValue(Eval("LanguagesKnown")) %>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="tj-caregiver-actions">
+
+            <a href='<%# ResolveUrl("~/CandidateDetails.aspx?id=" + Eval("CaregiverID")) %>'>
+                <i class="fa-solid fa-user-check"></i>
+                View Full Details
+            </a>
+
+            <a class="secondary"
+               href='<%# ResolveUrl("~/SendInquiry.aspx?id=" + Eval("CaregiverID")) %>'>
+                <i class="fa-solid fa-paper-plane"></i>
+                Send Inquiry
+            </a>
+
+        </div>
+
+    </div>
+
+</article>
+
+                </ItemTemplate>
+            </asp:Repeater>
+        </div>
+        
+        <div class="tj-requirements-footer">
+    <a href="<%= ResolveUrl("~/Candidates.aspx") %>"
+       class="tj-view-all-requirements">
+       View All Candidates
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
+        </div>
+</section>
     </div>
 
     <div class="tj-hero-bottom tj-container">
@@ -517,6 +821,7 @@
         <div class="tj-trust"><i class="fa-solid fa-users purple"></i> Multiple Candidate Options</div>
         <div class="tj-trust"><i class="fa-solid fa-handshake orange"></i> Joining Assistance</div>
     </div>
+
 </section>
 
     <!-- ========================================================= HOW IT WORKS ========================================================= -->

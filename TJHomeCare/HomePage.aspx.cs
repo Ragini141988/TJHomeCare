@@ -26,6 +26,7 @@ namespace TJHomeCare
             if (!IsPostBack)
             {
                 LoadRecentRequirements();
+                LoadRecentCaregivers();
             }
         }
         private void LoadReviews()
@@ -237,7 +238,80 @@ namespace TJHomeCare
             return "fa-solid fa-house";
         }
 
+        protected string GetInitials(object name)
+        {
+            string fullName = Convert.ToString(name);
 
+            if (string.IsNullOrWhiteSpace(fullName))
+                return "TJ";
+
+            string[] parts = fullName.Trim().Split(
+                new char[] { ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 1)
+                return parts[0].Substring(0, 1).ToUpperInvariant();
+
+            return (parts[0].Substring(0, 1) +
+                    parts[parts.Length - 1].Substring(0, 1))
+                    .ToUpperInvariant();
+        }
+
+        private void LoadRecentCaregivers()
+        {
+            string query = @"
+                SELECT TOP (5)
+                    C.CaregiverID,
+                    C.FullName,
+                    C.ServiceCategory,
+                    C.City,
+                    L.PlaceName AS PresentArea,
+                    C.Experience,
+                    C.LanguagesKnown,
+                    C.ProfilePhoto
+                FROM [sqladmin].[CaregiverProfiles] C
+                LEFT JOIN [sqladmin].[LocalPlaces] L
+                    ON C.PresentAreaID = L.PlaceID
+                WHERE C.IsActive = 1
+                ORDER BY C.CreatedDate DESC, C.CaregiverID DESC;";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                if (!dt.Columns.Contains("ProfilePhoto"))
+                    dt.Columns.Add("ProfilePhoto", typeof(byte[]));
+                rptRecentCaregivers.DataSource = dt;
+                rptRecentCaregivers.DataBind();
+            }
+        }
+
+        protected string GetPhotoUrl(object photo)
+        {
+            if (photo == null || photo == DBNull.Value)
+                return String.Empty;
+
+            byte[] bytes = photo as byte[];
+            if (bytes == null || bytes.Length == 0)
+                return String.Empty;
+
+            // If the database does not store MIME type, JPEG is the fallback.
+            string mime = "image/jpeg";
+            if (bytes.Length >= 8 &&
+                bytes[0] == 0x89 && bytes[1] == 0x50 &&
+                bytes[2] == 0x4E && bytes[3] == 0x47)
+                mime = "image/png";
+            else if (bytes.Length >= 3 &&
+                     bytes[0] == 0xFF && bytes[1] == 0xD8 && bytes[2] == 0xFF)
+                mime = "image/jpeg";
+            else if (bytes.Length >= 6 &&
+                     System.Text.Encoding.ASCII.GetString(bytes, 0, 3) == "GIF")
+                mime = "image/gif";
+
+            return "data:" + mime + ";base64," + Convert.ToBase64String(bytes);
+        }
 
     }
 }

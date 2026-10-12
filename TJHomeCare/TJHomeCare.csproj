@@ -106,6 +106,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="CandidateDetails.aspx" />
+    <Content Include="Candidates.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -155,15 +157,37 @@
     <Content Include="Images\patientcaretaker02.jpeg" />
     <Content Include="Images\tjhomecare.jpeg" />
     <Content Include="Images\tjhomecare02.jpeg" />
+    <Content Include="InquirySubmitted.aspx" />
     <Content Include="PostRequirement.aspx" />
     <Content Include="RequirementDetails.aspx" />
     <Content Include="Review.aspx" />
+    <Compile Include="CandidateDetails.aspx.cs">
+      <DependentUpon>CandidateDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CandidateDetails.aspx.designer.cs">
+      <DependentUpon>CandidateDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Candidates.aspx.cs">
+      <DependentUpon>Candidates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Candidates.aspx.designer.cs">
+      <DependentUpon>Candidates.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FindJobs.aspx.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FindJobs.aspx.designer.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InquirySubmitted.aspx.cs">
+      <DependentUpon>InquirySubmitted.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InquirySubmitted.aspx.designer.cs">
+      <DependentUpon>InquirySubmitted.aspx</DependentUpon>
     </Compile>
     <Compile Include="PostRequirement.aspx.cs">
       <DependentUpon>PostRequirement.aspx</DependentUpon>
@@ -183,11 +207,52 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Review.aspx.designer.cs" />
+    <Content Include="SendInquiry.aspx" />
+    <Content Include="Staff\Inquiries.aspx" />
+    <Content Include="Staff\InquiryMatches.aspx" />
+    <Content Include="Staff\InquiryMatches01.aspx" />
+    <Content Include="Staff\PostedRequirements.aspx" />
     <Content Include="Thankyou.aspx" />
+    <Compile Include="SendInquiry.aspx.cs">
+      <DependentUpon>SendInquiry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SendInquiry.aspx.designer.cs">
+      <DependentUpon>SendInquiry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Staff\Inquiries.aspx.cs">
+      <DependentUpon>Inquiries.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Staff\Inquiries.aspx.designer.cs">
+      <DependentUpon>Inquiries.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Staff\InquiryMatches.aspx.cs">
+      <DependentUpon>InquiryMatches.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Staff\InquiryMatches.aspx.designer.cs">
+      <DependentUpon>InquiryMatches.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Staff\InquiryMatches01.aspx.cs">
+      <DependentUpon>InquiryMatches01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Staff\InquiryMatches01.aspx.designer.cs">
+      <DependentUpon>InquiryMatches01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Staff\PostedRequirements.aspx.cs">
+      <DependentUpon>PostedRequirements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Staff\PostedRequirements.aspx.designer.cs">
+      <DependentUpon>PostedRequirements.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Thankyou.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Thankyou.aspx.designer.cs" />
+    <Content Include="UserRegistration.aspx" />
     <Content Include="viewcaregiverdetails.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
     <Content Include="WebForm1.aspx" />
@@ -278,6 +343,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserRegistration.aspx.cs">
+      <DependentUpon>UserRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserRegistration.aspx.designer.cs">
+      <DependentUpon>UserRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="viewcaregiverdetails.aspx.cs">
       <DependentUpon>viewcaregiverdetails.aspx</DependentUpon>

@@ -22,6 +22,15 @@ namespace TJHomeCare {
         protected global::System.Web.UI.WebControls.Repeater rptRecentRequirements;
         
         /// <summary>
+        /// rptRecentCaregivers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptRecentCaregivers;
+        
+        /// <summary>
         /// rptReviews control.
         /// </summary>
         /// <remarks>

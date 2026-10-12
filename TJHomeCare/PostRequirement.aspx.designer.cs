@@ -51,6 +51,15 @@ namespace TJHomeCare
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCity;
 
         /// <summary>
+        /// hdnAreaID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnAreaID;
+
+        /// <summary>
         /// txtArea control.
         /// </summary>
         /// <remarks>
