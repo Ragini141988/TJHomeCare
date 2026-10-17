@@ -259,14 +259,16 @@
             <!-- SERVICE REQUIREMENT -->
             <div class="form-group">
                 <label class="form-label">Service Requirement <span class="required">*</span></label>
-                <asp:DropDownList ID="ddlService" runat="server" CssClass="form-control">
-                    <asp:ListItem Value="">Select Service</asp:ListItem>
-                       <asp:ListItem>Baby Caretaker</asp:ListItem>
-                        <asp:ListItem>Patient Caretaker</asp:ListItem>
-                        <asp:ListItem>Elder Caretaker</asp:ListItem>
-                        <asp:ListItem>Home Nurse</asp:ListItem>
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfvService" runat="server" ControlToValidate="ddlService" InitialValue="" ErrorMessage="Please select a service." CssClass="validation" Display="Dynamic" />
+               <asp:DropDownList ID="ddlService"
+    runat="server"
+    CssClass="form-control"
+    DataTextField="ServiceName"
+    DataValueField="ServiceCategoryID"
+    AppendDataBoundItems="true">
+
+</asp:DropDownList>
+                <asp:RequiredFieldValidator ID="rfvService" runat="server" ControlToValidate="ddlService"
+                    InitialValue="" ErrorMessage="Please select a service." CssClass="validation" Display="Dynamic" />
             </div>
 
             <!-- CITY -->

@@ -37,10 +37,31 @@ namespace TJHomeCare
                 return;
             }
 
+            bool hasServiceCategoryId;
+
+            using (SqlConnection schemaCon = new SqlConnection(ConnectionString))
+            using (SqlCommand schemaCmd = new SqlCommand(
+                "SELECT CASE WHEN COL_LENGTH('sqladmin.PostRequirements', 'ServiceCategoryID') IS NULL THEN 0 ELSE 1 END",
+                schemaCon))
+            {
+                schemaCon.Open();
+                hasServiceCategoryId =
+                    Convert.ToInt32(schemaCmd.ExecuteScalar()) == 1;
+            }
+
+            string serviceSelect = hasServiceCategoryId
+                ? "COALESCE(sc.ServiceName, NULLIF(r.Service, ''), 'Not specified') AS Service,"
+                : "COALESCE(NULLIF(r.Service, ''), 'Not specified') AS Service,";
+
+            string serviceJoin = hasServiceCategoryId
+                ? @"LEFT JOIN [sqladmin].[ServiceCategories] sc
+                        ON sc.ServiceCategoryID = r.ServiceCategoryID"
+                : "";
+
             string sql = @"
                 SELECT
                     r.RequirementID,
-                    r.Service,
+                    " + serviceSelect + @"
                     COALESCE(
                         NULLIF(r.City, ''),
                         lp.City,
@@ -48,7 +69,8 @@ namespace TJHomeCare
                     ) AS City,
                     COALESCE(
                         lp.PlaceName,
-                        NULLIF(r.Area, '')
+                        NULLIF(r.Area, ''),
+                        'Not specified'
                     ) AS Area,
                     r.DutyTime,
                     r.PreferredLanguage,
@@ -57,7 +79,8 @@ namespace TJHomeCare
                     r.CreatedDate
                 FROM [sqladmin].[PostRequirements] r
                 LEFT JOIN [sqladmin].[LocalPlaces] lp
-                    ON CONVERT(NVARCHAR(20), lp.PlaceID) = r.Area
+                    ON lp.PlaceID = TRY_CONVERT(INT, r.Area)
+                " + serviceJoin + @"
                 WHERE r.RequirementID = @RequirementID";
 
             using (SqlConnection con =

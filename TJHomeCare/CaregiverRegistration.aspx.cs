@@ -19,6 +19,33 @@ namespace TabletJobs.com
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                BindServiceCategories();
+            }
+        }
+
+        // Load active services from the central master table.
+        private void BindServiceCategories()
+        {
+            const string sql = @"
+                SELECT ServiceCategoryID, ServiceName
+                FROM [sqladmin].[ServiceCategories]
+                WHERE IsActive = 1
+                ORDER BY DisplayOrder, ServiceName;";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cblServiceCategory.DataSource = dt;
+                cblServiceCategory.DataTextField = "ServiceName";
+                cblServiceCategory.DataValueField = "ServiceCategoryID";
+                cblServiceCategory.DataBind();
+            }
         }
 
         [WebMethod]
@@ -369,7 +396,7 @@ namespace TabletJobs.com
 
 
                 // Read Aadhar Photo
-               
+
 
                 using (BinaryReader reader =
                     new BinaryReader(
@@ -788,7 +815,7 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);
                                         SqlDbType.VarBinary,
                                         -1);
 
-                           
+
 
 
                                 aadharParameter.Value =
@@ -816,6 +843,45 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);
                                     Convert.ToInt32(result);
                             }
 
+
+                            // =========================================
+                            // SAVE SELECTED SERVICES IN MAPPING TABLE
+                            // One row per caregiver per selected service.
+                            // The old comma-separated column is retained
+                            // temporarily for backward compatibility.
+                            // =========================================
+
+                            const string serviceMapSql = @"
+                                INSERT INTO [sqladmin].[CaregiverServices]
+                                    (CaregiverID, ServiceCategoryID)
+                                VALUES
+                                    (@CaregiverID, @ServiceCategoryID);";
+
+                            foreach (ListItem item in cblServiceCategory.Items)
+                            {
+                                if (!item.Selected)
+                                    continue;
+
+                                int serviceCategoryID;
+                                if (!int.TryParse(item.Value, out serviceCategoryID))
+                                {
+                                    throw new Exception(
+                                        "A selected service category has an invalid ID.");
+                                }
+
+                                using (SqlCommand mapCmd =
+                                    new SqlCommand(serviceMapSql, con, transaction))
+                                {
+                                    mapCmd.Parameters.Add(
+                                        "@CaregiverID", SqlDbType.Int).Value = caregiverID;
+
+                                    mapCmd.Parameters.Add(
+                                        "@ServiceCategoryID", SqlDbType.Int).Value =
+                                        serviceCategoryID;
+
+                                    mapCmd.ExecuteNonQuery();
+                                }
+                            }
 
                             // =========================================
                             // COMMIT TRANSACTION

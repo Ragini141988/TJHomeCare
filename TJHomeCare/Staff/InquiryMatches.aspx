@@ -136,6 +136,23 @@
     }
 }
 
+.im-nearby-actions {
+    margin: 18px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.im-nearby-actions .care-btn {
+    min-height: 44px;
+}
+
+@media (max-width: 600px) {
+    .im-nearby-actions .care-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
 </style></asp:Content>
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 <section class="care-page">
@@ -143,6 +160,17 @@
     <p class="care-lead">Candidates are ranked using service-category and city/area matches.</p>
     <asp:Label ID="lblInquiry" runat="server" CssClass="care-note" />
     <asp:Label ID="lblMessage" runat="server" CssClass="care-message" />
+  <%--  New Button--%>
+    
+<div class="im-nearby-actions">
+    <asp:Button ID="btnNearbyAreas"
+        runat="server"
+        Text="Search Nearby Areas"
+        CssClass="care-btn"
+        Onclick="btnNearbyAreas_Click" CausesValidation="false" Visible="false" />
+</div>
+
+  <%--  Close Button--%>
     <div class="care-table-wrap">
        
 <asp:ListView ID="lvMatches" runat="server"

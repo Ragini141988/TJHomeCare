@@ -1,4 +1,6 @@
-<%@ Page Title="Candidates | TJ Home Care" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="Candidates.aspx.cs" Inherits="TJHomeCare.Candidates" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" 
+    AutoEventWireup="true" CodeBehind="Candidates.aspx.cs" Inherits="TJHomeCare.Candidates" %>
+
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"><style>
 .care-page{max-width:1180px;margin:0 auto;padding:34px 16px 55px;color:#16355f}
 .care-page h1{color:#082f6f;margin:0 0 10px;font-size:clamp(28px,4vw,38px)}
@@ -33,7 +35,14 @@
     <h1>Find Home Care Professionals</h1>
     <p class="care-lead">Browse caregiver profiles. Use the filters to find suitable home care support.</p>
     <div class="care-filters">
-        <asp:DropDownList ID="ddlService" runat="server" AutoPostBack="true" OnSelectedIndexChanged="FilterChanged" />
+         <asp:DropDownList ID="ddlService"
+    runat="server"
+    CssClass="form-control"
+    DataTextField="ServiceName"
+    DataValueField="ServiceCategoryID"
+    AutoPostBack="true" OnSelectedIndexChanged="FilterChanged" >
+
+</asp:DropDownList>
         <asp:DropDownList ID="ddlCity" runat="server" AutoPostBack="true" OnSelectedIndexChanged="FilterChanged" />
         <asp:DropDownList ID="ddlLanguage" runat="server" AutoPostBack="true" OnSelectedIndexChanged="FilterChanged" />
     </div>

@@ -99,10 +99,13 @@ namespace TJHomeCare
 
         private void LoadRecentRequirements()
         {
+            // ServiceCategoryID is the new source of truth.
+            // The old r.Service value is retained as a fallback while existing
+            // requirement records are being migrated.
             string query = @"
         SELECT TOP (10)
             r.RequirementID,
-            r.Service,
+            COALESCE(sc.ServiceName, NULLIF(r.Service, ''), 'Not specified') AS Service,
             COALESCE(
                 NULLIF(r.City, ''),
                 lp.City,
@@ -116,8 +119,10 @@ namespace TJHomeCare
             r.Budget,
             r.CreatedDate
         FROM [sqladmin].[PostRequirements] r
+        LEFT JOIN [sqladmin].[ServiceCategories] sc
+            ON r.ServiceCategoryID = sc.ServiceCategoryID
         LEFT JOIN [sqladmin].[LocalPlaces] lp
-            ON  r.Area = lp.PlaceID
+            ON TRY_CONVERT(INT, r.Area) = lp.PlaceID
         ORDER BY r.CreatedDate DESC, r.RequirementID DESC;";
 
             using (SqlConnection con =
@@ -259,17 +264,37 @@ namespace TJHomeCare
 
         private void LoadRecentCaregivers()
         {
+            // Build the displayed service list from CaregiverServices and
+            // ServiceCategories. Keep the old text as a fallback until all
+            // existing caregiver profiles have been migrated.
             string query = @"
                 SELECT TOP (5)
                     C.CaregiverID,
                     C.FullName,
-                    C.ServiceCategory,
+                    COALESCE(NULLIF(ServiceList.ServiceCategory, ''), C.ServiceCategory) AS ServiceCategory,
                     C.City,
                     L.PlaceName AS PresentArea,
                     C.Experience,
                     C.LanguagesKnown,
                     C.ProfilePhoto
                 FROM [sqladmin].[CaregiverProfiles] C
+                OUTER APPLY
+                (
+                    SELECT STUFF
+                    (
+                        (
+                            SELECT ', ' + SC.ServiceName
+                            FROM [sqladmin].[CaregiverServices] CS
+                            INNER JOIN [sqladmin].[ServiceCategories] SC
+                                ON SC.ServiceCategoryID = CS.ServiceCategoryID
+                            WHERE CS.CaregiverID = C.CaregiverID
+                              AND SC.IsActive = 1
+                            ORDER BY SC.DisplayOrder, SC.ServiceName
+                            FOR XML PATH(''), TYPE
+                        ).value('.', 'NVARCHAR(MAX)'),
+                        1, 2, ''
+                    ) AS ServiceCategory
+                ) AS ServiceList
                 LEFT JOIN [sqladmin].[LocalPlaces] L
                     ON C.PresentAreaID = L.PlaceID
                 WHERE C.IsActive = 1

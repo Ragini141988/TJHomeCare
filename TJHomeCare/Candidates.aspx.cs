@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace TJHomeCare
 {
-    public partial class Candidates : Page
+    public partial class Candidates : System.Web.UI.Page
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"].ConnectionString;
         private const int PageSize = 9;
@@ -24,6 +24,10 @@ namespace TJHomeCare
             {
                 LoadFilters();
                 BindCandidates();
+            }
+            if (!IsPostBack)
+            {
+                BindServices();
             }
         }
 
@@ -75,82 +79,193 @@ namespace TJHomeCare
         private void BindCandidates()
         {
             string filterSql = @"
-                FROM [sqladmin].[CaregiverProfiles] C
-                WHERE C.IsActive=1
-                  AND (@Service='' OR C.ServiceCategory=@Service)
-                  AND (@City='' OR C.City=@City)
-                  AND (@Language='' OR C.LanguagesKnown=@Language OR
-                       ',' + REPLACE(REPLACE(ISNULL(C.LanguagesKnown,''), ', ', ','), ' ,', ',') + ','
-                       LIKE '%,' + @Language + ',%')";
+        FROM [sqladmin].[CaregiverProfiles] C
+        WHERE C.IsActive = 1
+
+          AND (
+              @Service = ''
+              OR EXISTS
+              (
+                  SELECT 1
+                  FROM [sqladmin].[CaregiverServices] CS
+                  INNER JOIN [sqladmin].[ServiceCategories] SC
+                      ON SC.ServiceCategoryID = CS.ServiceCategoryID
+                  WHERE CS.CaregiverID = C.CaregiverID
+                    AND SC.ServiceCategoryID = @Service
+              )
+          )
+
+          AND (@City = '' OR C.City = @City)
+
+          AND (
+              @Language = ''
+              OR C.LanguagesKnown = @Language
+              OR ',' + REPLACE(
+                     REPLACE(ISNULL(C.LanguagesKnown, ''), ', ', ','),
+                     ' ,', ','
+                 ) + ','
+                 LIKE '%,' + @Language + ',%'
+          )";
 
             string sql = @"
-                SELECT C.CaregiverID, C.FullName, C.Age, C.Gender, C.ServiceCategory, C.City,
-                       L.PlaceName AS PresentArea, C.LanguagesKnown, C.Qualification, C.Experience,
-                       C.DutyPreference, C.ExpectedSalary, C.JoiningAvailability, C.ProfilePhoto
-                FROM [sqladmin].[CaregiverProfiles] C
-                LEFT JOIN [sqladmin].[LocalPlaces] L ON C.PresentAreaID=L.PlaceID
-                WHERE C.IsActive=1
-                  AND (@Service='' OR C.ServiceCategory=@Service)
-                  AND (@City='' OR C.City=@City)
-                  AND (@Language='' OR C.LanguagesKnown=@Language OR
-                       ',' + REPLACE(REPLACE(ISNULL(C.LanguagesKnown,''), ', ', ','), ' ,', ',') + ','
-                       LIKE '%,' + @Language + ',%')
-                ORDER BY C.CreatedDate DESC, C.CaregiverID DESC
-                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+        SELECT
+            C.CaregiverID,
+            C.FullName,
+            C.Age,
+            C.Gender,
+
+            COALESCE(
+                NULLIF(
+                    STUFF(
+                        (
+                            SELECT ', ' + SC.ServiceName
+                            FROM [sqladmin].[CaregiverServices] CS
+                            INNER JOIN [sqladmin].[ServiceCategories] SC
+                                ON SC.ServiceCategoryID = CS.ServiceCategoryID
+                            WHERE CS.CaregiverID = C.CaregiverID
+                            ORDER BY SC.DisplayOrder, SC.ServiceName
+                            FOR XML PATH(''), TYPE
+                        ).value('.', 'NVARCHAR(MAX)'),
+                        1, 2, ''
+                    ),
+                    ''
+                ),
+                C.ServiceCategory
+            ) AS ServiceCategory,
+
+            C.City,
+            L.PlaceName AS PresentArea,
+            C.LanguagesKnown,
+            C.Qualification,
+            C.Experience,
+            C.DutyPreference,
+            C.ExpectedSalary,
+            C.JoiningAvailability,
+            C.ProfilePhoto
+
+        FROM [sqladmin].[CaregiverProfiles] C
+
+        LEFT JOIN [sqladmin].[LocalPlaces] L
+            ON C.PresentAreaID = L.PlaceID
+
+        WHERE C.IsActive = 1
+
+          AND (
+              @Service = ''
+              OR EXISTS
+              (
+                  SELECT 1
+                  FROM [sqladmin].[CaregiverServices] CS
+                  INNER JOIN [sqladmin].[ServiceCategories] SC
+                      ON SC.ServiceCategoryID = CS.ServiceCategoryID
+                  WHERE CS.CaregiverID = C.CaregiverID
+                    AND SC.ServiceCategoryID = @Service
+              )
+          )
+
+          AND (@City = '' OR C.City = @City)
+
+          AND (
+              @Language = ''
+              OR C.LanguagesKnown = @Language
+              OR ',' + REPLACE(
+                     REPLACE(ISNULL(C.LanguagesKnown, ''), ', ', ','),
+                     ' ,', ','
+                 ) + ','
+                 LIKE '%,' + @Language + ',%'
+          )
+
+        ORDER BY C.CreatedDate DESC, C.CaregiverID DESC
+        OFFSET @Offset ROWS
+        FETCH NEXT @PageSize ROWS ONLY;";
 
             DataTable dt = new DataTable();
+            int total;
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
                     AddFilterParameters(cmd);
-                    cmd.Parameters.Add("@Offset", SqlDbType.Int).Value = CurrentPage * PageSize;
-                    cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value = PageSize;
+
+                    cmd.Parameters.Add("@Offset", SqlDbType.Int).Value =
+                        CurrentPage * PageSize;
+
+                    cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value =
+                        PageSize;
+
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        da.Fill(dt);
-                }
-
-                int total;
-                using (SqlCommand countCmd = new SqlCommand("SELECT COUNT(1) " + filterSql, con))
-                {
-                    AddFilterParameters(countCmd);
-                    con.Open();
-                    total = Convert.ToInt32(countCmd.ExecuteScalar());
-                }
-
-                int pages = Math.Max(1, (int)Math.Ceiling(total / (double)PageSize));
-                if (CurrentPage >= pages) CurrentPage = pages - 1;
-                // If a filter change reduced the result count, rerun at the corrected page.
-                if (CurrentPage * PageSize >= total && CurrentPage > 0)
-                {
-                    CurrentPage = pages - 1;
-                    using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
-                        AddFilterParameters(cmd);
-                        cmd.Parameters.Add("@Offset", SqlDbType.Int).Value = CurrentPage * PageSize;
-                        cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value = PageSize;
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            dt.Clear();
-                            da.Fill(dt);
-                        }
+                        da.Fill(dt);
                     }
                 }
 
-                rptCandidates.DataSource = dt;
-                rptCandidates.DataBind();
-                lblMessage.Text = total == 0 ? "No candidates found for these filters." : "";
-                lblPage.Text = "Page " + (CurrentPage + 1) + " of " + pages;
-                btnPrevious.Enabled = CurrentPage > 0;
-                btnNext.Enabled = CurrentPage < pages - 1;
+                using (SqlCommand countCmd =
+                    new SqlCommand("SELECT COUNT(1) " + filterSql, con))
+                {
+                    AddFilterParameters(countCmd);
+
+                    con.Open();
+                    total = Convert.ToInt32(countCmd.ExecuteScalar());
+                }
             }
+
+            int pages = Math.Max(
+                1,
+                (int)Math.Ceiling(total / (double)PageSize));
+
+            if (CurrentPage >= pages)
+                CurrentPage = pages - 1;
+
+            // Reload if the current page is beyond the filtered result count.
+            if (CurrentPage * PageSize >= total && CurrentPage > 0)
+            {
+                CurrentPage = pages - 1;
+
+                using (SqlConnection con =
+                    new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    AddFilterParameters(cmd);
+
+                    cmd.Parameters.Add("@Offset", SqlDbType.Int).Value =
+                        CurrentPage * PageSize;
+
+                    cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value =
+                        PageSize;
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        dt.Clear();
+                        da.Fill(dt);
+                    }
+                }
+            }
+
+            rptCandidates.DataSource = dt;
+            rptCandidates.DataBind();
+
+            lblMessage.Text = total == 0
+                ? "No candidates found for these filters."
+                : "";
+
+            lblPage.Text = "Page " + (CurrentPage + 1) +
+                           " of " + pages;
+
+            btnPrevious.Enabled = CurrentPage > 0;
+            btnNext.Enabled = CurrentPage < pages - 1;
         }
 
         private void AddFilterParameters(SqlCommand cmd)
         {
-            cmd.Parameters.Add("@Service", SqlDbType.NVarChar, 200).Value = ddlService.SelectedValue;
-            cmd.Parameters.Add("@City", SqlDbType.NVarChar, 100).Value = ddlCity.SelectedValue;
-            cmd.Parameters.Add("@Language", SqlDbType.NVarChar, 200).Value = ddlLanguage.SelectedValue;
+            cmd.Parameters.Add("@Service", SqlDbType.NVarChar, 200)
+                .Value = ddlService.SelectedValue ?? "";
+
+            cmd.Parameters.Add("@City", SqlDbType.NVarChar, 100)
+                .Value = ddlCity.SelectedValue ?? "";
+
+            cmd.Parameters.Add("@Language", SqlDbType.NVarChar, 200)
+                .Value = ddlLanguage.SelectedValue ?? "";
         }
 
         protected bool HasValue(object value)
@@ -170,6 +285,33 @@ namespace TJHomeCare
             if (bytes.Length >= 8 && bytes[0] == 137 && bytes[1] == 80 && bytes[2] == 78 && bytes[3] == 71) mime = "image/png";
             else if (bytes.Length >= 6 && System.Text.Encoding.ASCII.GetString(bytes, 0, 3) == "GIF") mime = "image/gif";
             return "data:" + mime + ";base64," + Convert.ToBase64String(bytes);
+        }
+        private void BindServices()
+        {
+            string cs = ConfigurationManager
+                .ConnectionStrings[
+                    "hospi2yp_tabletjobssConnectionString_V02"]
+                .ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(cs))
+            using (SqlCommand cmd = new SqlCommand(@"
+        SELECT ServiceCategoryID, ServiceName
+        FROM [sqladmin].[ServiceCategories]
+        WHERE IsActive = 1
+        ORDER BY DisplayOrder, ServiceName;", con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                ddlService.DataSource = dt;
+                ddlService.DataTextField = "ServiceName";
+                ddlService.DataValueField = "ServiceCategoryID";
+                ddlService.DataBind();
+
+                ddlService.Items.Insert(
+                    0, new ListItem("Select Service", ""));
+            }
         }
     }
 }

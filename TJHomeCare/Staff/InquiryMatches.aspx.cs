@@ -15,6 +15,21 @@ namespace TJHomeCare.Staff
                 "hospi2yp_tabletjobssConnectionString_V02"
             ].ConnectionString;
 
+        //New Code by Seema        
+private bool IsNearbySearch
+        {
+            get
+            {
+                return ViewState["IsNearbySearch"] != null
+                    && Convert.ToBoolean(ViewState["IsNearbySearch"]);
+            }
+            set
+            {
+                ViewState["IsNearbySearch"] = value;
+            }
+        }
+
+        //Close Codes
         private bool IsStaff()
         {
             bool isAdmin =
@@ -300,13 +315,26 @@ WHERE I.InquiryID = @InquiryID;";
             string city,
             int? areaId)
         {
-            if (String.IsNullOrWhiteSpace(service))
+            //New Code Added By Seema
+          
+if (IsNearbySearch)
             {
+                BindNearbyCaregiverMatches(service, city, areaId);
+                return;
+            }
+
+            //Close Code
+            if (String.IsNullOrWhiteSpace(service))       {
+                
+                
                 lblMessage.Text =
                     "The required service could not be determined.";
 
                 lvMatches.DataSource = null;
                 lvMatches.DataBind();
+                //New Code Added by Seema
+                btnNearbyAreas.Visible = false;
+                //Close
                 return;
             }
 
@@ -509,10 +537,143 @@ ORDER BY
 
             lvMatches.DataSource = dt;
             lvMatches.DataBind();
+            //New Code Added By Seema
+            if (dt.Rows.Count == 0)
+            {
+                btnNearbyAreas.Visible = true;
+                btnNearbyAreas.Text = "Search Nearby Areas";
+            }
+            else
+            {
+                btnNearbyAreas.Visible = false;
+            }
+            //Close Code
 
             lblMessage.Text = message;
         }
+        //New Code Added By Seema
+        
+private void BindNearbyCaregiverMatches(
+    string service,
+    string city,
+    int? areaId)
+        {
+            if (String.IsNullOrWhiteSpace(service))
+            {
+                lblMessage.Text =
+                    "The required service could not be determined.";
 
+                lvMatches.DataSource = null;
+                lvMatches.DataBind();
+                return;
+            }
+
+            const string sql = @"
+SELECT
+    C.CaregiverID,
+    C.FullName,
+    C.ServiceCategory,
+    C.City,
+    L.PlaceName AS PresentArea,
+    C.LanguagesKnown,
+    C.Experience,
+    C.JoiningAvailability,
+    'Other area in same city' AS LocationMatch
+
+FROM [sqladmin].[CaregiverProfiles] C
+
+LEFT JOIN [sqladmin].[LocalPlaces] L
+    ON C.PresentAreaID = L.PlaceID
+
+WHERE
+    C.IsActive = 1
+
+    AND EXISTS
+    (
+        SELECT 1
+        FROM STRING_SPLIT(
+            ISNULL(C.ServiceCategory, ''), ','
+        ) CS
+
+        INNER JOIN STRING_SPLIT(@Service, ',') RS
+            ON LOWER(LTRIM(RTRIM(CS.value))) =
+               LOWER(LTRIM(RTRIM(RS.value)))
+    )
+
+    AND LOWER(LTRIM(RTRIM(ISNULL(C.City, '')))) =
+        LOWER(LTRIM(RTRIM(ISNULL(@City, ''))))
+
+    AND C.PresentAreaID IS NOT NULL
+
+    AND
+    (
+        @AreaID IS NULL
+        OR C.PresentAreaID <> @AreaID
+    )
+
+ORDER BY
+    C.CreatedDate DESC,
+    C.CaregiverID DESC;";
+
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con =
+                new SqlConnection(connectionString))
+            using (SqlCommand cmd =
+                new SqlCommand(sql, con))
+            {
+                cmd.Parameters.Add(
+                    "@Service",
+                    SqlDbType.NVarChar,
+                    1000).Value = service.Trim();
+
+                cmd.Parameters.Add(
+                    "@City",
+                    SqlDbType.NVarChar,
+                    100).Value =
+                    String.IsNullOrWhiteSpace(city)
+                        ? (object)DBNull.Value
+                        : city.Trim();
+
+                cmd.Parameters.Add(
+                    "@AreaID",
+                    SqlDbType.Int).Value =
+                    areaId.HasValue
+                        ? (object)areaId.Value
+                        : DBNull.Value;
+
+                using (SqlDataAdapter adapter =
+                    new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            // Reset pagination when displaying nearby candidates.
+            dpMatches.SetPageProperties(0, dpMatches.PageSize, false);
+
+            lvMatches.DataSource = dt;
+            lvMatches.DataBind();
+            //New Code Added By Seema
+            btnNearbyAreas.Visible = true;
+            btnNearbyAreas.Text = "Back to Area Matches";
+            //Close Added Codes
+
+            if (dt.Rows.Count == 0)
+            {
+                lblMessage.Text =
+                    "No active caregivers were found in other areas " +
+                    "of this city for the selected service.";
+            }
+            else
+            {
+                lblMessage.Text =
+                    dt.Rows.Count +
+                    " caregiver(s) found in other areas of this city.";
+            }
+        }
+
+        //Close
         // ============================================================
         // LISTVIEW PAGINATION
         // ============================================================
@@ -599,5 +760,42 @@ ORDER BY
                 ViewState["OriginallySelectedCaregiverID"] = value;
             }
         }
+
+
+        //New Code By Seema
+        protected void btnNearbyAreas_Click(object sender, EventArgs e)
+        {
+
+
+
+            // Switch between area matches and nearby-area matches.
+            IsNearbySearch = !IsNearbySearch;
+
+            // Reset pagination when changing search mode.
+            dpMatches.SetPageProperties(
+                0,
+                dpMatches.PageSize,
+                false
+            );
+
+            btnNearbyAreas.Text = IsNearbySearch
+                ? "Back to Area Matches"
+                : "Search Nearby Areas";
+
+            lblMessage.Text = "";
+
+            // Reload the same requirement or inquiry.
+            if (IsRequirementMatchRequest())
+            {
+                LoadRequirementMatches();
+            }
+            else
+            {
+                LoadMatches();
+            }
+        }
+
+
+        //Close Code
     }
 }

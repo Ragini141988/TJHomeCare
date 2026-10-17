@@ -61,11 +61,10 @@ namespace TJHomeCare
         {
             LoadDropdown(
                 ddlService,
-                @"SELECT DISTINCT Service
-                  FROM [sqladmin].[PostRequirements]
-                  WHERE Service IS NOT NULL
-                    AND LTRIM(RTRIM(Service)) <> ''
-                  ORDER BY Service",
+                @"SELECT ServiceName
+                  FROM [sqladmin].[ServiceCategories]
+                  WHERE IsActive = 1
+                  ORDER BY DisplayOrder, ServiceName",
                 "All Services");
         }
 
@@ -215,138 +214,110 @@ namespace TJHomeCare
             string city = ddlCity.SelectedValue;
             string area = ddlArea.SelectedValue;
 
-            string fromSql = @"
-    FROM [sqladmin].[PostRequirements] r
-    LEFT JOIN [sqladmin].[LocalPlaces] lp
-        ON TRY_CONVERT(INT, r.Area) = lp.PlaceID
-    WHERE
-        (@Service = ''
-         OR r.Service LIKE '%' + @Service + '%')
-        AND
-        (@City = ''
-         OR COALESCE(NULLIF(r.City, ''), lp.City) = @City)
-        AND
-        (@Area = ''
-         OR TRY_CONVERT(INT, r.Area) =
-            TRY_CONVERT(INT, @Area))
-";
+            // Prefer the normalized ServiceCategoryID when the column exists.
+            // Otherwise keep compatibility with legacy text in PostRequirements.Service.
+            bool hasServiceCategoryId;
+            using (SqlConnection schemaCon = new SqlConnection(ConnectionString))
+            using (SqlCommand schemaCmd = new SqlCommand(
+                "SELECT CASE WHEN COL_LENGTH('[sqladmin].[PostRequirements]', 'ServiceCategoryID') IS NULL THEN 0 ELSE 1 END",
+                schemaCon))
+            {
+                schemaCon.Open();
+                hasServiceCategoryId = Convert.ToInt32(schemaCmd.ExecuteScalar()) == 1;
+            }
 
-            string selectSql = @"
-                SELECT
-                    r.RequirementID,
-                    r.Service,
-                    COALESCE(
-                        NULLIF(r.City, ''),
-                        lp.City,
-                        'Not specified'
-                    ) AS City,
-                    COALESCE(
-                        lp.PlaceName,
-                        NULLIF(r.Area, '')
-                    ) AS Area,
-                    r.DutyTime,
-                    r.Budget,
-                    r.CreatedDate ";
+            string legacyServiceMatch = @"(
+                    r.Service LIKE '%' + @Service + '%' OR
+                    (@Service = 'Maid' AND r.Service LIKE '%House Maid%') OR
+                    (@Service = 'Baby Care Taker' AND r.Service LIKE '%Baby Caretaker%') OR
+                    (@Service = 'Patient Care Taker' AND r.Service LIKE '%Patient Caretaker%') OR
+                    (@Service = 'Elder Care Taker' AND r.Service LIKE '%Elder Caretaker%'))";
+
+            string serviceFilter = hasServiceCategoryId
+                ? @"(@Service = '' OR EXISTS
+                    (SELECT 1
+                     FROM [sqladmin].[ServiceCategories] SC
+                     WHERE SC.ServiceName = @Service
+                       AND SC.ServiceCategoryID = r.ServiceCategoryID)
+                    OR (r.ServiceCategoryID IS NULL AND " + legacyServiceMatch + "))"
+                : @"(@Service = '' OR " + legacyServiceMatch + ")";
+
+            string fromSql = @"
+                FROM [sqladmin].[PostRequirements] r
+                LEFT JOIN [sqladmin].[LocalPlaces] lp
+                    ON TRY_CONVERT(INT, r.Area) = lp.PlaceID
+                WHERE " + serviceFilter + @"
+                  AND (@City = ''
+                       OR COALESCE(NULLIF(r.City, ''), lp.City) = @City)
+                  AND (@Area = ''
+                       OR TRY_CONVERT(INT, r.Area) = TRY_CONVERT(INT, @Area))";
+
+            string pageSql = @"
+                SELECT RequirementID, Service, City, Area, DutyTime, Budget, CreatedDate
+                FROM
+                (
+                    SELECT
+                        r.RequirementID,
+                        " + (hasServiceCategoryId
+                            ? "COALESCE(sc.ServiceName, NULLIF(r.Service, ''))"
+                            : "NULLIF(r.Service, '')") + @" AS Service,
+                        COALESCE(NULLIF(r.City, ''), lp.City, 'Not specified') AS City,
+                        COALESCE(lp.PlaceName, NULLIF(r.Area, ''), 'Not specified') AS Area,
+                        r.DutyTime,
+                        r.Budget,
+                        r.CreatedDate,
+                        ROW_NUMBER() OVER (
+                            ORDER BY r.CreatedDate DESC, r.RequirementID DESC
+                        ) AS RowNum
+                    FROM [sqladmin].[PostRequirements] r
+                    LEFT JOIN [sqladmin].[LocalPlaces] lp
+                        ON TRY_CONVERT(INT, r.Area) = lp.PlaceID
+                    " + (hasServiceCategoryId
+                            ? "LEFT JOIN [sqladmin].[ServiceCategories] sc ON sc.ServiceCategoryID = r.ServiceCategoryID "
+                            : "") + @"
+                    WHERE " + serviceFilter + @"
+                      AND (@City = ''
+                           OR COALESCE(NULLIF(r.City, ''), lp.City) = @City)
+                      AND (@Area = ''
+                           OR TRY_CONVERT(INT, r.Area) = TRY_CONVERT(INT, @Area))
+                ) AS RequirementResults
+                WHERE RowNum BETWEEN @StartRow AND @EndRow
+                ORDER BY RowNum;";
 
             int totalRecords;
-
-            using (SqlConnection con =
-                new SqlConnection(ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
-
-                using (SqlCommand countCmd = new SqlCommand(
-                    "SELECT COUNT(*) " + fromSql, con))
+                using (SqlCommand countCmd = new SqlCommand("SELECT COUNT(*) " + fromSql, con))
                 {
-                    AddFilterParameters(
-                        countCmd, service, city, area);
-
-                    totalRecords = Convert.ToInt32(
-                        countCmd.ExecuteScalar());
+                    AddFilterParameters(countCmd, service, city, area);
+                    totalRecords = Convert.ToInt32(countCmd.ExecuteScalar());
                 }
 
-                int totalPages = (int)Math.Ceiling(
-                    totalRecords / (double)PageSize);
-
+                int totalPages = (int)Math.Ceiling(totalRecords / (double)PageSize);
                 if (CurrentPage >= totalPages)
                     CurrentPage = Math.Max(0, totalPages - 1);
 
-                
-  string pageSql = @"
-    SELECT
-        RequirementID,
-        Service,
-        City,
-        Area,
-        DutyTime,
-        Budget,
-        CreatedDate
-    FROM
-    (
-        SELECT
-            r.RequirementID,
-            r.Service,
-            COALESCE(
-                NULLIF(r.City, ''),
-                lp.City,
-                'Not specified'
-            ) AS City,
-            COALESCE(
-                lp.PlaceName,
-                NULLIF(r.Area, '')
-            ) AS Area,
-            r.DutyTime,
-            r.Budget,
-            r.CreatedDate,
-            ROW_NUMBER() OVER(
-                ORDER BY r.CreatedDate DESC,
-                         r.RequirementID DESC
-            ) AS RowNum
-        " + fromSql + @"
-    ) AS RequirementResults
-    WHERE RowNum BETWEEN @StartRow AND @EndRow
-    ORDER BY RowNum";
-                using (SqlCommand cmd =
-                    new SqlCommand(pageSql, con))
+                using (SqlCommand cmd = new SqlCommand(pageSql, con))
                 {
-                    AddFilterParameters(
-                        cmd, service, city, area);
-
-                    cmd.Parameters.Add(
-      "@StartRow", SqlDbType.Int).Value =
-      CurrentPage * PageSize + 1;
-
-                    cmd.Parameters.Add(
-                        "@EndRow", SqlDbType.Int).Value =
-                        (CurrentPage + 1) * PageSize;
+                    AddFilterParameters(cmd, service, city, area);
+                    cmd.Parameters.Add("@StartRow", SqlDbType.Int).Value = CurrentPage * PageSize + 1;
+                    cmd.Parameters.Add("@EndRow", SqlDbType.Int).Value = (CurrentPage + 1) * PageSize;
 
                     DataTable dt = new DataTable();
-
-                    using (SqlDataAdapter da =
-                        new SqlDataAdapter(cmd))
-                    {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         da.Fill(dt);
-                    }
 
                     rptRequirements.DataSource = dt;
                     rptRequirements.DataBind();
-
                     pnlEmpty.Visible = totalRecords == 0;
-
                     lblResults.Text = totalRecords +
-                        (totalRecords == 1
-                            ? " requirement found."
-                            : " requirements found.");
-
+                        (totalRecords == 1 ? " requirement found." : " requirements found.");
                     lblPage.Text = totalPages == 0
                         ? "Page 0 of 0"
-                        : "Page " + (CurrentPage + 1) +
-                          " of " + totalPages;
-
+                        : "Page " + (CurrentPage + 1) + " of " + totalPages;
                     btnPrevious.Enabled = CurrentPage > 0;
-
-                    btnNext.Enabled =
-                        CurrentPage + 1 < totalPages;
+                    btnNext.Enabled = CurrentPage + 1 < totalPages;
                 }
             }
         }

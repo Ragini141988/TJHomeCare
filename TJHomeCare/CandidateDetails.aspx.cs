@@ -25,18 +25,76 @@ namespace TJHomeCare
             }
 
             string sql = @"
-                SELECT C.CaregiverID,C.FullName,C.Age,C.Gender,C.ServiceCategory,C.City,
-                       L.PlaceName AS PresentArea,C.LanguagesKnown,C.Qualification,C.Experience,
-                       C.DutyPreference,C.ExpectedSalary,C.PreferredWorkAreas,C.JoiningAvailability,C.ProfilePhoto
-                FROM [sqladmin].[CaregiverProfiles] C
-                LEFT JOIN [sqladmin].[LocalPlaces] L ON C.PresentAreaID=L.PlaceID
-                WHERE C.CaregiverID=@ID AND C.IsActive=1;";
+        SELECT
+            C.CaregiverID,
+            C.FullName,
+            C.Age,
+            C.Gender,
+
+            -- Service names from the new service mapping tables
+            COALESCE(
+                NULLIF(
+                    STUFF((
+                        SELECT ', ' + SC.ServiceName
+                        FROM [sqladmin].[CaregiverServices] CS
+                        INNER JOIN [sqladmin].[ServiceCategories] SC
+                            ON SC.ServiceCategoryID = CS.ServiceCategoryID
+                        WHERE CS.CaregiverID = C.CaregiverID
+                          AND SC.IsActive = 1
+                        ORDER BY SC.DisplayOrder, SC.ServiceName
+                        FOR XML PATH(''), TYPE
+                    ).value('.', 'NVARCHAR(MAX)'), 1, 2, ''),
+                    ''
+                ),
+                C.ServiceCategory
+            ) AS ServiceCategory,
+
+            C.City,
+
+            -- Present area name
+            LP.PlaceName AS PresentArea,
+
+            C.LanguagesKnown,
+            C.Qualification,
+            C.Experience,
+            C.DutyPreference,
+            C.ExpectedSalary,
+
+            -- Preferred work area names instead of IDs
+            COALESCE(
+                NULLIF(
+                    STUFF((
+                        SELECT ', ' + P.PlaceName
+                        FROM STRING_SPLIT(
+                            ISNULL(C.PreferredWorkAreas, ''), ','
+                        ) AS S
+                        INNER JOIN [sqladmin].[LocalPlaces] P
+                            ON P.PlaceID = TRY_CAST(LTRIM(RTRIM(S.value)) AS INT)
+                        FOR XML PATH(''), TYPE
+                    ).value('.', 'NVARCHAR(MAX)'), 1, 2, ''),
+                    ''
+                ),
+                C.PreferredWorkAreas
+            ) AS PreferredWorkAreas,
+
+            C.JoiningAvailability,
+            C.ProfilePhoto
+
+        FROM [sqladmin].[CaregiverProfiles] C
+
+        LEFT JOIN [sqladmin].[LocalPlaces] LP
+            ON C.PresentAreaID = LP.PlaceID
+
+        WHERE C.CaregiverID = @ID
+          AND C.IsActive = 1;";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(sql, con))
             {
                 cmd.Parameters.Add("@ID", SqlDbType.Int).Value = id;
+
                 con.Open();
+
                 using (SqlDataReader r = cmd.ExecuteReader())
                 {
                     if (!r.Read())
@@ -44,6 +102,7 @@ namespace TJHomeCare
                         lblMessage.Text = "This candidate is not available.";
                         return;
                     }
+
                     litName.Text = Enc(r["FullName"]);
                     litService.Text = Enc(r["ServiceCategory"]);
                     litAge.Text = Enc(r["Age"]);
@@ -57,13 +116,18 @@ namespace TJHomeCare
                     litSalary.Text = Enc(r["ExpectedSalary"]);
                     litWorkAreas.Text = Enc(r["PreferredWorkAreas"]);
                     litAvailability.Text = Enc(r["JoiningAvailability"]);
+
                     string photo = PhotoUrl(r["ProfilePhoto"]);
+
                     if (!String.IsNullOrEmpty(photo))
                     {
                         imgPhoto.ImageUrl = photo;
                         imgPhoto.Visible = true;
                     }
-                    lnkInquiry.NavigateUrl = ResolveUrl("~/SendInquiry.aspx?id=" + id);
+
+                    lnkInquiry.NavigateUrl =
+                        ResolveUrl("~/SendInquiry.aspx?id=" + id);
+
                     pnlProfile.Visible = true;
                 }
             }
@@ -83,5 +147,6 @@ namespace TJHomeCare
             else if (bytes.Length >= 6 && System.Text.Encoding.ASCII.GetString(bytes, 0, 3) == "GIF") mime = "image/gif";
             return "data:" + mime + ";base64," + Convert.ToBase64String(bytes);
         }
+       
     }
 }

@@ -1,6 +1,5 @@
 ﻿<%@ Page Title="Caregiver Registration" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" 
     CodeBehind="CaregiverRegistration.aspx.cs" Inherits="TabletJobs.com.CaregiverRegistration" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
      <style>
         .caregiver-wrapper {
@@ -363,15 +362,9 @@
 
                     <asp:CheckBoxList ID="cblServiceCategory"
                         runat="server"
-                        CssClass="checkbox-list">
-
-                        <asp:ListItem>Baby Caretaker</asp:ListItem>
-                        <asp:ListItem>Cook</asp:ListItem>
-                        <asp:ListItem>Driver</asp:ListItem>
-                        <asp:ListItem>Patient Caretaker</asp:ListItem>
-                        <asp:ListItem>Elder Caretaker</asp:ListItem>
-                        <asp:ListItem>Home Nurse</asp:ListItem>
-
+                        CssClass="checkbox-list"
+                        DataTextField="ServiceName"
+                        DataValueField="ServiceCategoryID">
                     </asp:CheckBoxList>
 
                     <asp:CustomValidator

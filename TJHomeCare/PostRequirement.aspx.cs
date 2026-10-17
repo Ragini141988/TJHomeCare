@@ -17,7 +17,10 @@ namespace TJHomeCare
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                BindServices();
+            }
         }
 
 [WebMethod]
@@ -89,8 +92,8 @@ public static List<PlaceResult> GetPlaces(string searchText, string city)
       .ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"]
       .ConnectionString;
 
-            string query = "INSERT INTO PostRequirements (Service, City, Area,  PresentAreaID, DutyTime, PreferredLanguage, Budget, JoiningDate, FullName, MobileNumber, WhatsAppNumber) " +
-                           "VALUES (@Service, @City, @Area, @PresentAreaID, @DutyTime, @PreferredLanguage, @Budget, @JoiningDate, @FullName, @MobileNumber, @WhatsAppNumber)";
+            string query = "INSERT INTO PostRequirements (Service, City, Area,  PresentAreaID, DutyTime, PreferredLanguage, Budget, JoiningDate, FullName, MobileNumber, WhatsAppNumber,ServiceCategoryID) " +
+                           "VALUES (@Service, @City, @Area, @PresentAreaID, @DutyTime, @PreferredLanguage, @Budget, @JoiningDate, @FullName, @MobileNumber, @WhatsAppNumber,@ServiceCategoryID)";
 
             using (SqlConnection conn = new SqlConnection(cs))
             {
@@ -118,8 +121,10 @@ public static List<PlaceResult> GetPlaces(string searchText, string city)
                     cmd.Parameters.AddWithValue("@JoiningDate", Convert.ToDateTime(txtJoiningDate.Text));
                     cmd.Parameters.AddWithValue("@FullName", txtName.Text.Trim());
                     cmd.Parameters.AddWithValue("@MobileNumber", txtMobile.Text.Trim());
+                    cmd.Parameters.AddWithValue("@ServiceCategoryID", ddlService.SelectedValue.ToString().Trim());
 
                     string whatsapp = txtWhatsApp.Text.Trim();
+                    
                     if (string.IsNullOrEmpty(whatsapp))
                     {
                         cmd.Parameters.AddWithValue("@WhatsAppNumber", DBNull.Value);
@@ -195,6 +200,33 @@ Swal.fire({
             {
                 // Method call
                 SaveRequirementToDatabase();
+            }
+        }
+        private void BindServices()
+        {
+            string cs = ConfigurationManager
+                .ConnectionStrings[
+                    "hospi2yp_tabletjobssConnectionString_V02"]
+                .ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(cs))
+            using (SqlCommand cmd = new SqlCommand(@"
+        SELECT ServiceCategoryID, ServiceName
+        FROM [sqladmin].[ServiceCategories]
+        WHERE IsActive = 1
+        ORDER BY DisplayOrder, ServiceName;", con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                ddlService.DataSource = dt;
+                ddlService.DataTextField = "ServiceName";
+                ddlService.DataValueField = "ServiceCategoryID";
+                ddlService.DataBind();
+
+                ddlService.Items.Insert(
+                    0, new ListItem("Select Service", ""));
             }
         }
     }
