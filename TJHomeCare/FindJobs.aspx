@@ -178,6 +178,37 @@
                 padding: 11px 8px;
             }
         }
+        .customer-area {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 18px 22px;
+    background: #f0f8ff;
+    border: 1px solid #cce5f5;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.customer-area h2 {
+    margin: 0 0 8px;
+    color: #145374;
+    font-size: 24px;
+}
+
+.customer-area p {
+    margin: 0;
+    color: #333;
+    font-size: 15px;
+}
+
+.customer-area a {
+    color: #087e8b;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.customer-area a:hover {
+    color: #064e5a;
+}
     </style>
 
 </asp:Content>
@@ -185,7 +216,15 @@
 <asp:Content ID="Content2"
     ContentPlaceHolderID="MainContent"
     runat="server">
-
+    <div class="customer-area">
+    <h2>Worker Area</h2>
+    <p>
+        If you are a worker,
+        <a href="<%= ResolveUrl("~/PostRequirement.aspx") %>">
+            click here to post your requirement
+        </a>.
+    </p>
+</div>
     <main class="find-jobs-page">
 
         <div class="find-jobs-heading">

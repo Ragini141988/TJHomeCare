@@ -242,10 +242,51 @@
     color: #198754;
     font-size: 13px;
 }
+.customer-area {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 18px 22px;
+    background: #f0f8ff;
+    border: 1px solid #cce5f5;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.customer-area h2 {
+    margin: 0 0 8px;
+    color: #145374;
+    font-size: 24px;
+}
+
+.customer-area p {
+    margin: 0;
+    color: #333;
+    font-size: 15px;
+}
+
+.customer-area a {
+    color: #087e8b;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.customer-area a:hover {
+    color: #064e5a;
+}
 </style>
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
+    <!-- CUSTOMER AREA -->
+<div class="customer-area">
+    <h2>Customer Area</h2>
+    <p>
+        If you are a worker,
+        <a href="<%= ResolveUrl("~/FindJobs.aspx") %>">
+            click here to check new jobs / customer requirements
+        </a>.
+    </p>
+</div>
 <section class="req-wrapper">
     <div class="req-card">
                       

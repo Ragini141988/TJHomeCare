@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">TJ Home Care</asp:ContentPlaceHolder></title>
     <meta name="description" content="Professional home care services in Bangalore by TJ Homecare." />
+       <!-- WEBSITE FAVICON -->
+    <link rel="icon" type="image/png"
+          href="<%= ResolveUrl("~/favicon.ico") %>" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -21,7 +24,7 @@
     <header class="site-header">
         <div class="container nav-wrap">
            <a class="brand" href="<%= ResolveUrl("~/Default.aspx") %>" aria-label="TJ Homecare Home">
-    <img src="<%= ResolveUrl("~/Images/tjhomecare-logo.jpeg") %>"
+    <img src="<%= ResolveUrl("~/Images/tjhomecare-logo.jpg") %>"
          alt="TJ Homecare"
          class="brand-logo" />
 </a>
@@ -52,7 +55,11 @@
                 <h4>Quick Links</h4>
                 <a href="<%= ResolveUrl("~/Default.aspx") %>">Home</a>
                 <a href="<%= ResolveUrl("~/About.aspx") %>">About</a>
-                <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>
+                <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>               
+<a href="<%= ResolveUrl("~/PrivacyPolicy.aspx") %>">Privacy Policy</a>
+<a href="<%= ResolveUrl("~/TermsAndConditions.aspx") %>">Terms &amp; Conditions</a>
+<a href="<%= ResolveUrl("~/CancellationRefundPolicy.aspx") %>">Cancellation &amp; Refund Policy</a>
+
             </div>
             <div>
                 <h4>Home Care</h4>

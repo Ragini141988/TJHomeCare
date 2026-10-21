@@ -5,7 +5,7 @@
   <div class="container">
     <span class="eyebrow">ABOUT US</span>
     <h1>About TJ Homecare</h1>
-    <p>Trusted Home Care Services in Bangalore</p>
+    <p>Trusted Home Care Services in Bangalore &amp; Hyderabad</p>
   </div>
 </section>
 
@@ -14,7 +14,7 @@
     <div class="about-image"><div class="about-image-placeholder"><i class="fa-solid fa-house-medical"></i><strong>TJ HOMECARE</strong><span>Compassionate care at home</span></div></div>
     <div>
       <span class="eyebrow">WHO WE ARE</span>
-      <h2>Trusted Home Care Services in Bangalore</h2>
+      <h2>Trusted Home Care Services in Bangalore &amp; Hyderabad</h2>
       <p>We understand that every person has different care requirements. Whether your loved one needs elderly care, patient care, bedridden patient care, post-hospitalization care, home nursing support, or newborn care, our team provides personalized care based on individual needs.</p>
     </div>
   </div>
@@ -24,7 +24,7 @@
   <div class="container">
     <div class="section-heading"><span class="eyebrow">OUR APPROACH</span><h2>Reliable Caregivers for Your Loved Ones</h2></div>
     <div class="content-card">
-      <p>Finding a dependable caregiver for your family member can be challenging. At TJ Homecare, we focus on providing trained and verified caregivers in Bangalore who understand the importance of responsible and compassionate care.</p>
+      <p>Finding a dependable caregiver for your family member can be challenging. At TJ Homecare, we focus on providing trained and verified caregivers in Bangalore &amp; Hyderabad who understand the importance of responsible and compassionate care.</p>
       <p>Our caregivers assist with day-to-day activities and provide the required support to seniors, patients, bedridden individuals, and families looking for professional home care assistance.</p>
     </div>
   </div>
@@ -49,8 +49,8 @@
 
 <section class="mission-section">
   <div class="container mission-grid">
-    <div class="mission-card"><div class="mission-icon"><i class="fa-solid fa-bullseye"></i></div><h3>Our Mission</h3><p>Our mission is to provide compassionate, professional, and dependable home care services in Bangalore that support the well-being and quality of life of individuals while giving families greater peace of mind.</p></div>
-    <div class="mission-card"><div class="mission-icon"><i class="fa-solid fa-eye"></i></div><h3>Our Vision</h3><p>Our vision is to become a trusted home care service provider in Bangalore, recognized for quality care, trained caregivers, professionalism, reliability, and a compassionate approach to every family we serve.</p></div>
+    <div class="mission-card"><div class="mission-icon"><i class="fa-solid fa-bullseye"></i></div><h3>Our Mission</h3><p>Our mission is to provide compassionate, professional, and dependable home care services in Bangalore &amp; Hyderabad that support the well-being and quality of life of individuals while giving families greater peace of mind.</p></div>
+    <div class="mission-card"><div class="mission-icon"><i class="fa-solid fa-eye"></i></div><h3>Our Vision</h3><p>Our vision is to become a trusted home care service provider in Bangalore &amp; Hyderabad, recognized for quality care, trained caregivers, professionalism, reliability, and a compassionate approach to every family we serve.</p></div>
   </div>
 </section>
 

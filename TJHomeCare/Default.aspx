@@ -1,4 +1,4 @@
-<%@ Page Title="Professional Home Care Services in Bangalore" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TJHomeCare._Default" %>
+﻿<%@ Page Title="Home Care and Online Wellness Services in Bangalore & Hyderabad" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TJHomeCare._Default" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -9,10 +9,10 @@
     <div class="container hero-grid">
         <div class="hero-copy">
             <span class="eyebrow"><i class="fa-solid fa-house-medical"></i> TRUSTED HOME CARE</span>
-            <h1>Professional Home Care Services in <span>Bangalore</span></h1>
+            <h1>Home Care &amp; Online Wellness Services in <span>Bangalore &amp; Hyderabad</span></h1>
             <h2>Compassionate Care at the Comfort of Your Home</h2>
             <p>
-                Welcome to TJ Homecare, your trusted partner for professional home care services in Bangalore.
+                Welcome to TJ Homecare, your trusted partner for professional home care and online wellness services in Bangalore and Hyderabad.
                 We provide trained and verified Caregivers, Patient Attendants, Home Nurses, and Baby Caregivers
                 to support your loved ones with compassionate and reliable care.
             </p>
@@ -21,7 +21,7 @@
                 caregivers are here to provide personalized support tailored to your family's needs.
             </p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="tel:+919999999999"><i class="fa-solid fa-phone"></i> Call Now</a>
+                <a class="btn btn-primary" href="tel:+919429693689"><i class="fa-solid fa-phone"></i> Call Now</a>
                 <a class="btn btn-outline" href="#services">View Services</a>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="section-heading">
             <span class="eyebrow">OUR SERVICES</span>
             <h2>Professional Home Care Services</h2>
-            <p>Trusted and compassionate care services for your loved ones, provided in the comfort and safety of your home across Bangalore.</p>
+            <p>Trusted and compassionate care services for your loved ones, provided in the comfort and safety of your home in Bangalore and Hyderabad, with convenient online wellness consultations.</p>
         </div>
 
         <div class="service-grid">
@@ -90,6 +90,40 @@
                 <p>Flexible care options designed around your family's requirements and preferred care schedule.</p>
                 <ul><li>12-hour day or night care</li><li>24-hour continuous support</li><li>Live-in caregiver arrangements</li><li>Replacement support</li></ul>
             </article>
+
+            <article class="service-card">
+                <div class="service-number">07</div><div class="service-icon"><i class="fa-solid fa-apple-whole"></i></div>
+                <h3>Online Dietician Counselling</h3>
+                <p><strong>Personalised Nutrition Guidance for a Healthier Life</strong></p>
+                <p>Get convenient online nutrition guidance tailored to your lifestyle, dietary preferences, and individual needs.</p>
+                <ul>
+                    <li>Single consultation: ₹499 + GST</li>
+                    <li>Monthly nutrition plan: ₹999 + GST</li>
+                    <li>Personalised diet and nutrition counselling</li>
+                    <li>Weight management, balanced diets and portion control</li>
+                    <li>Nutrition guidance for children, adults and senior citizens</li>
+                    <li>Nutrition support for diabetes and other conditions, where appropriate</li>
+                </ul>
+                <p><strong>How it works:</strong> Contact us to book, share your goals and dietary preferences, attend a scheduled online session, and receive personalised guidance and follow-up support as recommended.</p>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">08</div><div class="service-icon"><i class="fa-solid fa-brain"></i></div>
+                <h3>Online Psychologist Counselling &amp; Stress Management</h3>
+                <p><strong>Your Well-being Matters. Take the First Step Towards a Calmer Mind.</strong></p>
+                <p>Connect online with qualified psychologists for counselling and stress management in a private, supportive environment.</p>
+                <ul>
+                    <li>First consultation: ₹699 + GST</li>
+                    <li>Regular consultation: ₹899 + GST</li>
+                    <li>Package of 4 regular sessions: ₹2,499 + GST</li>
+                    <li>Stress, work pressure and burnout support</li>
+                    <li>Anxiety management and emotional well-being</li>
+                    <li>Personal, relationship, family and life-transition challenges</li>
+                    <li>Self-confidence, mindfulness and healthy coping strategies</li>
+                </ul>
+                <p><strong>How it works:</strong> Request a session, get matched with an appropriately qualified psychologist, attend your online appointment from a private space, and discuss follow-up sessions if needed.</p>
+                <p><strong>You Don't Have to Manage Everything Alone.</strong> Counselling is not an emergency service. If you are in immediate danger or experiencing a mental health emergency, seek urgent local assistance.</p>
+            </article>
         </div>
     </div>
 </section>
@@ -120,7 +154,7 @@
                 <div><i class="fa-solid fa-check"></i> Female Caregivers Available</div>
                 <div><i class="fa-solid fa-check"></i> Personalized Care Plans</div>
                 <div><i class="fa-solid fa-check"></i> Quick Replacement Support</div>
-                <div><i class="fa-solid fa-check"></i> Reliable Home Care Across Bangalore</div>
+                <div><i class="fa-solid fa-check"></i> Reliable Home Care in Bangalore & Hyderabad</div>
             </div>
         </div>
     </div>

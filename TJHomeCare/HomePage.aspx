@@ -602,16 +602,74 @@
 <section class="tj-hero">
     <div class="tj-container tj-hero-top">
         <!-- LEFT SIDE: HERO TEXT AND BUTTONS -->
-        <div class="tj-hero-copy">
-            <span class="tj-pill"><i class="fa-solid fa-house-medical"></i> India's Home Workforce Hiring Marketplace</span>
-            <h1><span class="b">Find.</span> <span class="r">Interview.</span> <span class="g">Hire.</span><br />Trusted People for Your Home.</h1>
-            <h2>Simple, reliable home care hiring for families.</h2>
-            <p>Find suitable maids, cooks, drivers, baby care takers, patient care takers and home nurses through TJ Home Care. Explore profiles, interview candidates and choose the right person for your family's needs.</p>
-            <div class="tj-actions">
-                <a class="tj-btn tj-primary" href="<%= ResolveUrl("~/PostRequirement.aspx") %>"><i class="fa-solid fa-file-circle-plus"></i> Post Your Requirement</a>
-                <a class="tj-btn tj-outline" href="<%= ResolveUrl("~/FindJobs.aspx") %>"><i class="fa-solid fa-magnifying-glass"></i> Find Jobs / Caregivers</a>
-            </div>
-        </div>
+     
+<div class="tj-hero-copy">
+
+    <span class="tj-pill">
+        <i class="fa-solid fa-house-medical"></i>
+        Online Consultations & Home Care Services
+    </span>
+
+    <h1>
+        <span class="b">Explore.</span>
+        <span class="r">Connect.</span>
+        <span class="g">Consult.</span>
+        <span class="b">Hire.</span>
+    </h1>
+
+    <h2>Your One-Stop Platform for Online Consultations & Home Care Services.</h2>
+
+    <p>
+        TJ Home Care connects you with qualified doctors, psychologists,
+        dieticians, physiotherapists, financial counsellors and legal
+        professionals for convenient one-to-one online consultations
+        across India.
+    </p>
+
+    <p>
+        We also help families find suitable baby caretakers, patient
+        and elderly caretakers, home nurses, maids, cooks and drivers.
+    </p>
+
+    <p>
+        Browse professional profiles, book online consultations,
+        interview caregivers and choose the right services for your needs.
+    </p>
+
+   ```html
+<div class="tj-actions">
+
+    <a class="tj-btn tj-primary"
+       href="<%= ResolveUrl("~/OnlineConsultations.aspx") %>">
+        <i class="fa-solid fa-video"></i>
+        Book Online Consultations
+    </a>
+
+    <a class="tj-btn tj-primary"
+       href="<%= ResolveUrl("~/PostRequirement.aspx") %>">
+        <i class="fa-solid fa-file-circle-plus"></i>
+        Post Home Care Requirement
+    </a>
+
+    <a class="tj-btn tj-outline"
+       href="<%= ResolveUrl("~/FindJobs.aspx") %>">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        Find Jobs / Caregivers
+    </a>
+
+</div>
+```
+
+    <p class="tj-service-coverage">
+        <i class="fa-solid fa-video"></i>
+        Online Consultations Across India
+        <span>|</span>
+        <i class="fa-solid fa-location-dot"></i>
+        Home Care Services in Bangalore & Hyderabad
+    </p>
+
+</div>
+
 
         <!-- RIGHT SIDE ON DESKTOP; AFTER RECENT REQUIREMENTS ON MOBILE -->
         <div class="tj-hero-art">

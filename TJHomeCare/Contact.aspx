@@ -8,9 +8,11 @@
 <div class="container contact-grid">
   <div class="contact-info">
     <span class="eyebrow">TJ HOMECARE</span><h2>Get in Touch</h2>
-    <p>TJ Homecare provides trusted, compassionate home care services in Bangalore, including caregivers, patient care, baby care, and home nursing support.</p>
-    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Service Location</strong><span>Bangalore</span></div></div>
-    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Address</strong><span>#102, RV Residency Krishna Reddy Layout,<br />GS Palya Electronic City,<br />Bangalore – 560100</span></div></div>
+    <p>TJ Homecare provides trusted home care services in Bangalore and online dietician counselling and psychologist counselling. Contact us for home care support in Bangalore or online wellness consultations.</p>
+    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Service Locations</strong><span>Bangalore &amp; Hyderabad (online counselling available)</span></div></div>
+    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Bangalore Address</strong><span>#102, RV Residency Krishna Reddy Layout,<br />GS Palya Electronic City,<br />Bangalore – 560100</span></div></div>
+    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Hyderabad Address</strong><span>A13/03, North East Business Center<br />Errum Manzil, Khairtabad<br />Hyderabad – 500004</span></div></div>
+    <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-phone"></i></div><div><strong>Hyderabad Phone</strong><span><a href="tel:+919704797476">9704797476</a><br /><a href="tel:+917989788410">7989788410</a></span></div></div>
     <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-phone"></i></div><div><strong>Call Us</strong><span><a href="tel:+918074660555">+91 8074660555</a><br /><a href="tel:+917013107986">+91 7013107986</a></span></div></div>
     <a class="btn btn-primary contact-call" href="tel:+917013107986"><i class="fa-solid fa-phone"></i> Call TJ Homecare</a>
   </div>
@@ -23,7 +25,7 @@
     </div>
     <div class="form-group"><label>Email</label><asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox></div>
     <div class="form-group"><label>Service Required</label><asp:DropDownList ID="ddlService" runat="server" CssClass="form-control">
-      <asp:ListItem Text="Select a service" Value=""></asp:ListItem><asp:ListItem Text="Elderly Care" Value="Elderly Care"></asp:ListItem><asp:ListItem Text="Patient Care" Value="Patient Care"></asp:ListItem><asp:ListItem Text="Bedridden Patient Care" Value="Bedridden Patient Care"></asp:ListItem><asp:ListItem Text="Post-Hospitalization Care" Value="Post-Hospitalization Care"></asp:ListItem><asp:ListItem Text="Home Nursing Support" Value="Home Nursing Support"></asp:ListItem><asp:ListItem Text="Newborn and Baby Care" Value="Newborn and Baby Care"></asp:ListItem><asp:ListItem Text="Caregiver" Value="Caregiver"></asp:ListItem><asp:ListItem Text="Other" Value="Other"></asp:ListItem>
+      <asp:ListItem Text="Select a service" Value=""></asp:ListItem><asp:ListItem Text="Elderly Care" Value="Elderly Care"></asp:ListItem><asp:ListItem Text="Patient Care" Value="Patient Care"></asp:ListItem><asp:ListItem Text="Bedridden Patient Care" Value="Bedridden Patient Care"></asp:ListItem><asp:ListItem Text="Post-Hospitalization Care" Value="Post-Hospitalization Care"></asp:ListItem><asp:ListItem Text="Home Nursing Support" Value="Home Nursing Support"></asp:ListItem><asp:ListItem Text="Newborn and Baby Care" Value="Newborn and Baby Care"></asp:ListItem><asp:ListItem Text="Caregiver" Value="Caregiver"></asp:ListItem><asp:ListItem Text="Online Dietician Counselling" Value="Online Dietician Counselling"></asp:ListItem><asp:ListItem Text="Online Psychologist Counselling &amp; Stress Management" Value="Online Psychologist Counselling & Stress Management"></asp:ListItem><asp:ListItem Text="Other" Value="Other"></asp:ListItem>
     </asp:DropDownList></div>
     <div class="form-group"><label>Message</label><asp:TextBox ID="txtMessage" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" placeholder="Tell us about your care requirement"></asp:TextBox></div>
     <asp:Button ID="btnSubmit" runat="server" Text="Send Enquiry" CssClass="btn btn-primary form-submit" OnClick="btnSubmit_Click" />

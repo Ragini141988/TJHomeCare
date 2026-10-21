@@ -106,6 +106,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="BookConsultation.aspx" />
+    <Content Include="CancellationRefundPolicy.aspx" />
     <Content Include="CandidateDetails.aspx" />
     <Content Include="Candidates.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
@@ -136,12 +138,15 @@
     <Content Include="Images\cookingservices.jpeg" />
     <Content Include="Images\cookingservices01.jpeg" />
     <Content Include="Images\cookingservices02.jpeg" />
+    <Content Include="Images\dietician.jpg" />
     <Content Include="Images\eldercare02.jpeg" />
     <Content Include="Images\elderlynurse.jpeg" />
     <Content Include="Images\feedingnurse.jpeg" />
+    <Content Include="Images\Financial Counsellor.jpg" />
     <Content Include="Images\generalhomesupport.jpeg" />
     <Content Include="Images\generalhomesupport01.jpeg" />
     <Content Include="Images\generalhomesupport02.jpeg" />
+    <Content Include="Images\gynecologist.jpg" />
     <Content Include="Images\homenure01.jpeg" />
     <Content Include="Images\homenure02.jpeg" />
     <Content Include="Images\homenurse.jpeg" />
@@ -149,18 +154,38 @@
     <Content Include="Images\housekeeping.jpeg" />
     <Content Include="Images\housekeeping02.jpeg" />
     <Content Include="Images\how tjhomecareworks.jpeg" />
+    <Content Include="Images\Legal.jpg" />
     <Content Include="Images\maidservices.jpeg" />
     <Content Include="Images\maidservvices01.jpeg" />
     <Content Include="Images\maidservvices02.jpeg" />
     <Content Include="Images\patientcaretaker.jpeg" />
     <Content Include="Images\patientcaretaker01.jpeg" />
     <Content Include="Images\patientcaretaker02.jpeg" />
+    <Content Include="Images\Physiotherapist.jpeg" />
+    <Content Include="Images\Psychologist.jpg" />
+    <Content Include="Images\tjhomecare-logo.jpg" />
     <Content Include="Images\tjhomecare.jpeg" />
     <Content Include="Images\tjhomecare02.jpeg" />
     <Content Include="InquirySubmitted.aspx" />
+    <Content Include="OnlineConsultations.aspx" />
     <Content Include="PostRequirement.aspx" />
+    <Content Include="PrivacyPolicy.aspx" />
     <Content Include="RequirementDetails.aspx" />
     <Content Include="Review.aspx" />
+    <Compile Include="BookConsultation.aspx.cs">
+      <DependentUpon>BookConsultation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BookConsultation.aspx.designer.cs">
+      <DependentUpon>BookConsultation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CancellationRefundPolicy.aspx.cs">
+      <DependentUpon>CancellationRefundPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CancellationRefundPolicy.aspx.designer.cs">
+      <DependentUpon>CancellationRefundPolicy.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CandidateDetails.aspx.cs">
       <DependentUpon>CandidateDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -189,12 +214,26 @@
     <Compile Include="InquirySubmitted.aspx.designer.cs">
       <DependentUpon>InquirySubmitted.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OnlineConsultations.aspx.cs">
+      <DependentUpon>OnlineConsultations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OnlineConsultations.aspx.designer.cs">
+      <DependentUpon>OnlineConsultations.aspx</DependentUpon>
+    </Compile>
     <Compile Include="PostRequirement.aspx.cs">
       <DependentUpon>PostRequirement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PostRequirement.aspx.designer.cs">
       <DependentUpon>PostRequirement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PrivacyPolicy.aspx.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrivacyPolicy.aspx.designer.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
     </Compile>
     <Compile Include="RequirementDetails.aspx.cs">
       <DependentUpon>RequirementDetails.aspx</DependentUpon>
@@ -212,6 +251,7 @@
     <Content Include="Staff\InquiryMatches.aspx" />
     <Content Include="Staff\InquiryMatches01.aspx" />
     <Content Include="Staff\PostedRequirements.aspx" />
+    <Content Include="TermsAndConditions.aspx" />
     <Content Include="Thankyou.aspx" />
     <Compile Include="SendInquiry.aspx.cs">
       <DependentUpon>SendInquiry.aspx</DependentUpon>
@@ -248,6 +288,13 @@
     <Compile Include="Staff\PostedRequirements.aspx.designer.cs">
       <DependentUpon>PostedRequirements.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TermsAndConditions.aspx.cs">
+      <DependentUpon>TermsAndConditions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TermsAndConditions.aspx.designer.cs">
+      <DependentUpon>TermsAndConditions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Thankyou.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -256,6 +303,7 @@
     <Content Include="viewcaregiverdetails.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
     <Content Include="WebForm1.aspx" />
+    <Content Include="Images\Dermatology.webp" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
