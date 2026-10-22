@@ -277,7 +277,7 @@
 
             <!-- SERVICE DETAILS -->
             <div class="section-title">Service Details Needed</div>
-            <div class="form-row">
+           <%-- <div class="form-row">
                 <div class="form-group full">
                     <label class="form-label">
                         Service Category Required <span class="required">*</span>
@@ -291,7 +291,31 @@
                     <asp:CustomValidator ID="cvServiceCategory" runat="server"
                         ErrorMessage="Please select at least one service category."
                         CssClass="validation" OnServerValidate="cvServiceCategory_ServerValidate">
-                    </asp:CustomValidator>
+                    </asp:CustomValidator>--%>
+          <%--  //New category from database table--%>
+            <div class="form-row">
+
+    <div class="form-group full">
+
+        <label class="form-label">
+            Service Category <span class="required">*</span>
+        </label>
+
+        <asp:CheckBoxList ID="cblServiceCategory"
+            runat="server"
+            CssClass="checkbox-list"
+            DataTextField="ServiceName"
+            DataValueField="ServiceCategoryID">
+        </asp:CheckBoxList>
+
+        <asp:CustomValidator
+            ID="cvServiceCategory"
+            runat="server"
+            ErrorMessage="Please select at least one service category."
+            CssClass="validation"
+            OnServerValidate="cvServiceCategory_ServerValidate">
+        </asp:CustomValidator>
+           <%-- //Close--%>
                 </div>
             </div>
 

@@ -20,8 +20,37 @@ namespace TJHomeCare
             ConfigurationManager.ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                BindServiceCategories();
+            }
 
         }
+        //New code for load category
+        // Load active services from the central master table.
+        private void BindServiceCategories()
+        {
+            const string sql = @"
+                SELECT ServiceCategoryID, ServiceName
+                FROM [sqladmin].[ServiceCategories]
+                WHERE IsActive = 1
+                ORDER BY DisplayOrder, ServiceName;";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cblServiceCategory.DataSource = dt;
+                cblServiceCategory.DataTextField = "ServiceName";
+                cblServiceCategory.DataValueField = "ServiceCategoryID";
+                cblServiceCategory.DataBind();
+            }
+        }
+
+        //Close load category
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static List<PlaceResult> GetPlaces(string searchText, string city)
