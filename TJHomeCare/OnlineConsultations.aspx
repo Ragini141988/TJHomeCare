@@ -194,7 +194,7 @@
                         pregnancy and other gynecological concerns.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=gynecologist") %>">
+                      href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=11") %>">
                         Gynecologist Online Consultation
                     </a>
                 </div>
@@ -213,7 +213,7 @@
                         concerns and personalised skincare advice.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=Dermatologist") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=12") %>">
                         Dermatologist Online Consultation
                     </a>
                 </div>
@@ -232,7 +232,7 @@
                         eating advice and support for your wellness goals.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=dietician") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=9") %>">
                         Dietician Online Consultation
                     </a>
                 </div>
@@ -251,7 +251,7 @@
                         emotional well-being and everyday life challenges.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=Psychologist") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=14") %>">
                         Psychologist Online Consultation
                     </a>
                 </div>
@@ -270,7 +270,7 @@
                         rehabilitation and suitable exercise routines.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=Physiotherapist") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=15") %>">
                         Physiotherapist Online Consultation
                     </a>
                 </div>
@@ -289,7 +289,7 @@
                         and managing your financial goals.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=FinancialCounsellor") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=16") %>">
                         Financial Counsellor Online Consultation
                     </a>
                 </div>
@@ -308,7 +308,7 @@
                         property concerns and other legal issues.
                     </p>
                     <a class="consultation-btn"
-                       href="<%= ResolveUrl("~/BookConsultation.aspx?service=legal") %>">
+                       href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=17") %>">
                         Legal Online Consultation
                     </a>
                 </div>
