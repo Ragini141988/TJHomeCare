@@ -636,7 +636,15 @@
         interview caregivers and choose the right services for your needs.
     </p>
 
-   ```html
+   <p>
+        <p class="tj-service-coverage">
+        <i class="fa-solid fa-video"></i>
+        Online Consultations Across India
+        <span>|</span>
+        <i class="fa-solid fa-location-dot"></i>
+        Home Care Services in Bangalore & Hyderabad
+    </p>
+    </p>
 <div class="tj-actions">
 
     <a class="tj-btn tj-primary"
@@ -658,15 +666,9 @@
     </a>
 
 </div>
-```
 
-    <p class="tj-service-coverage">
-        <i class="fa-solid fa-video"></i>
-        Online Consultations Across India
-        <span>|</span>
-        <i class="fa-solid fa-location-dot"></i>
-        Home Care Services in Bangalore & Hyderabad
-    </p>
+
+   
 
 </div>
 
