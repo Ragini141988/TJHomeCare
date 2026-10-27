@@ -15,15 +15,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="<%= ResolveUrl("~/Content/Site.css") %>" />
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DMW7JFQ8XS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-DMW7JFQ8XS');
+</script>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
      <asp:ContentPlaceHolder ID="head" runat="server" />
+
 </head>
 <body>
 <form id="mainForm" runat="server">
 
     <header class="site-header">
         <div class="container nav-wrap">
-           <a class="brand" href="<%= ResolveUrl("~/Default.aspx") %>" aria-label="TJ Homecare Home">
+           <a class="brand" href="<%= ResolveUrl("~/HomePage.aspx") %>" aria-label="TJ Homecare Home">
     <img src="<%= ResolveUrl("~/Images/tjhomecare-logo.jpg") %>"
          alt="TJ Homecare"
          class="brand-logo" />
@@ -34,7 +44,7 @@
             </button>
 
             <nav id="mainNav" class="main-nav">
-                <a href="<%= ResolveUrl("~/Default.aspx") %>">Home</a>
+                <a href="<%= ResolveUrl("~/HomePage.aspx") %>">Home</a>
                 <a href="<%= ResolveUrl("~/About.aspx") %>">About</a>
                 <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>
             </nav>
@@ -53,11 +63,14 @@
             </div>
             <div>
                 <h4>Quick Links</h4>
-                <a href="<%= ResolveUrl("~/Default.aspx") %>">Home</a>
+                <a href="<%= ResolveUrl("~/HomePage.aspx") %>">Home</a>
                 <a href="<%= ResolveUrl("~/About.aspx") %>">About</a>
                 <a href="<%= ResolveUrl("~/Contact.aspx") %>">Contact Us</a>               
 <a href="<%= ResolveUrl("~/PrivacyPolicy.aspx") %>">Privacy Policy</a>
 <a href="<%= ResolveUrl("~/TermsAndConditions.aspx") %>">Terms &amp; Conditions</a>
+<a href="<%= ResolveUrl("~/Pricing.aspx") %>">
+    Pricing &amp; Service Charges
+</a>
 <a href="<%= ResolveUrl("~/CancellationRefundPolicy.aspx") %>">Cancellation &amp; Refund Policy</a>
 
             </div>

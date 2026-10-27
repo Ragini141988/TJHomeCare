@@ -58,7 +58,7 @@ namespace TJHomeCare
             L.PlaceName AS PresentArea,
             C.Experience,
             C.LanguagesKnown,
-            C.ProfilePhoto,C.ProfilePhotoName,Qualification,DutyPreference
+            C.ProfilePhoto,C.ProfilePhotoName,Qualification,DutyPreference,SC.ServiceCategoryID
         FROM [sqladmin].[CaregiverProfiles] C
 
         INNER JOIN [sqladmin].[ServiceCategories] SC

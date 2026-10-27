@@ -111,13 +111,13 @@
     <Content Include="CandidateDetails.aspx" />
     <Content Include="Candidates.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
+    <Content Include="ConsultationBooking.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FindJobs.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -130,6 +130,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="HomeCareEnquiry.aspx" />
+    <Content Include="HomeCareEnquiryAdmin.aspx" />
     <Content Include="HomePage.aspx" />
     <Content Include="Images\babycaretaker.jpeg" />
     <Content Include="Images\babycaretaker01.jpeg" />
@@ -169,6 +171,7 @@
     <Content Include="InquirySubmitted.aspx" />
     <Content Include="OnlineConsultations.aspx" />
     <Content Include="PostRequirement.aspx" />
+    <Content Include="Pricing.aspx" />
     <Content Include="PrivacyPolicy.aspx" />
     <Content Include="RequirementDetails.aspx" />
     <Content Include="Review.aspx" />
@@ -200,12 +203,33 @@
     <Compile Include="Candidates.aspx.designer.cs">
       <DependentUpon>Candidates.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConsultationBooking.aspx.cs">
+      <DependentUpon>ConsultationBooking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBooking.aspx.designer.cs">
+      <DependentUpon>ConsultationBooking.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FindJobs.aspx.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FindJobs.aspx.designer.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeCareEnquiry.aspx.cs">
+      <DependentUpon>HomeCareEnquiry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeCareEnquiry.aspx.designer.cs">
+      <DependentUpon>HomeCareEnquiry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeCareEnquiryAdmin.aspx.cs">
+      <DependentUpon>HomeCareEnquiryAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeCareEnquiryAdmin.aspx.designer.cs">
+      <DependentUpon>HomeCareEnquiryAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="InquirySubmitted.aspx.cs">
       <DependentUpon>InquirySubmitted.aspx</DependentUpon>
@@ -227,6 +251,13 @@
     </Compile>
     <Compile Include="PostRequirement.aspx.designer.cs">
       <DependentUpon>PostRequirement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pricing.aspx.cs">
+      <DependentUpon>Pricing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pricing.aspx.designer.cs">
+      <DependentUpon>Pricing.aspx</DependentUpon>
     </Compile>
     <Compile Include="PrivacyPolicy.aspx.cs">
       <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
@@ -366,13 +397,6 @@
     </Compile>
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

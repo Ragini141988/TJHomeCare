@@ -49,50 +49,104 @@
         </div>
 
         <div class="service-grid">
-            <article class="service-card">
-                <div class="service-number">01</div><div class="service-icon"><i class="fa-solid fa-hands-helping"></i></div>
-                <h3>Caretakers</h3>
-                <p>Reliable and compassionate caretakers to assist individuals with their daily activities and personal care needs.</p>
-                <ul><li>Personal assistance</li><li>Daily routine support</li><li>Hygiene assistance</li><li>Companionship</li></ul>
-            </article>
+<article class="service-card">
+    <div class="service-number">01</div>
 
-            <article class="service-card">
-                <div class="service-number">02</div><div class="service-icon"><i class="fa-solid fa-person-cane"></i></div>
-                <h3>Elderly Care</h3>
-                <p>Dedicated support for senior citizens to help them live comfortably and safely at home.</p>
-                <ul><li>Daily activity assistance</li><li>Mobility support</li><li>Meal assistance</li><li>Companionship and supervision</li></ul>
-            </article>
+    <div class="service-icon">
+        <i class="fa-solid fa-user-doctor"></i>
+    </div>
 
-            <article class="service-card">
-                <div class="service-number">03</div><div class="service-icon"><i class="fa-solid fa-baby"></i></div>
-                <h3>Baby Care Services</h3>
-                <p>Caring and experienced baby caregivers to provide professional support for newborns and babies.</p>
-                <ul><li>Newborn care</li><li>Feeding assistance</li><li>Bathing and hygiene</li><li>Diaper changing</li></ul>
-            </article>
+    <h3>Online Doctor Consultation</h3>
 
-            <article class="service-card">
-                <div class="service-number">04</div><div class="service-icon"><i class="fa-solid fa-bed-pulse"></i></div>
-                <h3>Patient Care</h3>
-                <p>Compassionate assistance for patients who need additional support during their recovery and daily routines.</p>
-                <ul><li>Bedridden patient care</li><li>Personal care assistance</li><li>Mobility support</li><li>Recovery assistance</li></ul>
-            </article>
+    <h4>Expert Medical Care. Multiple Specialties. From the Comfort of Your Home.</h4>
 
-            <article class="service-card">
-                <div class="service-number">05</div><div class="service-icon"><i class="fa-solid fa-user-nurse"></i></div>
-                <h3>Home Nursing Support</h3>
-                <p>Professional home nursing support for individuals who require care and assistance at home.</p>
-                <ul><li>Basic nursing assistance</li><li>Health monitoring</li><li>Post-hospitalization support</li><li>Recovery care</li></ul>
-            </article>
+    <p>
+        Consult qualified, registered doctors online for general health concerns,
+        specialist medical advice, preventive healthcare and follow-up consultations.
+        Access convenient and confidential medical guidance without unnecessary
+        travel or long waiting times.
+    </p>
 
-            <article class="service-card">
-                <div class="service-number">06</div><div class="service-icon"><i class="fa-solid fa-clock"></i></div>
-                <h3>12-Hour &amp; 24-Hour Care</h3>
-                <p>Flexible care options designed around your family's requirements and preferred care schedule.</p>
-                <ul><li>12-hour day or night care</li><li>24-hour continuous support</li><li>Live-in caregiver arrangements</li><li>Replacement support</li></ul>
-            </article>
+    <ul>
+        <li><strong>Online Doctor Consultation:</strong> Starting at ₹999 + GST</li>
 
-            <article class="service-card">
-                <div class="service-number">07</div><div class="service-icon"><i class="fa-solid fa-apple-whole"></i></div>
+        <li><strong>General Medicine:</strong> Fever, cold, cough, infections,
+            diabetes, blood pressure and common health concerns.</li>
+
+        <li><strong>Gynaecology:</strong> Menstrual problems, PCOS, menopause,
+            reproductive health and women's health concerns.</li>
+
+        <li><strong>Obstetrics:</strong> Pregnancy-related guidance, antenatal
+            follow-ups, prenatal health concerns and postnatal care.</li>
+
+        <li><strong>Dermatology:</strong> Acne, pigmentation, hair fall,
+            skin allergies, rashes and other skin and hair concerns.</li>
+
+        <li><strong>Psychiatry:</strong> Anxiety, depression, sleep disturbances,
+            emotional health concerns and medication management, when appropriate.</li>
+
+        <li><strong>Paediatrics:</strong> Children's general health, nutrition,
+            common childhood illnesses and developmental concerns.</li>
+
+        <li><strong>Orthopaedics:</strong> Joint pain, back pain, arthritis,
+            bone and muscle-related concerns.</li>
+
+        <li><strong>General Physician Consultations:</strong> Routine medical advice,
+            preventive healthcare, report reviews and follow-up care.</li>
+
+        <li>Medical report review, prescription guidance and specialist referrals
+            when required.</li>
+    </ul>
+
+    <h4>How It Works</h4>
+
+    <p>
+        Request a consultation, select your preferred medical specialty, share
+        your health concerns, get matched with an appropriately qualified
+        registered doctor, attend your online appointment and receive
+        professional medical guidance.
+    </p>
+
+    <h4>Your Health. Your Convenience. Our Priority.</h4>
+
+    <p>
+        Whether you need a general physician, gynaecologist, dermatologist,
+        psychiatrist or another specialist, TJ Home Care helps you access
+        professional medical consultations from the comfort and privacy
+        of your home.
+    </p>
+
+    <p><strong>Consultation Fee: Starting at ₹999 + GST</strong></p>
+
+    <p>
+        <em>
+            Specialist consultation charges may vary. Doctor availability,
+            consultation duration and appointment timings are confirmed before
+            booking. Medicines, investigations and additional consultations
+            are charged separately.
+        </em>
+    </p>
+
+    <h4>Important Information</h4>
+
+    <p>
+        <em>
+            Online consultations are not emergency services. Some medical
+            conditions require physical examinations, investigations or
+            hospital-based treatment. Prescriptions are issued only when
+            clinically appropriate and permitted under applicable telemedicine
+            guidelines. In an emergency, seek immediate hospital care.
+        </em>
+    </p>
+
+    <p>
+        <strong>Book Your Online Doctor Consultation Today!</strong>
+    </p>
+
+</article>
+              <!-- 02. Online Dietician Consultation -->
+     <article class="service-card">
+                <div class="service-number">02</div><div class="service-icon"><i class="fa-solid fa-apple-whole"></i></div>
                 <h3>Online Dietician Counselling</h3>
                 <p><strong>Personalised Nutrition Guidance for a Healthier Life</strong></p>
                 <p>Get convenient online nutrition guidance tailored to your lifestyle, dietary preferences, and individual needs.</p>
@@ -108,7 +162,7 @@
             </article>
 
             <article class="service-card">
-                <div class="service-number">08</div><div class="service-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="service-number">03</div><div class="service-icon"><i class="fa-solid fa-brain"></i></div>
                 <h3>Online Psychologist Counselling &amp; Stress Management</h3>
                 <p><strong>Your Well-being Matters. Take the First Step Towards a Calmer Mind.</strong></p>
                 <p>Connect online with qualified psychologists for counselling and stress management in a private, supportive environment.</p>
@@ -124,6 +178,49 @@
                 <p><strong>How it works:</strong> Request a session, get matched with an appropriately qualified psychologist, attend your online appointment from a private space, and discuss follow-up sessions if needed.</p>
                 <p><strong>You Don't Have to Manage Everything Alone.</strong> Counselling is not an emergency service. If you are in immediate danger or experiencing a mental health emergency, seek urgent local assistance.</p>
             </article>
+            <article class="service-card">
+                <div class="service-number">04</div><div class="service-icon"><i class="fa-solid fa-hands-helping"></i></div>
+                <h3>Caretakers</h3>
+                <p>Reliable and compassionate caretakers to assist individuals with their daily activities and personal care needs.</p>
+                <ul><li>Personal assistance</li><li>Daily routine support</li><li>Hygiene assistance</li><li>Companionship</li></ul>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">05</div><div class="service-icon"><i class="fa-solid fa-person-cane"></i></div>
+                <h3>Elderly Care</h3>
+                <p>Dedicated support for senior citizens to help them live comfortably and safely at home.</p>
+                <ul><li>Daily activity assistance</li><li>Mobility support</li><li>Meal assistance</li><li>Companionship and supervision</li></ul>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">06</div><div class="service-icon"><i class="fa-solid fa-baby"></i></div>
+                <h3>Baby Care Services</h3>
+                <p>Caring and experienced baby caregivers to provide professional support for newborns and babies.</p>
+                <ul><li>Newborn care</li><li>Feeding assistance</li><li>Bathing and hygiene</li><li>Diaper changing</li></ul>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">07</div><div class="service-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+                <h3>Patient Care</h3>
+                <p>Compassionate assistance for patients who need additional support during their recovery and daily routines.</p>
+                <ul><li>Bedridden patient care</li><li>Personal care assistance</li><li>Mobility support</li><li>Recovery assistance</li></ul>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">08</div><div class="service-icon"><i class="fa-solid fa-user-nurse"></i></div>
+                <h3>Home Nursing Support</h3>
+                <p>Professional home nursing support for individuals who require care and assistance at home.</p>
+                <ul><li>Basic nursing assistance</li><li>Health monitoring</li><li>Post-hospitalization support</li><li>Recovery care</li></ul>
+            </article>
+
+            <article class="service-card">
+                <div class="service-number">09</div><div class="service-icon"><i class="fa-solid fa-clock"></i></div>
+                <h3>12-Hour &amp; 24-Hour Care</h3>
+                <p>Flexible care options designed around your family's requirements and preferred care schedule.</p>
+                <ul><li>12-hour day or night care</li><li>24-hour continuous support</li><li>Live-in caregiver arrangements</li><li>Replacement support</li></ul>
+            </article>
+
+           
         </div>
     </div>
 </section>

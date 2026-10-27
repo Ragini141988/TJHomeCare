@@ -220,13 +220,15 @@
                                 <%#: DisplayValue(Eval("DutyPreference")) %>
                             </div>
 
+                        
                             <a class="consultation-booking-btn"
-                               href='<%# ResolveUrl(
-                                   "~/ConsultationBooking.aspx?caregiverId="
-                                   + Eval("CaregiverID")) %>'>
-                                Book Online Consultation
-                            </a>
-
+   href='<%# ResolveUrl(
+       "~/ConsultationBooking.aspx?caregiverId="
+       + Eval("CaregiverID")
+       + "&serviceId="
+       + Eval("ServiceCategoryID")) %>'>
+    Book Online Consultation
+</a>
                         </div>
                     </article>
 
