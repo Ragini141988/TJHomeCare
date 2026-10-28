@@ -17,12 +17,96 @@ namespace TabletJobs.com
             ConfigurationManager.ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"].ConnectionString;
 
 
+        private int EditCaregiverID
+        {
+            get
+            {
+                int id;
+                return int.TryParse(Request.QueryString["CaregiverID"], out id) ? id : 0;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 BindServiceCategories();
+                if (EditCaregiverID > 0)
+                {
+                    LoadCaregiverForEdit(EditCaregiverID);
+                    btnSave.Text = "Update Caregiver";
+                    btnClear.Text = "Cancel";
+                    Page.Title = "Edit Caregiver";
+                }
             }
+        }
+
+        private void LoadCaregiverForEdit(int caregiverID)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                const string sql = @"SELECT CaregiverID, RecruiterName, ServiceCategory, FullName, Age, Gender,
+ContactNumber, City, PresentAreaID, LanguagesKnown, Qualification, Experience,
+DutyPreference, ExpectedSalary, PreferredWorkAreas, JoiningAvailability, Remarks
+FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.Add("@CaregiverID", SqlDbType.Int).Value = caregiverID;
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (!dr.Read())
+                        {
+                            ShowMessage("Caregiver record was not found.", false);
+                            btnSave.Enabled = false;
+                            return;
+                        }
+                        SetDropDownValue(ddlRecruiter, Convert.ToString(dr["RecruiterName"]));
+                        txtFullName.Text = Convert.ToString(dr["FullName"]);
+                        txtAge.Text = Convert.ToString(dr["Age"]);
+                        SetDropDownValue(ddlGender, Convert.ToString(dr["Gender"]));
+                        txtContactNumber.Text = Convert.ToString(dr["ContactNumber"]);
+                        SetDropDownValue(ddlCity, Convert.ToString(dr["City"]));
+                        hdnPresentAreaID.Value = dr["PresentAreaID"] == DBNull.Value ? "" : Convert.ToString(dr["PresentAreaID"]);
+                        SetDropDownValue(ddlQualification, Convert.ToString(dr["Qualification"]));
+                        SetDropDownValue(ddlExperience, Convert.ToString(dr["Experience"]));
+                        txtExpectedSalary.Text = Convert.ToString(dr["ExpectedSalary"]);
+                        SetDropDownValue(ddlJoiningAvailability, Convert.ToString(dr["JoiningAvailability"]));
+                        txtPreferredWorkAreas.Text = Convert.ToString(dr["PreferredWorkAreas"]);
+                        txtRemarks.Text = Convert.ToString(dr["Remarks"]);
+                        SetCheckBoxValues(cblLanguages, Convert.ToString(dr["LanguagesKnown"]));
+                        SetCheckBoxValues(cblDutyPreference, Convert.ToString(dr["DutyPreference"]));
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT ServiceCategoryID FROM [sqladmin].[CaregiverServices] WHERE CaregiverID=@CaregiverID", con))
+                {
+                    cmd.Parameters.Add("@CaregiverID", SqlDbType.Int).Value = caregiverID;
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            ListItem item = cblServiceCategory.Items.FindByValue(Convert.ToString(dr["ServiceCategoryID"]));
+                            if (item != null) item.Selected = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SetDropDownValue(DropDownList ddl, string value)
+        {
+            ListItem item = ddl.Items.FindByValue(value);
+            if (item != null) ddl.SelectedValue = value;
+        }
+
+        private void SetCheckBoxValues(CheckBoxList list, string csv)
+        {
+            string[] values = (csv ?? "").Split(',');
+            foreach (ListItem item in list.Items)
+                item.Selected = Array.Exists(values, v =>
+                    v.Trim().Equals(item.Value, StringComparison.OrdinalIgnoreCase) ||
+                    v.Trim().Equals(item.Text, StringComparison.OrdinalIgnoreCase));
         }
 
         // Load active services from the central master table.
@@ -509,57 +593,35 @@ namespace TabletJobs.com
                             // =========================================
 
                             string sql = @"
-
-INSERT INTO [sqladmin].[CaregiverProfiles]
-(
-    RecruiterName,
-    ServiceCategory,
-    FullName,
-    Age,
-    Gender,
-    ContactNumber,
-    City,
-    PresentAreaID,
-    LanguagesKnown,
-    Qualification,
-    Experience,
-    DutyPreference,
-    ExpectedSalary,
-    PreferredWorkAreas,
-    JoiningAvailability,
-    ProfilePhoto,
-    ProfilePhotoName,
-    VerificationStatus,
-    Remarks,
-    CreatedDate,
-    AadharPhoto
-)
-VALUES
-(
-    @RecruiterName,
-    @ServiceCategory,
-    @FullName,
-    @Age,
-    @Gender,
-    @ContactNumber,
-    @City,
-    @PresentAreaID,
-    @LanguagesKnown,
-    @Qualification,
-    @Experience,
-    @DutyPreference,
-    @ExpectedSalary,
-    @PreferredWorkAreas,
-    @JoiningAvailability,
-    @ProfilePhoto,
-    @ProfilePhotoName,
-    'Pending',
-    @Remarks,
-    GETDATE(),
-    @AadharPhoto
-);
-
-SELECT CAST(SCOPE_IDENTITY() AS INT);
+IF @CaregiverID > 0
+BEGIN
+    UPDATE [sqladmin].[CaregiverProfiles]
+    SET RecruiterName=@RecruiterName, ServiceCategory=@ServiceCategory,
+        FullName=@FullName, Age=@Age, Gender=@Gender, ContactNumber=@ContactNumber,
+        City=@City, PresentAreaID=@PresentAreaID, LanguagesKnown=@LanguagesKnown,
+        Qualification=@Qualification, Experience=@Experience, DutyPreference=@DutyPreference,
+        ExpectedSalary=@ExpectedSalary, PreferredWorkAreas=@PreferredWorkAreas,
+        JoiningAvailability=@JoiningAvailability,
+        ProfilePhoto=COALESCE(@ProfilePhoto, ProfilePhoto),
+        ProfilePhotoName=COALESCE(@ProfilePhotoName, ProfilePhotoName),
+        Remarks=@Remarks, AadharPhoto=COALESCE(@AadharPhoto, AadharPhoto)
+    WHERE CaregiverID=@CaregiverID;
+    SELECT @CaregiverID;
+END
+ELSE
+BEGIN
+    INSERT INTO [sqladmin].[CaregiverProfiles]
+    (RecruiterName, ServiceCategory, FullName, Age, Gender, ContactNumber, City,
+     PresentAreaID, LanguagesKnown, Qualification, Experience, DutyPreference,
+     ExpectedSalary, PreferredWorkAreas, JoiningAvailability, ProfilePhoto,
+     ProfilePhotoName, VerificationStatus, Remarks, CreatedDate, AadharPhoto)
+    VALUES
+    (@RecruiterName, @ServiceCategory, @FullName, @Age, @Gender, @ContactNumber, @City,
+     @PresentAreaID, @LanguagesKnown, @Qualification, @Experience, @DutyPreference,
+     @ExpectedSalary, @PreferredWorkAreas, @JoiningAvailability, @ProfilePhoto,
+     @ProfilePhotoName, 'Pending', @Remarks, GETDATE(), @AadharPhoto);
+    SELECT CAST(SCOPE_IDENTITY() AS INT);
+END
 ";
 
 
@@ -572,6 +634,9 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);
                                     con,
                                     transaction))
                             {
+                                // =====================================
+                                cmd.Parameters.Add("@CaregiverID", SqlDbType.Int).Value = EditCaregiverID;
+
                                 // =====================================
                                 // RECRUITER
                                 // =====================================
@@ -851,6 +916,17 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);
                             // temporarily for backward compatibility.
                             // =========================================
 
+                            if (EditCaregiverID > 0)
+                            {
+                                using (SqlCommand deleteMappings = new SqlCommand(
+                                    "DELETE FROM [sqladmin].[CaregiverServices] WHERE CaregiverID=@CaregiverID",
+                                    con, transaction))
+                                {
+                                    deleteMappings.Parameters.Add("@CaregiverID", SqlDbType.Int).Value = caregiverID;
+                                    deleteMappings.ExecuteNonQuery();
+                                }
+                            }
+
                             const string serviceMapSql = @"
                                 INSERT INTO [sqladmin].[CaregiverServices]
                                     (CaregiverID, ServiceCategoryID)
@@ -895,12 +971,17 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);
                             // =========================================
 
                             ShowMessage(
-                                "Caregiver profile registered successfully. " +
-                                "Caregiver ID: " +
-                                caregiverID,
+                                EditCaregiverID > 0
+                                    ? "Caregiver profile updated successfully."
+                                    : "Caregiver profile registered successfully. Caregiver ID: " + caregiverID,
                                 true);
 
-
+                            if (EditCaregiverID > 0)
+                            {
+                                Response.Redirect("CaregiverList.aspx", false);
+                                Context.ApplicationInstance.CompleteRequest();
+                                return;
+                            }
                             ClearForm();
                         }
                         catch
@@ -1014,6 +1095,12 @@ WHERE PlaceID = @PlaceID;";
             object sender,
             EventArgs e)
         {
+            if (EditCaregiverID > 0)
+            {
+                Response.Redirect("CaregiverList.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
             ClearForm();
         }
 

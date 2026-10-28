@@ -110,6 +110,7 @@
     <Content Include="CancellationRefundPolicy.aspx" />
     <Content Include="CandidateDetails.aspx" />
     <Content Include="Candidates.aspx" />
+    <Content Include="CaregiverList.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
     <Content Include="ConsultationBooking.aspx" />
     <Content Include="Consultation\dermo.jpeg" />
@@ -219,6 +220,13 @@
     </Compile>
     <Compile Include="Candidates.aspx.designer.cs">
       <DependentUpon>Candidates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CaregiverList.aspx.cs">
+      <DependentUpon>CaregiverList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CaregiverList.aspx.designer.cs">
+      <DependentUpon>CaregiverList.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConsultationBooking.aspx.cs">
       <DependentUpon>ConsultationBooking.aspx</DependentUpon>

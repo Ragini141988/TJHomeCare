@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Caregiver Registration" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" 
     CodeBehind="CaregiverRegistration.aspx.cs" Inherits="TabletJobs.com.CaregiverRegistration" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
      <style>
         .caregiver-wrapper {
