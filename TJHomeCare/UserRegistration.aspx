@@ -1,15 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="UserRegistration.aspx.cs" Inherits="TJHomeCare.UserRegistration" %>
-
-
+﻿<%@ Page Title="User Registration" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+    CodeBehind="UserRegistration.aspx.cs" Inherits="TJHomeCare.UserRegistration" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .user-wrapper {
+     <style>
+        .caregiver-wrapper {
             max-width: 1000px;
             margin: 25px auto;
             padding: 0 15px 40px;
         }
 
-        .user-card {
+        .caregiver-card {
             background: #fff;
             border-radius: 14px;
             box-shadow: 0 3px 18px rgba(0,0,0,.08);
@@ -59,12 +58,6 @@
             color: #dc3545;
         }
 
-        .optional-text {
-            color: #6c757d;
-            font-size: 13px;
-            font-weight: normal;
-        }
-
         .form-control {
             width: 100%;
             min-height: 42px;
@@ -80,23 +73,23 @@
             resize: vertical;
         }
 
-        .checkbox-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px 25px;
-            padding: 10px 0;
-        }
+      .checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 25px;
+    padding: 10px 0;
+}
 
-        .checkbox-list input[type="checkbox"] {
-            margin-right: 6px;
-            vertical-align: middle;
-        }
+.checkbox-list input[type="checkbox"] {
+    margin-right: 6px;
+    vertical-align: middle;
+}
 
-        .checkbox-list label {
-            font-weight: 400;
-            margin-right: 20px;
-            display: inline-block;
-        }
+.checkbox-list label {
+    font-weight: 400;
+    margin-right: 20px;
+    display: inline-block;
+}
 
         .validation {
             display: block;
@@ -122,11 +115,11 @@
             color: #842029;
         }
 
-        .area-search, .preferred-area-search {
+        .area-search {
             position: relative;
         }
 
-        .area-results, .preferred-area-results {
+        .area-results {
             position: absolute;
             z-index: 1000;
             left: 0;
@@ -140,13 +133,13 @@
             box-shadow: 0 5px 10px rgba(0,0,0,.1);
         }
 
-        .area-item, .preferred-area-item {
+        .area-item {
             padding: 10px 12px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
         }
 
-        .area-item:hover, .preferred-area-item:hover {
+        .area-item:hover {
             background: #f1f5f9;
         }
 
@@ -154,31 +147,6 @@
             margin-top: 6px;
             font-size: 13px;
             color: #198754;
-        }
-
-        .selected-preferred-areas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .preferred-area-tag {
-            display: inline-flex;
-            align-items: center;
-            background: #e8f5e9;
-            color: #146c43;
-            border: 1px solid #badbcc;
-            border-radius: 20px;
-            padding: 6px 10px;
-            font-size: 14px;
-        }
-
-        .preferred-area-remove {
-            margin-left: 7px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #dc3545;
         }
 
         .btn-submit {
@@ -206,171 +174,311 @@
             margin-left: 8px;
         }
 
-        @media (max-width: 768px) {
-            .user-wrapper {
-                margin: 10px auto;
-                padding: 0 10px 30px;
-            }
-            .user-card {
-                padding: 17px;
-                border-radius: 10px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .form-group.full {
-                grid-column: auto;
-            }
-            .checkbox-list {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .btn-submit, .btn-clear {
-                width: 100%;
-                margin: 5px 0;
-            }
+        .photo-preview {
+            margin-top: 10px;
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
         }
+
+        .preferred-area-search {
+    position: relative;
+}
+
+.preferred-area-results {
+    position: absolute;
+    z-index: 2000;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 5px 10px rgba(0,0,0,.12);
+}
+
+.preferred-area-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.preferred-area-item:hover {
+    background: #f1f5f9;
+}
+
+.selected-preferred-areas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.preferred-area-tag {
+    display: inline-flex;
+    align-items: center;
+    background: #e8f5e9;
+    color: #146c43;
+    border: 1px solid #badbcc;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.preferred-area-remove {
+    margin-left: 7px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.preferred-area-remove:hover {
+    color: #a71d2a;
+}
+
+       @media (max-width: 768px) {
+
+    .caregiver-wrapper {
+        margin: 10px auto;
+        padding: 0 10px 30px;
+    }
+
+    .caregiver-card {
+        padding: 17px;
+        border-radius: 10px;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .checkbox-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .checkbox-list label {
+        margin-right: 0;
+    }
+
+    .btn-submit,
+    .btn-clear {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
     </style>
 </asp:Content>
-
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="user-wrapper">
-        <div class="user-card">
 
-            <h1 class="page-title">TJ HOME CARE – User Registration</h1>
-            <div class="page-subtitle">Register user requirement profile</div>
+    <div class="caregiver-wrapper">
 
-            <asp:Label ID="lblMessage" runat="server" Visible="false" CssClass="message"></asp:Label>
+        <div class="caregiver-card">
 
-            <!-- REGISTRATION MODE -->
-            <div class="section-title">Registration Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">
-                        Registration Mode <span class="required">*</span>
-                    </label>
-                    <asp:DropDownList ID="ddlRegistrationMode" runat="server" CssClass="form-control" onchange="toggleStaffDropdown();">
-                        <asp:ListItem Text="-- Select Mode --" Value="" />
-                        <asp:ListItem Text="Self Registration (Website)" Value="Self" />
-                      <%--  <asp:ListItem Text="Internal Staff" Value="Staff" />--%>
-                    </asp:DropDownList>
-                    <asp:RequiredFieldValidator ID="rfvRegistrationMode" runat="server"
-                        ControlToValidate="ddlRegistrationMode" InitialValue=""
-                        ErrorMessage="Please select registration mode."
-                        CssClass="validation" Display="Dynamic" />
-                </div>
+            <h1 class="page-title">
+                TJ Home Care – Worker Registration
+            </h1>
 
-                <div class="form-group" id="divStaff" style="display: none;">
-                    <label class="form-label">
-                        Staff / Recruiter Name <span class="required">*</span>
-                    </label>
-                    <asp:DropDownList ID="ddlRecruiter" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="-- Select Staff --" Value="" />
-                        <asp:ListItem Text="Sangeetha" Value="Sangeetha" />
-                        <asp:ListItem Text="Prasanna" Value="Prasanna" />
-                        <asp:ListItem Text="Divya" Value="Divya" />
-                    </asp:DropDownList>
-                </div>
+            <div class="page-subtitle">
+                Register Your Profile & Find Work Opportunities
             </div>
 
-            <!-- SERVICE DETAILS -->
-            <div class="section-title">Service Details Needed</div>
-           <%-- <div class="form-row">
+            <asp:Label ID="lblMessage"
+                runat="server"
+                Visible="false"
+                CssClass="message">
+            </asp:Label>
+
+            <!-- RECRUITER -->
+
+            <div class="section-title">
+                Registration Information
+            </div>
+
+            <!-- SERVICE -->
+
+            <div class="section-title">
+                Select Your Job Category
+            </div>
+
+            <div class="form-row">
+
                 <div class="form-group full">
+
                     <label class="form-label">
-                        Service Category Required <span class="required">*</span>
+                        Type of Work You Are Looking For <span class="required">*</span>
                     </label>
-                    <asp:CheckBoxList ID="cblServiceCategory" runat="server" CssClass="checkbox-list">
-                        <asp:ListItem>Baby Caretaker</asp:ListItem>
-                        <asp:ListItem>Patient Caretaker</asp:ListItem>
-                        <asp:ListItem>Elder Caretaker</asp:ListItem>
-                        <asp:ListItem>Home Nurse</asp:ListItem>
+
+                    <asp:CheckBoxList ID="cblServiceCategory"
+                        runat="server"
+                        CssClass="checkbox-list"
+                        DataTextField="ServiceName"
+                        DataValueField="ServiceCategoryID">
                     </asp:CheckBoxList>
-                    <asp:CustomValidator ID="cvServiceCategory" runat="server"
+
+                    <asp:CustomValidator
+                        ID="cvServiceCategory"
+                        runat="server"
                         ErrorMessage="Please select at least one service category."
-                        CssClass="validation" OnServerValidate="cvServiceCategory_ServerValidate">
-                    </asp:CustomValidator>--%>
-          <%--  //New category from database table--%>
-            <div class="form-row">
+                        CssClass="validation"
+                        OnServerValidate="cvServiceCategory_ServerValidate">
+                    </asp:CustomValidator>
 
-    <div class="form-group full">
-
-        <label class="form-label">
-            Service Category <span class="required">*</span>
-        </label>
-
-        <asp:CheckBoxList ID="cblServiceCategory"
-            runat="server"
-            CssClass="checkbox-list"
-            DataTextField="ServiceName"
-            DataValueField="ServiceCategoryID">
-        </asp:CheckBoxList>
-
-        <asp:CustomValidator
-            ID="cvServiceCategory"
-            runat="server"
-            ErrorMessage="Please select at least one service category."
-            CssClass="validation"
-            OnServerValidate="cvServiceCategory_ServerValidate">
-        </asp:CustomValidator>
-           <%-- //Close--%>
                 </div>
+
             </div>
 
-            <!-- PERSONAL INFORMATION -->
-            <div class="section-title">Personal Information</div>
+
+            <!-- PERSONAL -->
+
+            <div class="section-title">
+                Personal Details
+            </div>
+
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Full Name <span class="required">*</span></label>
-                    <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtFullName"
-                        ErrorMessage="Full name is required." CssClass="validation" Display="Dynamic" />
-                </div>
 
                 <div class="form-group">
-                    <label class="form-label">Age <span class="required">*</span></label>
-                    <asp:TextBox ID="txtAge" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtAge"
-                        ErrorMessage="Age is required." CssClass="validation" Display="Dynamic" />
-                    <asp:RangeValidator runat="server" ControlToValidate="txtAge"
-                        MinimumValue="18" MaximumValue="100" Type="Integer"
-                        ErrorMessage="Age must be valid." CssClass="validation" Display="Dynamic" />
+
+                    <label class="form-label">
+                        Full Name <span class="required">*</span>
+                    </label>
+
+                    <asp:TextBox ID="txtFullName"
+                        runat="server"
+                        CssClass="form-control"
+                        MaxLength="200">
+                    </asp:TextBox>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="txtFullName"
+                        ErrorMessage="Full name is required."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
                 </div>
 
+
                 <div class="form-group">
-                    <label class="form-label">Gender <span class="required">*</span></label>
-                    <asp:DropDownList ID="ddlGender" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="-- Select Gender --" Value="" />
-                        <asp:ListItem Text="Female" Value="Female" />
-                        <asp:ListItem Text="Male" Value="Male" />
-                        <asp:ListItem Text="Other" Value="Other" />
+
+                    <label class="form-label">
+                        Age <span class="required">*</span>
+                    </label>
+
+                    <asp:TextBox ID="txtAge"
+                        runat="server"
+                        CssClass="form-control"
+                        TextMode="Number">
+                    </asp:TextBox>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="txtAge"
+                        ErrorMessage="Age is required."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                    <asp:RangeValidator
+                        runat="server"
+                        ControlToValidate="txtAge"
+                        MinimumValue="18"
+                        MaximumValue="70"
+                        Type="Integer"
+                        ErrorMessage="Age must be between 18 and 70."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Gender <span class="required">*</span>
+                    </label>
+
+                    <asp:DropDownList ID="ddlGender"
+                        runat="server"
+                        CssClass="form-control">
+
+                        <asp:ListItem Text="-- Select Gender --"
+                            Value="" />
+
+                        <asp:ListItem Text="Female"
+                            Value="Female" />
+
+                        <asp:ListItem Text="Male"
+                            Value="Male" />
+
                     </asp:DropDownList>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlGender"
-                        InitialValue="" ErrorMessage="Please select gender." CssClass="validation" Display="Dynamic" />
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="ddlGender"
+                        InitialValue=""
+                        ErrorMessage="Please select gender."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Contact Number <span class="required">*</span></label>
-                    <asp:TextBox ID="txtContactNumber" runat="server" CssClass="form-control" MaxLength="10" TextMode="Phone"></asp:TextBox>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtContactNumber"
-                        ErrorMessage="Contact number is required." CssClass="validation" Display="Dynamic" />
-                    <asp:RegularExpressionValidator runat="server" ControlToValidate="txtContactNumber"
-                        ValidationExpression="^[6-9][0-9]{9}$" ErrorMessage="Enter valid 10 digit mobile number."
-                        CssClass="validation" Display="Dynamic" />
-                </div>
 
                 <div class="form-group">
-                    <label class="form-label">Email Address <span class="optional-text">(Optional)</span></label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+
+                    <label class="form-label">
+                        Contact Number <span class="required">*</span>
+                    </label>
+
+                    <asp:TextBox ID="txtContactNumber"
+                        runat="server"
+                        CssClass="form-control"
+                        MaxLength="10"
+                        TextMode="Phone">
+                    </asp:TextBox>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="txtContactNumber"
+                        ErrorMessage="Contact number is required."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                    <asp:RegularExpressionValidator
+                        runat="server"
+                        ControlToValidate="txtContactNumber"
+                        ValidationExpression="^[6-9][0-9]{9}$"
+                        ErrorMessage="Enter valid 10 digit mobile number."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
                 </div>
 
+
                 <div class="form-group">
-                    <label class="form-label">City <span class="required">*</span></label>
-                    <asp:DropDownList ID="ddlCity" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="-- Select City --" Value="" />
-                        <asp:ListItem>Bangalore</asp:ListItem>
+
+                    <label class="form-label">
+                        City <span class="required">*</span>
+                    </label>
+
+                    <asp:DropDownList ID="ddlCity"
+                        runat="server"
+                        CssClass="form-control">
+
+                        <asp:ListItem Text="-- Select City --"
+                            Value="" />
+                         <asp:ListItem>Bangalore</asp:ListItem>
                         <asp:ListItem>Hyderabad</asp:ListItem>
                         <asp:ListItem>Ranchi</asp:ListItem>
                         <asp:ListItem>Bokaro</asp:ListItem>
@@ -378,38 +486,80 @@
                         <asp:ListItem>Asansol</asp:ListItem>
                         <asp:ListItem>Kolkata</asp:ListItem>
                         <asp:ListItem>Other</asp:ListItem>
+
                     </asp:DropDownList>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlCity"
-                        InitialValue="" ErrorMessage="Please select city." CssClass="validation" Display="Dynamic" />
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="ddlCity"
+                        InitialValue=""
+                        ErrorMessage="Please select city."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
                 </div>
+
 
                 <!-- PRESENT AREA -->
+
                 <div class="form-group">
-                    <label class="form-label">Present Area <span class="required">*</span></label>
+
+                    <label class="form-label">
+                        Current Location / Area <span class="required">*</span>
+                    </label>
+
                     <div class="area-search">
-                        <asp:TextBox ID="txtPresentArea" runat="server" CssClass="form-control" placeholder="Type area e.g. AR" autocomplete="off"></asp:TextBox>
-                        <asp:HiddenField ID="hdnPresentAreaID" runat="server" />
-                        <div id="areaResults" class="area-results"></div>
+
+                        <asp:TextBox ID="txtPresentArea"
+                            runat="server"
+                            CssClass="form-control"
+                            placeholder="Type area e.g. AR">
+                        </asp:TextBox>
+
+                        <asp:HiddenField
+                            ID="hdnPresentAreaID"
+                            runat="server" />
+                        
+                        <div id="areaResults"
+                            class="area-results">
+                        </div>
+
                     </div>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPresentArea"
-                        ErrorMessage="Please select present area." CssClass="validation" Display="Dynamic" />
-                    <div id="selectedArea" class="selected-area"></div>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="txtPresentArea"
+                        ErrorMessage="Please select present area."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                    <div id="selectedArea"
+                        class="selected-area">
+                    </div>
+
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">Complete Address <span class="required">*</span></label>
-                    <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" TextMode="MultiLine"></asp:TextBox>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtAddress"
-                        ErrorMessage="Address is required." CssClass="validation" Display="Dynamic" />
-                </div>
             </div>
 
-            <!-- LANGUAGES PREFERRED -->
-            <div class="section-title">Languages Preferred</div>
+
+            <!-- LANGUAGE -->
+
+            <div class="section-title">
+                Languages & Skills
+            </div>
+
             <div class="form-row">
+
                 <div class="form-group full">
-                    <label class="form-label">Languages Known / Preferred <span class="required">*</span></label>
-                    <asp:CheckBoxList ID="cblLanguages" runat="server" CssClass="checkbox-list">
+
+                    <label class="form-label">
+                        Languages You Can Speak <span class="required">*</span>
+                    </label>
+
+                <asp:CheckBoxList ID="cblLanguages"
+    runat="server"
+    CssClass="checkbox-list">
+
                         <asp:ListItem>Kannada</asp:ListItem>
                         <asp:ListItem>Telugu</asp:ListItem>
                         <asp:ListItem>Hindi</asp:ListItem>
@@ -418,309 +568,905 @@
                         <asp:ListItem>English</asp:ListItem>
                         <asp:ListItem>Bengali</asp:ListItem>
                         <asp:ListItem>Others</asp:ListItem>
+
                     </asp:CheckBoxList>
-                    <asp:CustomValidator ID="cvLanguages" runat="server"
+
+                    <asp:CustomValidator
+                        ID="cvLanguages"
+                        runat="server"
                         ErrorMessage="Please select at least one language."
-                        CssClass="validation" OnServerValidate="cvLanguages_ServerValidate">
+                        CssClass="validation"
+                        OnServerValidate="cvLanguages_ServerValidate">
                     </asp:CustomValidator>
+
                 </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Qualification
+                    </label>
+
+                    <asp:DropDownList ID="ddlQualification"
+                        runat="server"
+                        CssClass="form-control">
+
+                        <asp:ListItem Text="-- Select Qualification --"
+                            Value="" />
+
+                        <asp:ListItem>Below 10th</asp:ListItem>
+                        <asp:ListItem>10th</asp:ListItem>
+                        <asp:ListItem>12th</asp:ListItem>
+                        <asp:ListItem>Diploma</asp:ListItem>
+                        <asp:ListItem>Graduate</asp:ListItem>
+                        <asp:ListItem>ANM</asp:ListItem>
+                        <asp:ListItem>GNM</asp:ListItem>
+                        <asp:ListItem>B.Sc Nursing</asp:ListItem>
+                        <asp:ListItem>Other</asp:ListItem>
+
+                    </asp:DropDownList>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Experience <span class="required">*</span>
+                    </label>
+
+                    <asp:DropDownList ID="ddlExperience"
+                        runat="server"
+                        CssClass="form-control">
+
+                        <asp:ListItem Text="-- Select Experience --"
+                            Value="" />
+
+                        <asp:ListItem>Fresher</asp:ListItem>
+                        <asp:ListItem>Below 1 Year</asp:ListItem>
+                        <asp:ListItem>1–2 Years</asp:ListItem>
+                        <asp:ListItem>2–5 Years</asp:ListItem>
+                        <asp:ListItem>5+ Years</asp:ListItem>
+
+                    </asp:DropDownList>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="ddlExperience"
+                        InitialValue=""
+                        ErrorMessage="Please select experience."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                </div>
+
             </div>
 
-            <!-- SERVICE PREFERENCES -->
-            <div class="section-title">Service Requirements & Preferences</div>
+
+            <!-- DUTY -->
+
+            <div class="section-title">
+                Job Preferences
+            </div>
+
             <div class="form-row">
+
                 <div class="form-group full">
-                    <label class="form-label">Duty Shift Preference <span class="required">*</span></label>
-                    <asp:CheckBoxList ID="cblDutyPreference" runat="server" CssClass="checkbox-list">
+
+                    <label class="form-label">
+                        Preferred Duty Hours <span class="required">*</span>
+                    </label>
+
+                    <asp:CheckBoxList ID="cblDutyPreference"
+                        runat="server"
+                        CssClass="checkbox-list">
+
                         <asp:ListItem>8 Hours</asp:ListItem>
                         <asp:ListItem>10 Hours</asp:ListItem>
                         <asp:ListItem>12 Hours Day</asp:ListItem>
                         <asp:ListItem>12 Hours Night</asp:ListItem>
                         <asp:ListItem>24 Hours Live-in</asp:ListItem>
+
                     </asp:CheckBoxList>
-                    <asp:CustomValidator ID="cvDuty" runat="server"
+
+                    <asp:CustomValidator
+                        ID="cvDuty"
+                        runat="server"
                         ErrorMessage="Please select duty preference."
-                        CssClass="validation" OnServerValidate="cvDuty_ServerValidate">
+                        CssClass="validation"
+                        OnServerValidate="cvDuty_ServerValidate">
                     </asp:CustomValidator>
+
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Expected Budget ₹ / Month <span class="required">*</span></label>
-                    <asp:TextBox ID="txtExpectedSalary" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtExpectedSalary"
-                        ErrorMessage="Expected salary budget is required." CssClass="validation" Display="Dynamic" />
-                </div>
 
                 <div class="form-group">
-                    <label class="form-label">Joining / Requirement Availability <span class="required">*</span></label>
-                    <asp:DropDownList ID="ddlJoiningAvailability" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="-- Select --" Value="" />
+
+                    <label class="form-label">
+                        Expected Monthly Salary (₹) <span class="required">*</span>
+                    </label>
+
+                    <asp:TextBox ID="txtExpectedSalary"
+                        runat="server"
+                        CssClass="form-control"
+                        TextMode="Number">
+                    </asp:TextBox>
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="txtExpectedSalary"
+                        ErrorMessage="Expected salary is required."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                    <asp:RangeValidator
+                        runat="server"
+                        ControlToValidate="txtExpectedSalary"
+                        MinimumValue="1"
+                        MaximumValue="999999"
+                        Type="Double"
+                        ErrorMessage="Enter a valid salary."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Joining Availability <span class="required">*</span>
+                    </label>
+
+                    <asp:DropDownList ID="ddlJoiningAvailability"
+                        runat="server"
+                        CssClass="form-control">
+
+                        <asp:ListItem Text="-- Select --"
+                            Value="" />
+
                         <asp:ListItem>Immediately</asp:ListItem>
                         <asp:ListItem>Within 3 Days</asp:ListItem>
                         <asp:ListItem>Within 7 Days</asp:ListItem>
                         <asp:ListItem>Later</asp:ListItem>
+
                     </asp:DropDownList>
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlJoiningAvailability"
-                        InitialValue="" ErrorMessage="Please select requirement timeline." CssClass="validation" Display="Dynamic" />
+
+                    <asp:RequiredFieldValidator
+                        runat="server"
+                        ControlToValidate="ddlJoiningAvailability"
+                        InitialValue=""
+                        ErrorMessage="Please select joining availability."
+                        CssClass="validation"
+                        Display="Dynamic" />
+
                 </div>
 
-                <!-- PREFERRED WORK AREAS -->
-                <div class="form-group full">
-                    <label class="form-label">Preferred Areas for Service <span class="optional-text">(Optional)</span></label>
-                    <div class="preferred-area-search">
-                        <asp:TextBox ID="txtPreferredWorkAreas" runat="server" CssClass="form-control" placeholder="Type area e.g. AR" autocomplete="off"></asp:TextBox>
-                        <asp:HiddenField ID="hdnPreferredWorkAreaIDs" runat="server" />
-                        <div id="preferredAreaResults" class="preferred-area-results"></div>
-                    </div>
-                    <div id="selectedPreferredAreas" class="selected-preferred-areas"></div>
-                </div>
 
-                <div class="form-group full">
-                    <label class="form-label">Remarks / Specific Requirements <span class="optional-text">(Optional)</span></label>
-                    <asp:TextBox ID="txtRemarks" runat="server" CssClass="form-control" TextMode="MultiLine"></asp:TextBox>
-                </div>
+              <div class="form-group full">
+
+    <label class="form-label">
+        Preferred Work Locations
+    </label>
+
+    <div class="preferred-area-search">
+
+        <asp:TextBox
+            ID="txtPreferredWorkAreas"
+            runat="server"
+            CssClass="form-control"
+            placeholder="Type area e.g. AR"
+            autocomplete="off">
+        </asp:TextBox>
+
+        <asp:HiddenField
+            ID="hdnPreferredWorkAreaIDs"
+            runat="server" />
+
+        <div id="preferredAreaResults"
+             class="preferred-area-results">
+        </div>
+
+    </div>
+
+    <div id="selectedPreferredAreas"
+         class="selected-preferred-areas">
+    </div>
+
+</div>
+                 </div> <!-- End Job Preferences form-row -->
+
+            <!-- PHOTO -->
+
+            <div class="section-title">
+                Profile
             </div>
 
-            <!-- SUBMIT BUTTONS -->
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Profile Photo <span class="required"></span>
+                    </label>
+
+                    <asp:FileUpload
+                        ID="fuProfilePhoto"
+                        runat="server"
+                        CssClass="form-control"
+                        accept=".jpg,.jpeg,.png" />
+
+                    <small>
+                        JPG / JPEG / PNG. Maximum 2 MB.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Additional Information (Optional)
+                    </label>
+
+                    <asp:TextBox
+                        ID="txtRemarks"
+                        runat="server"
+                        CssClass="form-control"
+                        TextMode="MultiLine">
+                    </asp:TextBox>
+
+                </div>
+
+            </div>
+
+             <!-- PHOTO -->
+
+            
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Aadhar Photo <span class="required"></span>
+                    </label>
+
+                    <asp:FileUpload
+                        ID="fupaadhar"
+                        runat="server"
+                        CssClass="form-control"
+                        accept=".jpg,.jpeg,.png" />
+
+                    <small>
+                        JPG / JPEG / PNG. Maximum 2 MB.
+                    </small>
+
+                </div>
+
+
+              
+
+            </div>
+
+
             <div style="margin-top:25px;">
-                <asp:Button ID="btnSave" runat="server" Text="Register User" CssClass="btn-submit" OnClick="btnSave_Click" />
-                <asp:Button ID="btnClear" runat="server" Text="Clear" CssClass="btn-clear" CausesValidation="false" OnClick="btnClear_Click" />
+
+                <asp:Button
+                    ID="btnSave"
+                    runat="server"
+                    Text="Register as Worker"
+                    CssClass="btn-submit"
+                    OnClick="btnSave_Click" />
+
+                <asp:Button
+                    ID="btnClear"
+                    runat="server"
+                    Text="Clear"
+                    CssClass="btn-clear"
+                    CausesValidation="false"
+                    OnClick="btnClear_Click" />
+
             </div>
 
         </div>
+
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script type="text/javascript">
-        function toggleStaffDropdown() {
-            var mode = document.getElementById('<%= ddlRegistrationMode.ClientID %>').value;
-            var divStaff = document.getElementById('divStaff');
-            if (mode === 'Staff') {
-                divStaff.style.display = 'block';
-            } else {
-                divStaff.style.display = 'none';
-                document.getElementById('<%= ddlRecruiter.ClientID %>').selectedIndex = 0;
-            }
+
+  <script type="text/javascript">
+
+      // ======================================
+// PREFERRED WORK AREAS - MULTI SELECT
+// ======================================
+
+var preferredAreaTextBox =
+    document.getElementById(
+        "<%= txtPreferredWorkAreas.ClientID %>"
+    );
+
+var preferredAreaHidden =
+    document.getElementById(
+        "<%= hdnPreferredWorkAreaIDs.ClientID %>"
+    );
+
+var preferredAreaResults =
+    document.getElementById(
+        "preferredAreaResults"
+    );
+
+var selectedPreferredAreas =
+    document.getElementById(
+        "selectedPreferredAreas"
+    );
+
+var preferredAreaTimer = null;
+
+
+// Store selected areas
+var selectedPreferredAreaList = [];
+
+
+// ======================================
+// LOAD EXISTING SELECTED VALUES
+// ======================================
+
+function loadPreferredAreas() {
+
+    var value =
+        preferredAreaHidden.value.trim();
+
+    if (value === "") {
+        return;
+    }
+
+    var ids = value.split(",");
+
+    ids.forEach(function (id) {
+
+        id = id.trim();
+
+        if (id !== "") {
+
+            selectedPreferredAreaList.push({
+                PlaceID: parseInt(id),
+                PlaceName: ""
+            });
+
         }
 
-        // PREFERRED WORK AREAS - MULTI SELECT
-        var preferredAreaTextBox = document.getElementById("<%= txtPreferredWorkAreas.ClientID %>");
-        var preferredAreaHidden = document.getElementById("<%= hdnPreferredWorkAreaIDs.ClientID %>");
-        var preferredAreaResults = document.getElementById("preferredAreaResults");
-        var selectedPreferredAreas = document.getElementById("selectedPreferredAreas");
-        var preferredAreaTimer = null;
-        var selectedPreferredAreaList = [];
+    });
 
-        if (preferredAreaTextBox) {
-            preferredAreaTextBox.addEventListener("input", function () {
-                var searchText = preferredAreaTextBox.value.trim();
-                clearTimeout(preferredAreaTimer);
+}
 
-             var city = $('#<%= ddlCity.ClientID %>').val() || '';
 
-                if (!city) {
-                    preferredAreaHidden.value = "";
-                    preferredAreaResults.innerHTML = "";
+// ======================================
+// SEARCH
+// ======================================
 
-                    var message = document.createElement("div");
-                    message.className = "preferred-area-item";
-                    message.textContent = "Please select a city first.";
+preferredAreaTextBox.addEventListener(
+    "input",
+    function () {
 
-                    preferredAreaResults.appendChild(message);
-                    preferredAreaResults.style.display = "block";
-                    return;
-                }
-                if (searchText.length < 2) {
-                    preferredAreaResults.innerHTML = "";
-                    preferredAreaResults.style.display = "none";
-                    return;
-                }
+        var searchText =
+            preferredAreaTextBox.value.trim();
 
-                preferredAreaTimer = setTimeout(function () {
-                    var city = $('#<%= ddlCity.ClientID %>').val() || '';
+        clearTimeout(preferredAreaTimer);
 
-                    fetch("<%= ResolveUrl("~/UserRegistration.aspx/GetPlaces") %>", {
+        if (searchText.length < 2) {
+
+            preferredAreaResults.innerHTML = "";
+
+            preferredAreaResults.style.display =
+                "none";
+
+            return;
+        }
+
+        preferredAreaTimer =
+            setTimeout(function () {
+
+                var city =
+                    $('#<%= ddlCity.ClientID %>').val() || '';
+
+                console.log(
+                    "Preferred Area searchText:",
+                    searchText
+                );
+
+                console.log(
+                    "Preferred Area city:",
+                    city
+                );
+
+                fetch(
+                    "<%= ResolveUrl("~/CaregiverRegistration.aspx/GetPlaces") %>",
+                    {
                         method: "POST",
-                        headers: { "Content-Type": "application/json; charset=utf-8" },
-                        body: JSON.stringify({ searchText: searchText, city: city })
-                    })
-                    .then(function (response) { return response.json(); })
-                    .then(function (result) {
-                        var places = result.d;
-                        preferredAreaResults.innerHTML = "";
 
-                        if (!places || places.length === 0) {
-                            var noResult = document.createElement("div");
-                            noResult.className = "preferred-area-item";
-                            noResult.textContent = "No area found";
-                            preferredAreaResults.appendChild(noResult);
-                            preferredAreaResults.style.display = "block";
+                        headers: {
+                            "Content-Type":
+                                "application/json; charset=utf-8"
+                        },
+
+                        body: JSON.stringify({
+                            searchText: searchText,
+                            city: city
+                        })
+                    }
+                )
+
+                .then(function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Server returned " +
+                            response.status
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(function (result) {
+
+                    var places = result.d;
+
+                    preferredAreaResults.innerHTML = "";
+
+
+                    if (!places ||
+                        places.length === 0) {
+
+                        var noResult =
+                            document.createElement("div");
+
+                        noResult.className =
+                            "preferred-area-item";
+
+                        noResult.textContent =
+                            "No area found";
+
+                        preferredAreaResults.appendChild(
+                            noResult
+                        );
+
+                        preferredAreaResults.style.display =
+                            "block";
+
+                        return;
+                    }
+
+
+                    places.forEach(function (place) {
+
+                        // Don't show already selected areas
+                        var alreadySelected =
+                            selectedPreferredAreaList
+                                .some(function (x) {
+
+                                    return x.PlaceID ==
+                                        place.PlaceID;
+
+                                });
+
+
+                        if (alreadySelected) {
                             return;
                         }
 
-                        places.forEach(function (place) {
-                            var alreadySelected = selectedPreferredAreaList.some(function (x) { return x.PlaceID == place.PlaceID; });
-                            if (alreadySelected) return;
 
-                            var item = document.createElement("div");
-                            item.className = "preferred-area-item";
-                            item.textContent = place.PlaceName;
+                        var item =
+                            document.createElement("div");
 
-                            item.addEventListener("click", function () {
-                                addPreferredArea(place.PlaceID, place.PlaceName);
-                                preferredAreaTextBox.value = "";
-                                preferredAreaResults.innerHTML = "";
-                                preferredAreaResults.style.display = "none";
+                        item.className =
+                            "preferred-area-item";
+
+                        item.textContent =
+                            place.PlaceName;
+
+
+                        item.addEventListener(
+                            "click",
+                            function () {
+
+                                addPreferredArea(
+                                    place.PlaceID,
+                                    place.PlaceName
+                                );
+
+                                preferredAreaTextBox.value =
+                                    "";
+
+                                preferredAreaResults.innerHTML =
+                                    "";
+
+                                preferredAreaResults.style.display =
+                                    "none";
+
                                 preferredAreaTextBox.focus();
-                            });
+                            }
+                        );
 
-                            preferredAreaResults.appendChild(item);
-                        });
 
-                        preferredAreaResults.style.display = "block";
+                        preferredAreaResults.appendChild(
+                            item
+                        );
+
                     });
-                }, 250);
-            });
-        }
-
-        function addPreferredArea(placeID, placeName) {
-            var exists = selectedPreferredAreaList.some(function (x) { return x.PlaceID == placeID; });
-            if (exists) return;
-
-            selectedPreferredAreaList.push({ PlaceID: placeID, PlaceName: placeName });
-            updatePreferredAreaHiddenField();
-            renderPreferredAreaTags();
-        }
-
-        function removePreferredArea(placeID) {
-            selectedPreferredAreaList = selectedPreferredAreaList.filter(function (x) { return x.PlaceID != placeID; });
-            updatePreferredAreaHiddenField();
-            renderPreferredAreaTags();
-        }
-
-        function updatePreferredAreaHiddenField() {
-            var ids = selectedPreferredAreaList.map(function (x) { return x.PlaceID; });
-            preferredAreaHidden.value = ids.join(",");
-        }
 
 
-        function renderPreferredAreaTags() {
-            selectedPreferredAreas.innerHTML = "";
+                    preferredAreaResults.style.display =
+                        "block";
 
-            selectedPreferredAreaList.forEach(function (place) {
-                var tag = document.createElement("span");
-                tag.className = "preferred-area-tag";
+                })
 
-                tag.appendChild(document.createTextNode(place.PlaceName));
+                .catch(function (error) {
 
-                var remove = document.createElement("span");
-                remove.className = "preferred-area-remove";
-                remove.textContent = " ×";
-                remove.style.cursor = "pointer";
+                    console.error(
+                        "Preferred Area search error:",
+                        error
+                    );
 
-                remove.addEventListener("click", function () {
-                    removePreferredArea(place.PlaceID);
+                    preferredAreaResults.innerHTML =
+                        "<div class='preferred-area-item'>" +
+                        "Unable to load areas." +
+                        "</div>";
+
+                    preferredAreaResults.style.display =
+                        "block";
+
                 });
 
-                tag.appendChild(remove);
-                selectedPreferredAreas.appendChild(tag);
-            });
+            }, 250);
+
+    }
+);
+
+// ======================================
+// ADD AREA
+// ======================================
+
+function addPreferredArea(
+    placeID,
+    placeName
+) {
+
+    var exists =
+        selectedPreferredAreaList.some(
+            function (x) {
+
+                return x.PlaceID == placeID;
+
+            }
+        );
+
+
+    if (exists) {
+        return;
+    }
+
+
+    selectedPreferredAreaList.push({
+        PlaceID: placeID,
+        PlaceName: placeName
+    });
+
+
+    updatePreferredAreaHiddenField();
+
+    renderPreferredAreaTags();
+}
+
+
+// ======================================
+// REMOVE AREA
+// ======================================
+
+function removePreferredArea(placeID) {
+
+    selectedPreferredAreaList =
+        selectedPreferredAreaList.filter(
+            function (x) {
+
+                return x.PlaceID != placeID;
+
+            }
+        );
+
+
+    updatePreferredAreaHiddenField();
+
+    renderPreferredAreaTags();
+}
+
+
+// ======================================
+// HIDDEN FIELD
+// ======================================
+
+function updatePreferredAreaHiddenField() {
+
+    var ids =
+        selectedPreferredAreaList.map(
+            function (x) {
+
+                return x.PlaceID;
+
+            }
+        );
+
+
+    preferredAreaHidden.value =
+        ids.join(",");
+}
+
+
+// ======================================
+// DISPLAY SELECTED TAGS
+// ======================================
+
+function renderPreferredAreaTags() {
+
+    selectedPreferredAreas.innerHTML = "";
+
+
+    selectedPreferredAreaList.forEach(
+        function (place) {
+
+            var tag =
+                document.createElement("span");
+
+            tag.className =
+                "preferred-area-tag";
+
+
+            tag.textContent =
+                place.PlaceName;
+
+
+            var remove =
+                document.createElement("span");
+
+            remove.className =
+                "preferred-area-remove";
+
+            remove.textContent =
+                " ×";
+
+
+            remove.addEventListener(
+                "click",
+                function () {
+
+                    removePreferredArea(
+                        place.PlaceID
+                    );
+
+                }
+            );
+
+
+            tag.appendChild(remove);
+
+            selectedPreferredAreas
+                .appendChild(tag);
+
         }
-        // PRESENT AREA SEARCH
-        document.addEventListener("DOMContentLoaded", function () {
-            toggleStaffDropdown();
+    );
+}
 
-            var areaTextBox = document.getElementById("<%= txtPresentArea.ClientID %>");
-            var areaHidden = document.getElementById("<%= hdnPresentAreaID.ClientID %>");
-            var areaResults = document.getElementById("areaResults");
-            var selectedArea = document.getElementById("selectedArea");
-            var timer = null;
 
-            if (areaTextBox) {
-                areaTextBox.addEventListener("input", function () {
+// ======================================
+// CLOSE RESULT WHEN CLICKING OUTSIDE
+// ======================================
 
-                    var searchText = areaTextBox.value.trim();
-                    clearTimeout(timer);
+document.addEventListener(
+    "click",
+    function (event) {
 
-                    areaHidden.value = "";
-                    selectedArea.innerHTML = "";
+        if (!event.target.closest(
+            ".preferred-area-search"
+        )) {
 
-                    var city = $('#<%= ddlCity.ClientID %>').val() || '';
+            preferredAreaResults.style.display =
+                "none";
+        }
 
-                    if (!city) {
-                        areaResults.innerHTML = "";
+    }
+);
 
-                        var message = document.createElement("div");
-                        message.className = "area-item";
-                        message.textContent = "Please select a city first.";
+    document.addEventListener("DOMContentLoaded", function () {
 
-                        areaResults.appendChild(message);
+        var areaTextBox =
+            document.getElementById("<%= txtPresentArea.ClientID %>");
+
+        var areaHidden =
+            document.getElementById("<%= hdnPresentAreaID.ClientID %>");
+
+        var areaResults =
+            document.getElementById("areaResults");
+
+        var selectedArea =
+            document.getElementById("selectedArea");
+
+        var timer = null;
+
+
+        areaTextBox.addEventListener("input", function () {
+
+            var searchText = areaTextBox.value.trim();
+
+            clearTimeout(timer);
+
+            // Clear previously selected ID
+            areaHidden.value = "";
+
+            selectedArea.innerHTML = "";
+
+            if (searchText.length < 2) {
+
+                areaResults.innerHTML = "";
+                areaResults.style.display = "none";
+
+                return;
+            }
+
+
+            timer = setTimeout(function () {
+
+              fetch(
+    "CaregiverRegistration.aspx/GetPlaces",
+    {
+        method: "POST",
+
+        headers: {
+            "Content-Type":
+                "application/json; charset=utf-8"
+        },
+
+        body: JSON.stringify({
+            searchText: searchText,
+            city: $('#<%= ddlCity.ClientID %>').val() || ''
+        })
+    }
+)
+
+                .then(function (response) {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Server returned " + response.status
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(function (result) {
+
+                    var places = result.d;
+
+                    areaResults.innerHTML = "";
+
+                    if (!places || places.length === 0) {
+
+                        var noResult =
+                            document.createElement("div");
+
+                        noResult.className = "area-item";
+
+                        noResult.textContent =
+                            "No area found";
+
+                        areaResults.appendChild(noResult);
+
                         areaResults.style.display = "block";
+
                         return;
                     }
 
-                    if (searchText.length < 2) {
-                        areaResults.innerHTML = "";
-                        areaResults.style.display = "none";
-                        return;
-                    }
 
-                    timer = setTimeout(function () {
-                        fetch("<%= ResolveUrl("~/UserRegistration.aspx/GetPlaces") %>", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json; charset=utf-8" },
-                            body: JSON.stringify({ searchText: searchText, city: city })
-                        })
-                            .then(function (response) { return response.json(); })
-                            .then(function (result) {
-                                var places = result.d;
+                    places.forEach(function (place) {
+
+                        var item =
+                            document.createElement("div");
+
+                        item.className = "area-item";
+
+                        item.textContent =
+                            place.PlaceName;
+
+                        item.setAttribute(
+                            "data-id",
+                            place.PlaceID
+                        );
+
+
+                        item.addEventListener(
+                            "click",
+                            function () {
+
+                                areaTextBox.value =
+                                    place.PlaceName;
+
+                                areaHidden.value =
+                                    place.PlaceID;
+
+                                selectedArea.innerHTML =
+                                    "Selected Area: <strong>" +
+                                    escapeHtml(place.PlaceName) +
+                                    "</strong>";
+
                                 areaResults.innerHTML = "";
 
-                                if (!places || places.length === 0) {
-                                    var noResult = document.createElement("div");
-                                    noResult.className = "area-item";
-                                    noResult.textContent = "No area found";
-                                    areaResults.appendChild(noResult);
-                                    areaResults.style.display = "block";
-                                    return;
-                                }
+                                areaResults.style.display =
+                                    "none";
+                            }
+                        );
 
-                                places.forEach(function (place) {
-                                    var item = document.createElement("div");
-                                    item.className = "area-item";
-                                    item.textContent = place.PlaceName;
 
-                                    item.addEventListener("click", function () {
-                                        areaTextBox.value = place.PlaceName;
-                                        areaHidden.value = place.PlaceID;
-                                        selectedArea.innerHTML = "Selected Area: <strong>" + escapeHtml(place.PlaceName) + "</strong>";
-                                        areaResults.innerHTML = "";
-                                        areaResults.style.display = "none";
-                                    });
+                        areaResults.appendChild(item);
 
-                                    areaResults.appendChild(item);
-                                });
+                    });
 
-                                areaResults.style.display = "block";
-                            });
-                    }, 250);
+
+                    areaResults.style.display = "block";
+
+                })
+
+                .catch(function (error) {
+
+                    console.error(
+                        "Present Area search error:",
+                        error
+                    );
+
+                    areaResults.innerHTML =
+                        "<div class='area-item'>" +
+                        "Unable to load areas." +
+                        "</div>";
+
+                    areaResults.style.display =
+                        "block";
                 });
-            }
 
-            document.addEventListener("click", function (event) {
-                if (!event.target.closest(".area-search")) {
-                    if (areaResults) areaResults.style.display = "none";
-                }
-                if (!event.target.closest(".preferred-area-search")) {
-                    if (preferredAreaResults) preferredAreaResults.style.display = "none";
-                }
-            });
 
-            function escapeHtml(value) {
-                var div = document.createElement("div");
-                div.textContent = value;
-                return div.innerHTML;
-            }
+            }, 250);
+
         });
-    </script>
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (!event.target.closest(".area-search")) {
+
+                    areaResults.style.display =
+                        "none";
+                }
+
+            }
+        );
+
+
+        function escapeHtml(value) {
+
+            var div =
+                document.createElement("div");
+
+            div.textContent = value;
+
+            return div.innerHTML;
+        }
+
+    });
+
+</script>
+
 </asp:Content>

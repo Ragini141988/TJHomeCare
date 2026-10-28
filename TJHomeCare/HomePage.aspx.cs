@@ -338,5 +338,61 @@ namespace TJHomeCare
             return "data:" + mime + ";base64," + Convert.ToBase64String(bytes);
         }
 
+        //protected void rptRecentRequirements_ItemCommand(object source, RepeaterCommandEventArgs e)
+        //{
+
+        //}
+
+        protected void rptRecentRequirements_ItemCommand(
+            object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName != "DeleteRequirement")
+                return;
+
+            int requirementID;
+
+            if (!int.TryParse(
+                Convert.ToString(e.CommandArgument),
+                out requirementID))
+            {
+                Response.Write("Invalid Requirement ID: " +
+                    Convert.ToString(e.CommandArgument));
+                return;
+            }
+
+            string query = @"
+        DELETE FROM [sqladmin].[PostRequirements]
+        WHERE RequirementID = @RequirementID;";
+
+            using (SqlConnection con =
+                new SqlConnection(connectionString))
+            using (SqlCommand cmd =
+                new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add(
+                    "@RequirementID", SqlDbType.Int).Value =
+                    requirementID;
+
+                con.Open();
+
+                int rowsDeleted = cmd.ExecuteNonQuery();
+
+                if (rowsDeleted > 0)
+                {
+                    LoadRecentRequirements();
+
+                    Response.Write(
+                        "Requirement ID " + requirementID +
+                        " deleted successfully.");
+                }
+                else
+                {
+                    Response.Write(
+                        "No record deleted. Requirement ID: " +
+                        requirementID);
+                }
+            }
+        }
+
     }
 }

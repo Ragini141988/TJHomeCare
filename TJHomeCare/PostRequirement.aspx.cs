@@ -213,7 +213,7 @@ Swal.fire({
             using (SqlCommand cmd = new SqlCommand(@"
         SELECT ServiceCategoryID, ServiceName
         FROM [sqladmin].[ServiceCategories]
-        WHERE IsActive = 1
+        WHERE IsActive = 1 and [ServiceName] not like '%Online%'
         ORDER BY DisplayOrder, ServiceName;", con))
             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
             {

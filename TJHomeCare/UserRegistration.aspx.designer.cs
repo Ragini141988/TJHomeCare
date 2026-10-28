@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TJHomeCare
-{
-
-
-    public partial class UserRegistration
-    {
-
+namespace TJHomeCare {
+    
+    
+    public partial class UserRegistration {
+        
         /// <summary>
         /// lblMessage control.
         /// </summary>
@@ -22,34 +20,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
-
-        /// <summary>
-        /// ddlRegistrationMode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRegistrationMode;
-
-        /// <summary>
-        /// rfvRegistrationMode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRegistrationMode;
-
-        /// <summary>
-        /// ddlRecruiter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRecruiter;
-
+        
         /// <summary>
         /// cblServiceCategory control.
         /// </summary>
@@ -58,7 +29,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblServiceCategory;
-
+        
         /// <summary>
         /// cvServiceCategory control.
         /// </summary>
@@ -67,7 +38,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvServiceCategory;
-
+        
         /// <summary>
         /// txtFullName control.
         /// </summary>
@@ -76,7 +47,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFullName;
-
+        
         /// <summary>
         /// txtAge control.
         /// </summary>
@@ -85,7 +56,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAge;
-
+        
         /// <summary>
         /// ddlGender control.
         /// </summary>
@@ -94,7 +65,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlGender;
-
+        
         /// <summary>
         /// txtContactNumber control.
         /// </summary>
@@ -103,16 +74,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContactNumber;
-
-        /// <summary>
-        /// txtEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
-
+        
         /// <summary>
         /// ddlCity control.
         /// </summary>
@@ -121,7 +83,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCity;
-
+        
         /// <summary>
         /// txtPresentArea control.
         /// </summary>
@@ -130,7 +92,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPresentArea;
-
+        
         /// <summary>
         /// hdnPresentAreaID control.
         /// </summary>
@@ -139,16 +101,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPresentAreaID;
-
-        /// <summary>
-        /// txtAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
-
+        
         /// <summary>
         /// cblLanguages control.
         /// </summary>
@@ -157,7 +110,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblLanguages;
-
+        
         /// <summary>
         /// cvLanguages control.
         /// </summary>
@@ -166,7 +119,25 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvLanguages;
-
+        
+        /// <summary>
+        /// ddlQualification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlQualification;
+        
+        /// <summary>
+        /// ddlExperience control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExperience;
+        
         /// <summary>
         /// cblDutyPreference control.
         /// </summary>
@@ -175,7 +146,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblDutyPreference;
-
+        
         /// <summary>
         /// cvDuty control.
         /// </summary>
@@ -184,7 +155,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvDuty;
-
+        
         /// <summary>
         /// txtExpectedSalary control.
         /// </summary>
@@ -193,7 +164,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtExpectedSalary;
-
+        
         /// <summary>
         /// ddlJoiningAvailability control.
         /// </summary>
@@ -202,7 +173,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlJoiningAvailability;
-
+        
         /// <summary>
         /// txtPreferredWorkAreas control.
         /// </summary>
@@ -211,7 +182,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPreferredWorkAreas;
-
+        
         /// <summary>
         /// hdnPreferredWorkAreaIDs control.
         /// </summary>
@@ -220,7 +191,16 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPreferredWorkAreaIDs;
-
+        
+        /// <summary>
+        /// fuProfilePhoto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuProfilePhoto;
+        
         /// <summary>
         /// txtRemarks control.
         /// </summary>
@@ -229,7 +209,16 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRemarks;
-
+        
+        /// <summary>
+        /// fupaadhar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fupaadhar;
+        
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -238,7 +227,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSave;
-
+        
         /// <summary>
         /// btnClear control.
         /// </summary>

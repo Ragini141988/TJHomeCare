@@ -184,7 +184,7 @@
             <!-- 1. GYNECOLOGIST -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/gynecologist.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/gynecologist3.png") %>"
                      alt="Gynecologist Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -203,7 +203,7 @@
             <!-- 2. DERMATOLOGIST -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/dermatologist.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/dermo.jpeg") %>"
                      alt="Dermatologist Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -219,10 +219,35 @@
                 </div>
             </div>
 
+           
+<div class="consultation-card">
+    <img class="consultation-image"
+         src="<%= ResolveUrl("~/Consultation/sexual_1200x675.jpg") %>"
+         alt="Sexual Health and Wellness Online Doctor Consultation" />
+
+    <div class="consultation-card-content">
+        <h2>Sexual Health &amp; Wellness – Online Doctor Consultation</h2>
+
+        <p>
+            Consult a qualified doctor online for confidential guidance
+            on sexual health, reproductive wellness, intimacy-related
+            concerns and general sexual well-being in a safe,
+            respectful and private environment.
+        </p>
+
+        <a class="consultation-btn"
+           href="<%= ResolveUrl("~/BookConsultation.aspx?serviceId=18") %>">
+            Book Online Consultation
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+
             <!-- 3. DIETICIAN -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/dietician.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/dietician_1200x675.jpg") %>"
                      alt="Dietician Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -241,7 +266,7 @@
             <!-- 4. PSYCHOLOGIST -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/Psychologist.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/psycologist_1200x675.jpg") %>"
                      alt="Psychologist Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -260,7 +285,7 @@
             <!-- 5. PHYSIOTHERAPIST -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/Physiotherapist.jpeg") %>"
+                     src="<%= ResolveUrl("~/Consultation/Physiotherapist_1200x675.jpg") %>"
                      alt="Physiotherapist Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -279,7 +304,7 @@
             <!-- 6. FINANCIAL COUNSELLOR -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/Financial%20Counsellor.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/FinancialCounsellor.jpg_1200x675.jpg") %>"
                      alt="Financial Counsellor Online Consultation" />
 
                 <div class="consultation-card-content">
@@ -298,7 +323,7 @@
             <!-- 7. LEGAL -->
             <div class="consultation-card">
                 <img class="consultation-image"
-                     src="<%= ResolveUrl("~/Images/legal.jpg") %>"
+                     src="<%= ResolveUrl("~/Consultation/Legal_1200x675.jpg") %>"
                      alt="Legal Online Consultation" />
 
                 <div class="consultation-card-content">

@@ -4,36 +4,34 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Services;
 using System.Web.Services;
+using System.Web.Script.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using static TabletJobs.com.CaregiverRegistration;
 
 namespace TJHomeCare
 {
-    public partial class UserRegistration : System.Web.UI.Page
+    public partial class UserRegistration : Page
     {
         private readonly string connectionString =
             ConfigurationManager.ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"].ConnectionString;
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 BindServiceCategories();
             }
-
         }
-        //New code for load category
+
         // Load active services from the central master table.
         private void BindServiceCategories()
         {
             const string sql = @"
                 SELECT ServiceCategoryID, ServiceName
                 FROM [sqladmin].[ServiceCategories]
-                WHERE IsActive = 1
+                WHERE IsActive = 1 AND ServiceCategoryID < 7
                 ORDER BY DisplayOrder, ServiceName;";
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -50,7 +48,6 @@ namespace TJHomeCare
             }
         }
 
-        //Close load category
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static List<PlaceResult> GetPlaces(string searchText, string city)
@@ -60,31 +57,42 @@ namespace TJHomeCare
             if (string.IsNullOrWhiteSpace(searchText))
                 return result;
 
-            string connString =
+            string connectionString =
                 ConfigurationManager
                 .ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"]
                 .ConnectionString;
 
-            using (SqlConnection con = new SqlConnection(connString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string sql = @"
-                SELECT TOP 30
-                    PlaceID,
-                    PlaceName
-                FROM [sqladmin].[LocalPlaces]
-                WHERE PlaceName LIKE @SearchText
-                  AND (
-                        @City = ''
-                        OR UPPER(City) = @City
-                      )
-                ORDER BY
-                    OrderColumn ASC,
-                    PlaceName ASC";
+            SELECT TOP 30
+                   PlaceID,
+                   PlaceName
+            FROM [sqladmin].[LocalPlaces]
+            WHERE PlaceName LIKE @SearchText
+              AND (
+                    @City = ''
+                    OR UPPER(City) = @City
+                  )
+            ORDER BY
+                   OrderColumn ASC,
+                   PlaceName ASC";
 
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.Add("@SearchText", SqlDbType.NVarChar, 200).Value = "%" + searchText.Trim() + "%";
-                    cmd.Parameters.Add("@City", SqlDbType.NVarChar, 300).Value = string.IsNullOrWhiteSpace(city) ? "" : city.Trim().ToUpper();
+                    cmd.Parameters.Add(
+                        "@SearchText",
+                        SqlDbType.NVarChar,
+                        200
+                    ).Value = "%" + searchText.Trim() + "%";
+
+                    cmd.Parameters.Add(
+                        "@City",
+                        SqlDbType.NVarChar,
+                        300
+                    ).Value = string.IsNullOrWhiteSpace(city)
+                                ? ""
+                                : city.Trim().ToUpper();
 
                     con.Open();
 
@@ -95,7 +103,10 @@ namespace TJHomeCare
                             result.Add(
                                 new PlaceResult
                                 {
-                                    PlaceID = Convert.ToInt32(reader["PlaceID"]),
+                                    PlaceID = Convert.ToInt32(
+                                        reader["PlaceID"]
+                                    ),
+
                                     PlaceName = reader["PlaceName"].ToString()
                                 }
                             );
@@ -108,23 +119,40 @@ namespace TJHomeCare
         }
 
         // ================================
-        // VALIDATIONS
+        // SERVICE CATEGORY VALIDATION
         // ================================
 
-        protected void cvServiceCategory_ServerValidate(object source, ServerValidateEventArgs args)
+        protected void cvServiceCategory_ServerValidate(
+            object source,
+            ServerValidateEventArgs args)
         {
             args.IsValid = IsAnyCheckboxSelected(cblServiceCategory);
         }
 
-        protected void cvLanguages_ServerValidate(object source, ServerValidateEventArgs args)
+
+        // ================================
+        // LANGUAGE VALIDATION
+        // ================================
+
+        protected void cvLanguages_ServerValidate(
+            object source,
+            ServerValidateEventArgs args)
         {
             args.IsValid = IsAnyCheckboxSelected(cblLanguages);
         }
 
-        protected void cvDuty_ServerValidate(object source, ServerValidateEventArgs args)
+
+        // ================================
+        // DUTY VALIDATION
+        // ================================
+
+        protected void cvDuty_ServerValidate(
+            object source,
+            ServerValidateEventArgs args)
         {
             args.IsValid = IsAnyCheckboxSelected(cblDutyPreference);
         }
+
 
         private bool IsAnyCheckboxSelected(CheckBoxList checkBoxList)
         {
@@ -133,13 +161,14 @@ namespace TJHomeCare
                 if (item.Selected)
                     return true;
             }
+
             return false;
         }
 
-        // ================================
-        // SAVE TO DATABASE
-        // ================================
 
+        // ================================
+        // SAVE
+        // ================================
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -147,78 +176,94 @@ namespace TJHomeCare
 
             if (!Page.IsValid)
             {
-                ShowMessage("Please correct the highlighted fields.", false);
+                ShowMessage(
+                    "Please correct the highlighted fields.",
+                    false);
+
                 return;
             }
 
-            // 1. Registration Mode
-            string registrationMode = ddlRegistrationMode.SelectedValue;
 
-            if (registrationMode != "Self" && registrationMode != "Staff")
-            {
-                ShowMessage("Please select Registration Mode.", false);
-                return;
-            }
+            // =========================================================
+            // PRESENT AREA VALIDATION
+            // =========================================================
 
-            // 2. Recruiter Name
-            string recruiterName = null;
-
-            if (registrationMode == "Staff")
-            {
-                if (ddlRecruiter.SelectedIndex <= 0 ||
-                    string.IsNullOrWhiteSpace(ddlRecruiter.SelectedValue))
-                {
-                    ShowMessage("Please select a Recruiter.", false);
-                    return;
-                }
-
-                recruiterName = ddlRecruiter.SelectedItem.Text;
-            }
-
-            // 3. Present Area ID validation
             int presentAreaID;
 
-            if (!int.TryParse(hdnPresentAreaID.Value, out presentAreaID))
+            if (!int.TryParse(
+                hdnPresentAreaID.Value,
+                out presentAreaID))
             {
-                ShowMessage("Please select a valid Present Area from the list.", false);
+                ShowMessage(
+                    "Please select a valid Present Area from the list.",
+                    false);
+
                 return;
             }
 
+
+            // Check whether Present Area exists
             if (!PlaceExists(presentAreaID))
             {
-                ShowMessage("Selected Present Area is invalid. Please select again.", false);
+                ShowMessage(
+                    "Selected Present Area is invalid. Please select again.",
+                    false);
+
                 return;
             }
 
-            // 4. Preferred Work Areas validation
-            string preferredAreaIDs = hdnPreferredWorkAreaIDs.Value.Trim();
 
-            List<int> validPreferredAreaIDs = new List<int>();
+            // =========================================================
+            // PREFERRED WORK AREAS
+            // =========================================================
+
+            string preferredAreaIDs =
+                hdnPreferredWorkAreaIDs.Value.Trim();
+
+            // Preferred Work Areas is optional.
+
+
+            // Validate selected Place IDs
+            List<int> validPreferredAreaIDs =
+                new List<int>();
+
 
             if (!string.IsNullOrWhiteSpace(preferredAreaIDs))
             {
-                string[] selectedIDs = preferredAreaIDs.Split(
-                    new[] { ',' },
-                    StringSplitOptions.RemoveEmptyEntries);
+                string[] selectedIDs =
+                    preferredAreaIDs.Split(
+                        new[] { ',' },
+                        StringSplitOptions.RemoveEmptyEntries);
+
 
                 foreach (string idText in selectedIDs)
                 {
                     int placeID;
 
-                    if (!int.TryParse(idText.Trim(), out placeID))
+                    if (!int.TryParse(
+                        idText.Trim(),
+                        out placeID))
                     {
-                        ShowMessage("Invalid Preferred Work Area selected.", false);
+                        ShowMessage(
+                            "Invalid Preferred Work Area selected.",
+                            false);
+
                         return;
                     }
 
+
+                    // Make sure PlaceID really exists
                     if (!PlaceExists(placeID))
                     {
                         ShowMessage(
                             "One of the selected Preferred Work Areas is invalid.",
                             false);
+
                         return;
                     }
 
+
+                    // Avoid duplicate IDs
                     if (!validPreferredAreaIDs.Contains(placeID))
                     {
                         validPreferredAreaIDs.Add(placeID);
@@ -226,216 +271,451 @@ namespace TJHomeCare
                 }
             }
 
-            string preferredWorkAreaIDsValue =
+
+            // Store IDs as:
+            // 1,3,8
+
+            string preferredWorkAreasValue =
                 validPreferredAreaIDs.Count > 0
                     ? string.Join(",", validPreferredAreaIDs)
                     : null;
 
-            // 5. Checkbox values
-            string serviceCategory = GetSelectedValues(cblServiceCategory);
-            string languages = GetSelectedValues(cblLanguages);
-            string dutyPreference = GetSelectedValues(cblDutyPreference);
 
-            if (string.IsNullOrWhiteSpace(serviceCategory))
+            // =========================================================
+            // PROFILE PHOTO - OPTIONAL
+            // =========================================================
+
+            byte[] photoBytes = null;
+
+            byte[] photoBytes1 = null;
+            string profilePhotoName = null;
+
+
+            if (fuProfilePhoto.HasFile)
             {
-                ShowMessage("Please select at least one Service Category.", false);
-                return;
-            }
-
-            // 6. Age validation
-            int age;
-
-            if (!int.TryParse(txtAge.Text.Trim(), out age) ||
-                age < 18 || age > 100)
-            {
-                ShowMessage("Age must be between 18 and 100.", false);
-                return;
-            }
-
-            // 7. Contact Number validation
-            string contactNumber = txtContactNumber.Text.Trim();
-
-            if (contactNumber.Length != 10)
-            {
-                ShowMessage("Please enter a valid 10-digit Contact Number.", false);
-                return;
-            }
-
-            foreach (char digit in contactNumber)
-            {
-                if (!char.IsDigit(digit))
+                // Maximum 2 MB
+                if (fuProfilePhoto.PostedFile.ContentLength >
+                    2 * 1024 * 1024)
                 {
-                    ShowMessage("Contact Number must contain only digits.", false);
+                    ShowMessage(
+                        "Profile photo must be less than or equal to 2 MB.",
+                        false);
+
                     return;
                 }
+
+
+                string extension =
+                    Path.GetExtension(
+                        fuProfilePhoto.FileName)
+                    .ToLowerInvariant();
+
+
+                string[] allowedExtensions =
+                {
+            ".jpg",
+            ".jpeg",
+            ".png"
+        };
+
+
+                if (Array.IndexOf(
+                    allowedExtensions,
+                    extension) < 0)
+                {
+                    ShowMessage(
+                        "Only JPG, JPEG and PNG files are allowed for Profile Photo.",
+                        false);
+
+                    return;
+                }
+
+
+                // Read Profile Photo
+                using (BinaryReader reader =
+                    new BinaryReader(
+                        fuProfilePhoto.PostedFile.InputStream))
+                {
+                    photoBytes =
+                        reader.ReadBytes(
+                            fuProfilePhoto.PostedFile.ContentLength);
+                }
+
+
+                profilePhotoName =
+                    Path.GetFileName(
+                        fuProfilePhoto.FileName);
             }
 
-            // 8. Expected Budget validation
-            // txtExpectedSalary is the textbox ID in the existing form.
-            decimal expectedBudget;
 
-            if (!decimal.TryParse(txtExpectedSalary.Text.Trim(), out expectedBudget) ||
-                expectedBudget <= 0)
+            // =========================================================
+            // AADHAR PHOTO - MANDATORY
+            // =========================================================
+
+            if (fupaadhar.HasFile)
             {
-                ShowMessage("Please enter a valid Expected Budget greater than zero.", false);
+
+
+
+                // Maximum 2 MB
+                if (fupaadhar.PostedFile.ContentLength >
+                    2 * 1024 * 1024)
+                {
+                    ShowMessage(
+                        "Aadhar photo must be less than or equal to 2 MB.",
+                        false);
+
+                    return;
+                }
+
+
+                string aadharExtension =
+                    Path.GetExtension(
+                        fupaadhar.FileName)
+                    .ToLowerInvariant();
+
+
+                string[] allowedAadharExtensions =
+                {
+        ".jpg",
+        ".jpeg",
+        ".png"
+    };
+
+
+                if (Array.IndexOf(
+                    allowedAadharExtensions,
+                    aadharExtension) < 0)
+                {
+                    ShowMessage(
+                        "Only JPG, JPEG and PNG files are allowed for Aadhar Photo.",
+                        false);
+
+                    return;
+                }
+
+
+                // Read Aadhar Photo
+
+
+                using (BinaryReader reader =
+                    new BinaryReader(
+                        fupaadhar.PostedFile.InputStream))
+                {
+                    photoBytes1 =
+                        reader.ReadBytes(
+                            fupaadhar.PostedFile.ContentLength);
+                }
+
+            }
+            // =========================================================
+            // CHECKBOX VALUES
+            // =========================================================
+
+            string serviceCategory =
+                GetSelectedValues(
+                    cblServiceCategory);
+
+
+            string languages =
+                GetSelectedValues(
+                    cblLanguages);
+
+
+            string dutyPreference =
+                GetSelectedValues(
+                    cblDutyPreference);
+
+
+            // =========================================================
+            // SALARY VALIDATION
+            // =========================================================
+
+            decimal expectedSalary;
+
+            if (!decimal.TryParse(
+                txtExpectedSalary.Text.Trim(),
+                out expectedSalary))
+            {
+                ShowMessage(
+                    "Please enter a valid expected salary.",
+                    false);
+
                 return;
             }
 
-            // 9. Save to CaregiverProfiles table
+
+            if (expectedSalary <= 0)
+            {
+                ShowMessage(
+                    "Expected salary must be greater than zero.",
+                    false);
+
+                return;
+            }
+
+
+            // =========================================================
+            // AGE VALIDATION
+            // =========================================================
+
+            int age;
+
+            if (!int.TryParse(
+                txtAge.Text.Trim(),
+                out age))
+            {
+                ShowMessage(
+                    "Please enter a valid age.",
+                    false);
+
+                return;
+            }
+
+
+            if (age < 18 || age > 70)
+            {
+                ShowMessage(
+                    "Age must be between 18 and 70.",
+                    false);
+
+                return;
+            }
+
+
+            // =========================================================
+            // SAVE TO DATABASE
+            // =========================================================
+
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con =
+                    new SqlConnection(connectionString))
                 {
                     con.Open();
 
-                    using (SqlTransaction transaction = con.BeginTransaction())
+
+                    // =================================================
+                    // TRANSACTION
+                    // =================================================
+
+                    using (SqlTransaction transaction =
+                        con.BeginTransaction())
                     {
                         try
                         {
+                            // =========================================
+                            // INSERT CAREGIVER
+                            // =========================================
+
                             string sql = @"
+
 INSERT INTO [sqladmin].[CaregiverProfiles]
 (
-    RegistrationMode,
     RecruiterName,
     ServiceCategory,
     FullName,
     Age,
     Gender,
     ContactNumber,
-    Email,
     City,
     PresentAreaID,
-    CompleteAddress,
     LanguagesKnown,
+    Qualification,
     Experience,
     DutyPreference,
     ExpectedSalary,
     PreferredWorkAreas,
-    PreferredWorkAreaIDs,
     JoiningAvailability,
+    ProfilePhoto,
+    ProfilePhotoName,
     VerificationStatus,
     Remarks,
-    RegistrationDate,
-    RegistrationStatus,
-    IsActive
+    CreatedDate,
+    AadharPhoto
 )
 VALUES
 (
-    @RegistrationMode,
-    @RecruiterName,
+    'SELF',
     @ServiceCategory,
     @FullName,
     @Age,
     @Gender,
     @ContactNumber,
-    @Email,
     @City,
     @PresentAreaID,
-    @CompleteAddress,
     @LanguagesKnown,
+    @Qualification,
     @Experience,
     @DutyPreference,
     @ExpectedSalary,
     @PreferredWorkAreas,
-    @PreferredWorkAreaIDs,
     @JoiningAvailability,
-    @VerificationStatus,
+    @ProfilePhoto,
+    @ProfilePhotoName,
+    'Pending',
     @Remarks,
-    SYSDATETIME(),
-    N'Registered',
-    1
+    GETDATE(),
+    @AadharPhoto
 );
 
-SELECT CAST(SCOPE_IDENTITY() AS INT);";
+SELECT CAST(SCOPE_IDENTITY() AS INT);
+";
+
 
                             int caregiverID;
 
-                            using (SqlCommand cmd =
-                                new SqlCommand(sql, con, transaction))
-                            {
-                                cmd.Parameters.Add(
-                                    "@RegistrationMode",
-                                    SqlDbType.NVarChar, 20)
-                                    .Value = registrationMode;
 
-                                cmd.Parameters.Add(
-                                    "@RecruiterName",
-                                    SqlDbType.NVarChar, 100)
-                                    .Value = string.IsNullOrWhiteSpace(recruiterName)
-                                        ? (object)DBNull.Value
-                                        : recruiterName;
+                            using (SqlCommand cmd =
+                                new SqlCommand(
+                                    sql,
+                                    con,
+                                    transaction))
+                            {
+                                // =====================================
+                                // RECRUITER
+                                // =====================================
+
+                               
+
+
+                                // =====================================
+                                // SERVICE CATEGORY
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@ServiceCategory",
-                                    SqlDbType.NVarChar, 500)
-                                    .Value = serviceCategory;
+                                    SqlDbType.NVarChar,
+                                    500)
+                                    .Value =
+                                    serviceCategory;
+
+
+                                // =====================================
+                                // FULL NAME
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@FullName",
-                                    SqlDbType.NVarChar, 200)
-                                    .Value = txtFullName.Text.Trim();
+                                    SqlDbType.NVarChar,
+                                    200)
+                                    .Value =
+                                    txtFullName.Text.Trim();
+
+
+                                // =====================================
+                                // AGE
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@Age",
                                     SqlDbType.Int)
-                                    .Value = age;
+                                    .Value =
+                                    age;
+
+
+                                // =====================================
+                                // GENDER
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@Gender",
-                                    SqlDbType.NVarChar, 20)
-                                    .Value = ddlGender.SelectedValue;
+                                    SqlDbType.NVarChar,
+                                    20)
+                                    .Value =
+                                    ddlGender.SelectedValue;
 
-                                // CaregiverProfiles.ContactNumber is nvarchar(20).
+
+                                // =====================================
+                                // CONTACT NUMBER
+                                // =====================================
+
                                 cmd.Parameters.Add(
                                     "@ContactNumber",
-                                    SqlDbType.NVarChar, 20)
-                                    .Value = contactNumber;
+                                    SqlDbType.NVarChar,
+                                    20)
+                                    .Value =
+                                    txtContactNumber.Text.Trim();
 
-                                cmd.Parameters.Add(
-                                    "@Email",
-                                    SqlDbType.NVarChar, 200)
-                                    .Value = string.IsNullOrWhiteSpace(txtEmail.Text)
-                                        ? (object)DBNull.Value
-                                        : txtEmail.Text.Trim();
+
+                                // =====================================
+                                // CITY
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@City",
-                                    SqlDbType.NVarChar, 100)
-                                    .Value = ddlCity.SelectedValue;
+                                    SqlDbType.NVarChar,
+                                    100)
+                                    .Value =
+                                    ddlCity.SelectedValue;
+
+
+                                // =====================================
+                                // PRESENT AREA
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@PresentAreaID",
                                     SqlDbType.Int)
-                                    .Value = presentAreaID;
+                                    .Value =
+                                    presentAreaID;
 
-                                cmd.Parameters.Add(
-                                    "@CompleteAddress",
-                                    SqlDbType.NVarChar, 500)
-                                    .Value = string.IsNullOrWhiteSpace(txtAddress.Text)
-                                        ? (object)DBNull.Value
-                                        : txtAddress.Text.Trim();
 
-                                // UserRegistration.PreferredLanguages maps to
-                                // CaregiverProfiles.LanguagesKnown.
+                                // =====================================
+                                // LANGUAGES
+                                // =====================================
+
                                 cmd.Parameters.Add(
                                     "@LanguagesKnown",
-                                    SqlDbType.NVarChar, 500)
-                                    .Value = languages ?? string.Empty;
+                                    SqlDbType.NVarChar,
+                                    500)
+                                    .Value =
+                                    languages;
 
-                                // No Experience field is collected by this form.
-                                // Keep it empty until an Experience input is added.
+
+                                // =====================================
+                                // QUALIFICATION
+                                // =====================================
+
+                                cmd.Parameters.Add(
+                                    "@Qualification",
+                                    SqlDbType.NVarChar,
+                                    100)
+                                    .Value =
+                                    string.IsNullOrWhiteSpace(
+                                        ddlQualification.SelectedValue)
+                                    ? (object)DBNull.Value
+                                    : ddlQualification.SelectedValue;
+
+
+                                // =====================================
+                                // EXPERIENCE
+                                // =====================================
+
                                 cmd.Parameters.Add(
                                     "@Experience",
-                                    SqlDbType.NVarChar, 50)
-                                    .Value = string.Empty;
+                                    SqlDbType.NVarChar,
+                                    50)
+                                    .Value =
+                                    ddlExperience.SelectedValue;
+
+
+                                // =====================================
+                                // DUTY PREFERENCE
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@DutyPreference",
-                                    SqlDbType.NVarChar, 500)
-                                    .Value = dutyPreference;
+                                    SqlDbType.NVarChar,
+                                    500)
+                                    .Value =
+                                    dutyPreference;
 
-                                // UserRegistration.ExpectedBudget maps to
-                                // CaregiverProfiles.ExpectedSalary.
+
+                                // =====================================
+                                // EXPECTED SALARY
+                                // =====================================
+
                                 SqlParameter salaryParameter =
                                     cmd.Parameters.Add(
                                         "@ExpectedSalary",
@@ -443,62 +723,185 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                                 salaryParameter.Precision = 10;
                                 salaryParameter.Scale = 2;
-                                salaryParameter.Value = expectedBudget;
+
+                                salaryParameter.Value =
+                                    expectedSalary;
+
+
+                                // =====================================
+                                // PREFERRED WORK AREAS
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@PreferredWorkAreas",
-                                    SqlDbType.NVarChar, 1000)
-                                    .Value = string.IsNullOrWhiteSpace(
-                                        txtPreferredWorkAreas.Text)
-                                        ? (object)DBNull.Value
-                                        : txtPreferredWorkAreas.Text.Trim();
+                                    SqlDbType.NVarChar,
+                                    1000)
+                                    .Value =
+                                    string.IsNullOrWhiteSpace(
+                                        preferredWorkAreasValue)
+                                    ? (object)DBNull.Value
+                                    : preferredWorkAreasValue;
 
-                                cmd.Parameters.Add(
-                                    "@PreferredWorkAreaIDs",
-                                    SqlDbType.NVarChar, 500)
-                                    .Value = string.IsNullOrWhiteSpace(
-                                        preferredWorkAreaIDsValue)
-                                        ? (object)DBNull.Value
-                                        : preferredWorkAreaIDsValue;
+
+                                // =====================================
+                                // JOINING AVAILABILITY
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@JoiningAvailability",
-                                    SqlDbType.NVarChar, 50)
-                                    .Value = ddlJoiningAvailability.SelectedValue;
+                                    SqlDbType.NVarChar,
+                                    50)
+                                    .Value =
+                                    ddlJoiningAvailability.SelectedValue;
+
+
+                                // =====================================
+                                // PROFILE PHOTO - OPTIONAL
+                                // =====================================
+
+                                SqlParameter photoParameter =
+                                    cmd.Parameters.Add(
+                                        "@ProfilePhoto",
+                                        SqlDbType.VarBinary,
+                                        -1);
+
+                                photoParameter.Value =
+                                    photoBytes != null
+                                    ? (object)photoBytes
+                                    : DBNull.Value;
+
+
+                                // =====================================
+                                // PROFILE PHOTO NAME - OPTIONAL
+                                // =====================================
 
                                 cmd.Parameters.Add(
-                                    "@VerificationStatus",
-                                    SqlDbType.NVarChar, 30)
-                                    .Value = "Pending";
+                                    "@ProfilePhotoName",
+                                    SqlDbType.NVarChar,
+                                    200)
+                                    .Value =
+                                    profilePhotoName != null
+                                    ? (object)profilePhotoName
+                                    : DBNull.Value;
+
+
+                                // =====================================
+                                // REMARKS
+                                // =====================================
 
                                 cmd.Parameters.Add(
                                     "@Remarks",
-                                    SqlDbType.NVarChar, 1000)
-                                    .Value = string.IsNullOrWhiteSpace(txtRemarks.Text)
-                                        ? (object)DBNull.Value
-                                        : txtRemarks.Text.Trim();
+                                    SqlDbType.NVarChar,
+                                    1000)
+                                    .Value =
+                                    string.IsNullOrWhiteSpace(
+                                        txtRemarks.Text)
+                                    ? (object)DBNull.Value
+                                    : txtRemarks.Text.Trim();
 
-                                object result = cmd.ExecuteScalar();
 
-                                if (result == null || result == DBNull.Value)
+                                // =====================================
+                                // AADHAR PHOTO - MANDATORY
+                                // =====================================
+
+                                SqlParameter aadharParameter =
+                                    cmd.Parameters.Add(
+                                        "@AadharPhoto",
+                                        SqlDbType.VarBinary,
+                                        -1);
+
+
+
+
+                                aadharParameter.Value =
+                                   photoBytes1 != null
+                                    ? (object)photoBytes1
+                                    : DBNull.Value;
+
+                                // =====================================
+                                // EXECUTE
+                                // =====================================
+
+                                object result =
+                                    cmd.ExecuteScalar();
+
+
+                                if (result == null ||
+                                    result == DBNull.Value)
                                 {
                                     throw new Exception(
-                                        "Unable to save caregiver registration.");
+                                        "Unable to create caregiver profile.");
                                 }
 
-                                caregiverID = Convert.ToInt32(result);
+
+                                caregiverID =
+                                    Convert.ToInt32(result);
                             }
+
+
+                            // =========================================
+                            // SAVE SELECTED SERVICES IN MAPPING TABLE
+                            // One row per caregiver per selected service.
+                            // The old comma-separated column is retained
+                            // temporarily for backward compatibility.
+                            // =========================================
+
+                            const string serviceMapSql = @"
+                                INSERT INTO [sqladmin].[CaregiverServices]
+                                    (CaregiverID, ServiceCategoryID)
+                                VALUES
+                                    (@CaregiverID, @ServiceCategoryID);";
+
+                            foreach (ListItem item in cblServiceCategory.Items)
+                            {
+                                if (!item.Selected)
+                                    continue;
+
+                                int serviceCategoryID;
+                                if (!int.TryParse(item.Value, out serviceCategoryID))
+                                {
+                                    throw new Exception(
+                                        "A selected service category has an invalid ID.");
+                                }
+
+                                using (SqlCommand mapCmd =
+                                    new SqlCommand(serviceMapSql, con, transaction))
+                                {
+                                    mapCmd.Parameters.Add(
+                                        "@CaregiverID", SqlDbType.Int).Value = caregiverID;
+
+                                    mapCmd.Parameters.Add(
+                                        "@ServiceCategoryID", SqlDbType.Int).Value =
+                                        serviceCategoryID;
+
+                                    mapCmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            // =========================================
+                            // COMMIT TRANSACTION
+                            // =========================================
 
                             transaction.Commit();
 
+
+                            // =========================================
+                            // SUCCESS
+                            // =========================================
+
                             ShowMessage(
-                                "Registration saved successfully. Caregiver ID: " +
+                                "Caregiver profile registered successfully. " +
+                                "Caregiver ID: " +
                                 caregiverID,
                                 true);
+
+
+                            ClearForm();
                         }
                         catch
                         {
                             transaction.Rollback();
+
                             throw;
                         }
                     }
@@ -506,84 +909,156 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);";
             }
             catch (Exception ex)
             {
-                // Log the exception in production rather than exposing database details.
-                System.Diagnostics.Trace.TraceError(ex.ToString());
-
                 ShowMessage(
-                    "An error occurred while saving the registration. Please try again.",
+                    "Error while saving caregiver profile: " +
+                    ex.Message,
                     false);
             }
         }
+
+        // ================================
+        // PRESENT AREA SEARCH
+        // ================================
+
+
+        // ================================
+        // CHECK PLACE
+        // ================================
+
         private bool PlaceExists(int placeID)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con =
+                   new SqlConnection(connectionString))
             {
-                string sql = "SELECT COUNT(1) FROM [sqladmin].[LocalPlaces] WHERE PlaceID = @PlaceID;";
-                using (SqlCommand cmd = new SqlCommand(sql, con))
+                string sql = @"
+
+SELECT COUNT(1)
+FROM [sqladmin].[LocalPlaces]
+WHERE PlaceID = @PlaceID;";
+
+
+                using (SqlCommand cmd =
+                       new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.Add("@PlaceID", SqlDbType.Int).Value = placeID;
+                    cmd.Parameters.Add(
+                        "@PlaceID",
+                        SqlDbType.Int)
+                        .Value = placeID;
+
+
                     con.Open();
-                    return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+
+
+                    return Convert.ToInt32(
+                        cmd.ExecuteScalar()) > 0;
                 }
             }
         }
 
-        private string GetSelectedValues(CheckBoxList checkBoxList)
+
+        // ================================
+        // CHECKBOX VALUES
+        // ================================
+
+        private string GetSelectedValues(
+            CheckBoxList checkBoxList)
         {
-            List<string> values = new List<string>();
-            foreach (ListItem item in checkBoxList.Items)
+            List<string> values =
+                new List<string>();
+
+
+            foreach (ListItem item in
+                     checkBoxList.Items)
             {
                 if (item.Selected)
                 {
                     values.Add(item.Text);
                 }
             }
+
+
             return string.Join(", ", values);
         }
 
-        private void ShowMessage(string message, bool success)
+
+        // ================================
+        // MESSAGE
+        // ================================
+
+        private void ShowMessage(
+            string message,
+            bool success)
         {
             lblMessage.Visible = true;
-            lblMessage.Text = Server.HtmlEncode(message);
-            lblMessage.CssClass = success ? "message success" : "message error";
+
+            lblMessage.Text =
+                Server.HtmlEncode(message);
+
+            lblMessage.CssClass =
+                success
+                    ? "message success"
+                    : "message error";
         }
 
-        protected void btnClear_Click(object sender, EventArgs e)
+
+        // ================================
+        // CLEAR
+        // ================================
+
+        protected void btnClear_Click(
+            object sender,
+            EventArgs e)
         {
             ClearForm();
         }
 
+
         private void ClearForm()
         {
-            ddlRegistrationMode.SelectedIndex = 0;
-            ddlRecruiter.SelectedIndex = 0;
+
             txtFullName.Text = "";
             txtAge.Text = "";
             ddlGender.SelectedIndex = 0;
             txtContactNumber.Text = "";
-            txtEmail.Text = "";
             ddlCity.SelectedIndex = 0;
+
             txtPresentArea.Text = "";
             hdnPresentAreaID.Value = "";
+
+            ddlQualification.SelectedIndex = 0;
+            ddlExperience.SelectedIndex = 0;
+
             txtExpectedSalary.Text = "";
             ddlJoiningAvailability.SelectedIndex = 0;
-            txtPreferredWorkAreas.Text = "";
-            hdnPreferredWorkAreaIDs.Value = "";
-            txtAddress.Text = "";
-            txtRemarks.Text = "";
-            lblMessage.Visible = false;
-            lblMessage.Text = "";
-           
 
-            foreach (ListItem item in cblServiceCategory.Items) item.Selected = false;
-            foreach (ListItem item in cblLanguages.Items) item.Selected = false;
-            foreach (ListItem item in cblDutyPreference.Items) item.Selected = false;
+            txtPreferredWorkAreas.Text = "";
+            txtRemarks.Text = "";
+
+            foreach (ListItem item in cblServiceCategory.Items)
+                item.Selected = false;
+
+            foreach (ListItem item in cblLanguages.Items)
+                item.Selected = false;
+
+            foreach (ListItem item in cblDutyPreference.Items)
+                item.Selected = false;
         }
+
+
+        // ================================
+        // SEARCH RESULT CLASS
+        // ================================
 
         public class PlaceResult
         {
             public int PlaceID { get; set; }
+
             public string PlaceName { get; set; }
+        }
+
+        protected void ddlCity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

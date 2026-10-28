@@ -18,9 +18,20 @@ namespace TJHomeCare
                     .ConnectionString;
             }
         }
-
+        protected int RequirementId
+        {
+            get { return ViewState["RequirementId"] == null ? 0 : Convert.ToInt32(ViewState["RequirementId"]); }
+            set { ViewState["RequirementId"] = value; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!int.TryParse(Request.QueryString["Id"], out int Id))
+            {
+               
+                return;
+            }
+
+            RequirementId = Id;
             if (!IsPostBack)
             {
                 LoadRequirement();
@@ -139,6 +150,36 @@ namespace TJHomeCare
             DateTime date = Convert.ToDateTime(value);
 
             return date.ToString("dd MMM yyyy");
+        }
+        protected string GetShareApplyUrl(int RequirementId)
+        {
+            return "https://tjhomecare.com/RequirementDetails.aspx?id=" + RequirementId;
+        }
+
+        protected string GetFacebookShareUrl(int RequirementId)
+        {
+            return "https://www.facebook.com/sharer/sharer.php?u=" + Uri.EscapeDataString(GetShareApplyUrl(RequirementId));
+        }
+
+        protected string GetWhatsAppShareUrl(int RequirementId)
+        {
+            string text = "Check out TJHomecare job: " + GetShareApplyUrl(RequirementId);
+            return "https://api.whatsapp.com/send?text=" + Uri.EscapeDataString(text);
+        }
+
+        protected string GetTelegramShareUrl(int RequirementId)
+        {
+            return "https://t.me/share/url?url=" + Uri.EscapeDataString(GetShareApplyUrl(RequirementId)) + "&text=" + Uri.EscapeDataString("Find hospital jobs faster on TabletJobs.com");
+        }
+
+        protected string GetTwitterShareUrl(int RequirementId)
+        {
+            return "https://twitter.com/intent/tweet?url=" + Uri.EscapeDataString(GetShareApplyUrl(RequirementId)) + "&text=" + Uri.EscapeDataString("Find Hospital Jobs Faster on TabletJobs");
+        }
+
+        protected string GetLinkedInShareUrl(int RequirementId)
+        {
+            return "https://www.linkedin.com/shareArticle?mini=true&url=" + Uri.EscapeDataString(GetShareApplyUrl(RequirementId)) + "&title=" + Uri.EscapeDataString("TabletJobs - Healthcare Job Portal");
         }
     }
 }

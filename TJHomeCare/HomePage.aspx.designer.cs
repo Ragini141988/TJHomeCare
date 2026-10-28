@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TJHomeCare {
-    
-    
-    public partial class HomePage {
-        
+namespace TJHomeCare
+{
+
+
+    public partial class HomePage
+    {
+
         /// <summary>
         /// rptRecentRequirements control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace TJHomeCare {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptRecentRequirements;
-        
+
         /// <summary>
         /// rptRecentCaregivers control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace TJHomeCare {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptRecentCaregivers;
-        
+
         /// <summary>
         /// rptReviews control.
         /// </summary>

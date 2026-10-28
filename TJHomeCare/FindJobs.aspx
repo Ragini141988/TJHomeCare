@@ -209,6 +209,41 @@
 .customer-area a:hover {
     color: #064e5a;
 }
+```css
+.worker-register-link {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.worker-register-link a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 22px;
+    color: black;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+
+.worker-register-link a .fa-user-plus {
+    font-size: 18px;
+}
+
+.worker-register-link a .fa-arrow-right {
+    font-size: 13px;
+}
+
+@media (max-width: 480px) {
+    .worker-register-link a {
+        padding: 11px 15px;
+        font-size: 13px;
+        gap: 7px;
+    }
+}
+```
     </style>
 
 </asp:Content>
@@ -219,11 +254,20 @@
     <div class="customer-area">
     <h2>Worker Area</h2>
     <p>
-        If you are a worker,
+        If you are a Customer,
         <a href="<%= ResolveUrl("~/PostRequirement.aspx") %>">
             click here to post your requirement
         </a>.
     </p>
+      
+<div class="worker-register-link">
+    <a href="https://tjhomecare.com/userregistration">
+        <i class="fa-solid fa-user-plus"></i>
+        Workers / Professionals Register Here
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
+
 </div>
     <main class="find-jobs-page">
 

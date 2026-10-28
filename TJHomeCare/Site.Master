@@ -24,6 +24,48 @@
 
   gtag('config', 'G-DMW7JFQ8XS');
 </script>
+    <style>
+    .nav-wrap {
+        display: flex !important;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-wrap .brand { margin-right: auto; }
+
+    .nav-wrap .header-actions {
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        margin-right: 12px;
+    }
+
+    .nav-wrap .header-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff !important;
+        font-size: 18px;
+        text-decoration: none;
+    }
+
+    .nav-wrap .call-icon { background: #0a6fe8; }
+    .nav-wrap .wa-icon   { background: #25D366; font-size: 22px; }
+
+    /* stop the toggle from overlapping the icons */
+    .nav-wrap .menu-toggle {
+        position: static !important;
+        margin: 0 !important;
+        flex: 0 0 auto;
+    }
+
+    /* keep the dropdown menu on its own full-width row */
+    .nav-wrap .main-nav { flex: 0 0 100%; }
+</style>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
      <asp:ContentPlaceHolder ID="head" runat="server" />
 
@@ -38,10 +80,17 @@
          alt="TJ Homecare"
          class="brand-logo" />
 </a>
-
-            <button type="button" class="menu-toggle" aria-label="Open menu" onclick="toggleMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+<div class="header-actions">
+    <a href="tel:+919429693689" class="header-icon call-icon" aria-label="Call us">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+    <a href="https://wa.me/919429693689" target="_blank" rel="noopener" class="header-icon wa-icon" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <button type="button" class="menu-toggle" aria-label="Open menu" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
 
             <nav id="mainNav" class="main-nav">
                 <a href="<%= ResolveUrl("~/HomePage.aspx") %>">Home</a>

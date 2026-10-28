@@ -592,6 +592,20 @@
     }
 }
 
+.tj-service-coverage {
+    color: #1379BE !important;
+    font-weight: 600;
+}
+
+.tj-service-coverage i {
+    color: #1379BE !important;
+}
+
+.tj-service-coverage span {
+    color: #1379BE;
+    margin: 0 8px;
+}
+
 </style>
 </asp:Content>
 
@@ -639,7 +653,7 @@
    <p>
         <p class="tj-service-coverage">
         <i class="fa-solid fa-video"></i>
-        Online Consultations Across India
+       Online Consultations Across India
         <span>|</span>
         <i class="fa-solid fa-location-dot"></i>
         Home Care Services in Bangalore & Hyderabad
@@ -692,8 +706,11 @@
 
        <div class="tj-requirements-grid">
 
-    <asp:Repeater ID="rptRecentRequirements"
-        runat="server">
+    <%--<asp:Repeater ID="rptRecentRequirements"
+        runat="server">--%>
+           <asp:Repeater ID="rptRecentRequirements"
+    runat="server"
+    OnItemCommand="rptRecentRequirements_ItemCommand">
 
         <ItemTemplate>
             <div class="tj-requirement-card">
@@ -747,13 +764,23 @@
 
                 </div>
 
-              <a class="tj-view-requirement"
+             <%-- <a class="tj-view-requirement"
    href='<%# ResolveUrl("~/RequirementDetails.aspx?id=" +
        Eval("RequirementID")) %>'>
     View Requirement
     <i class="fa-solid fa-arrow-right"></i>
-</a>
+</a>--%>
+        <div style="display:flex; align-items:center; gap:30px; flex-wrap:nowrap;">
 
+    <a class="tj-view-requirement"
+       href='<%# ResolveUrl("~/RequirementDetails.aspx?id=" + Eval("RequirementID")) %>'>
+        View Requirement
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+
+   
+
+</div>       
             </div>
         </ItemTemplate>
 

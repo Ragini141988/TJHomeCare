@@ -112,12 +112,29 @@
     <Content Include="Candidates.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
     <Content Include="ConsultationBooking.aspx" />
+    <Content Include="Consultation\dermo.jpeg" />
+    <Content Include="Consultation\dietician.jpeg" />
+    <Content Include="Consultation\dietician_1200x675.jpg" />
+    <Content Include="Consultation\FinancialCounsellor.jpg.jpeg" />
+    <Content Include="Consultation\FinancialCounsellor.jpg_1200x675.jpg" />
+    <Content Include="Consultation\gynecologist.jpg" />
+    <Content Include="Consultation\gynecologist2.jpg" />
+    <Content Include="Consultation\gynecologist3.png" />
+    <Content Include="Consultation\Legal.jpg" />
+    <Content Include="Consultation\Legal_1200x675.jpg" />
+    <Content Include="Consultation\Physiotherapist.jpeg" />
+    <Content Include="Consultation\Physiotherapist_1200x675.jpg" />
+    <Content Include="Consultation\psycologist.jpeg" />
+    <Content Include="Consultation\psycologist_1200x675.jpg" />
+    <Content Include="Consultation\sexual.jpeg" />
+    <Content Include="Consultation\sexual_1200x675.jpg" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="EditRequirements.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FindJobs.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -209,6 +226,13 @@
     </Compile>
     <Compile Include="ConsultationBooking.aspx.designer.cs">
       <DependentUpon>ConsultationBooking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditRequirements.aspx.cs">
+      <DependentUpon>EditRequirements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditRequirements.aspx.designer.cs">
+      <DependentUpon>EditRequirements.aspx</DependentUpon>
     </Compile>
     <Compile Include="FindJobs.aspx.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
@@ -332,6 +356,7 @@
     <Compile Include="Thankyou.aspx.designer.cs" />
     <Content Include="UserRegistration.aspx" />
     <Content Include="viewcaregiverdetails.aspx" />
+    <Content Include="ViewPostedRequirement.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Images\Dermatology.webp" />
@@ -429,6 +454,13 @@
     </Compile>
     <Compile Include="viewcaregiverdetails.aspx.designer.cs">
       <DependentUpon>viewcaregiverdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewPostedRequirement.aspx.cs">
+      <DependentUpon>ViewPostedRequirement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewPostedRequirement.aspx.designer.cs">
+      <DependentUpon>ViewPostedRequirement.aspx</DependentUpon>
     </Compile>
     <Compile Include="viewregisteredcaregiver.aspx.cs">
       <DependentUpon>viewregisteredcaregiver.aspx</DependentUpon>

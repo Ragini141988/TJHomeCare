@@ -135,6 +135,231 @@
                 box-sizing: border-box;
             }
         }
+       
+.requirement-contact-box {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 25px;
+    padding: 22px;
+    background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+    border: 1px solid #bbf7d0;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(22, 101, 52, 0.07);
+}
+
+.requirement-contact-icon {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 32px;
+}
+
+.requirement-contact-content {
+    flex: 1;
+}
+
+.requirement-contact-content h4 {
+    margin: 0 0 6px;
+    color: #14532d;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.requirement-contact-content p {
+    margin: 0 0 14px;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.requirement-contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.requirement-call-btn,
+.requirement-whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+}
+
+.requirement-call-btn {
+    background: #166534;
+    color: #fff !important;
+}
+
+.requirement-call-btn:hover {
+    background: #14532d;
+    transform: translateY(-2px);
+}
+
+.requirement-whatsapp-btn {
+    background: #25D366;
+    color: #fff !important;
+}
+
+.requirement-whatsapp-btn:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    .requirement-contact-box {
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .requirement-contact-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        font-size: 25px;
+    }
+
+    .requirement-contact-content h4 {
+        font-size: 17px;
+    }
+
+    .requirement-contact-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .requirement-call-btn,
+    .requirement-whatsapp-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Social sharing section */
+.share-social {
+    margin-top: 25px !important;
+    padding: 20px 15px;
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(19, 121, 190, 0.10);
+    text-align: center;
+}
+
+/* Highlighted heading */
+.share-social-title {
+    color: #1379BE;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-bottom: 15px !important;
+}
+
+.share-social-title i {
+    margin-right: 6px;
+    font-size: 18px;
+}
+
+/* Social media icon container */
+.share-social .d-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap !important;
+    gap: 10px;
+}
+
+/* Social media buttons */
+.share-social .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    color: #1379BE;
+    font-size: 19px;
+    text-decoration: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+}
+
+/* Individual brand colors */
+.share-social .social-icon[title="Share on Facebook"] {
+    color: #1877F2;
+}
+
+.share-social .social-icon[title="Share on WhatsApp"] {
+    color: #25D366;
+}
+
+.share-social .social-icon[title="Share on Telegram"] {
+    color: #229ED9;
+}
+
+.share-social .social-icon[title="Share on Instagram"] {
+    color: #E4405F;
+}
+
+.share-social .social-icon[title="Share on Twitter"] {
+    color: #1DA1F2;
+}
+
+.share-social .social-icon[title="Share on LinkedIn"] {
+    color: #0A66C2;
+}
+
+/* Hover effect */
+.share-social .social-icon:hover {
+    background: #1379BE;
+    color: #ffffff !important;
+    border-color: #1379BE;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(19, 121, 190, 0.22);
+}
+
+/* Mobile responsive */
+
+@media (max-width: 480px) {
+    .share-social {
+        padding: 15px 5px;
+    }
+
+    .share-social .d-flex {
+        display: flex;
+        flex-wrap: nowrap !important;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .share-social .social-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 0;
+        flex: 0 1 36px;
+        margin: 0;
+        font-size: 16px;
+    }
+}
+
+
     </style>
 
 </asp:Content>
@@ -227,7 +452,45 @@
                             </div>
 
                         </div>
+                         <div class="share-social mt-2 border-top pt-1 mb-3">
+                <div class="share-social-title text-center fw-semibold mb-1 small">Share With Your Friends</div>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <a href='<%= GetFacebookShareUrl(RequirementId) %>' class="social-icon" target="_blank" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href='<%= GetWhatsAppShareUrl(RequirementId) %>' class="social-icon" target="_blank" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href='<%= GetTelegramShareUrl(RequirementId) %>' class="social-icon" target="_blank" title="Share on Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    <a href='https://www.instagram.com/' class="social-icon" target="_blank" title="Share on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href='<%= GetTwitterShareUrl(RequirementId) %>' class="social-icon" target="_blank" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href='<%= GetLinkedInShareUrl(RequirementId) %>' class="social-icon" target="_blank" title="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+                        <div class="requirement-contact-box">
 
+    
+
+    <div class="requirement-contact-content">
+        <h4>Interested in This Job?</h4>
+        <p>Call or WhatsApp us to get started!</p>
+
+        <div class="requirement-contact-buttons">
+
+            <a href="tel:+919429693689"
+               class="requirement-call-btn">
+                <i class="fa-solid fa-phone"></i>
+                Call Now
+            </a>
+
+            <a href="https://wa.me/919429693689"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="requirement-whatsapp-btn">
+                <i class="fa-brands fa-whatsapp"></i>
+                WhatsApp Us
+            </a>
+
+        </div>
+    </div>
+
+</div>
                         <div class="requirement-details-actions">
 
                             <a href="<%= ResolveUrl("~/Homepage.aspx") %>"
@@ -243,6 +506,8 @@
                             </a>
 
                         </div>
+                       
+                         
 
                     </div>
 
