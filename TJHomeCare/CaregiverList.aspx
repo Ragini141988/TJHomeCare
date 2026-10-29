@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Caregiver Profiles" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="CaregiverList.aspx.cs" Inherits="TabletJobs.com.CaregiverList" %>
+    CodeBehind="CaregiverList.aspx.cs" Inherits="TJHomeCare.CaregiverList" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="head" runat="server">
 <style>
@@ -9,6 +9,7 @@
     .cg-subtitle{color:#6b7280;margin-bottom:18px}
     .cg-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
     .cg-search{padding:10px 12px;border:1px solid #ced4da;border-radius:7px;min-width:240px}
+    .cg-filter{padding:10px 12px;border:1px solid #ced4da;border-radius:7px;min-width:210px;background:#fff;max-width:100%}
     .cg-btn{display:inline-block;border:0;border-radius:6px;padding:8px 12px;text-decoration:none;cursor:pointer;font-size:14px;margin:2px}
     .cg-view{background:#0d6efd;color:white}.cg-edit{background:#ffc107;color:#212529}.cg-save{background:#198754;color:white}
     .cg-cancel{background:#6c757d;color:white}.cg-delete{background:#dc3545;color:white}
@@ -29,7 +30,9 @@
     .cg-empty{padding:20px;text-align:center;color:#6b7280}
     @media(max-width:700px){
       .cg-card{padding:14px}.cg-title{font-size:22px}.cg-toolbar{align-items:stretch}
-      .cg-search{width:100%;min-width:0;box-sizing:border-box}
+      .cg-search,.cg-filter{width:100%;min-width:0;box-sizing:border-box}
+      .cg-toolbar > div{display:flex;flex-direction:column;gap:6px}
+      .cg-toolbar > div .cg-btn{margin:0;text-align:center}
       .cg-table-wrap{overflow:visible}.cg-table,.cg-table tbody,.cg-table tr,.cg-table td{display:block;width:100%;box-sizing:border-box}
       .cg-table thead{display:none}
       .cg-table tr{border:1px solid #e5e7eb;border-radius:9px;margin-bottom:13px;padding:10px;background:#fff}
@@ -50,6 +53,8 @@
     <div class="cg-toolbar">
       <asp:TextBox ID="txtSearch" runat="server" CssClass="cg-search"
           placeholder="Search name, contact, city or recruiter" />
+      <asp:DropDownList ID="ddlServiceCategory" runat="server" CssClass="cg-filter"
+          AppendDataBoundItems="false" aria-label="Filter by service category" />
       <div>
         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="cg-btn cg-view" OnClick="btnSearch_Click" />
         <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="cg-btn cg-cancel" OnClick="btnReset_Click" />

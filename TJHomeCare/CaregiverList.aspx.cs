@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace TabletJobs.com
+namespace TJHomeCare
 {
     public partial class CaregiverList : Page
     {
@@ -21,21 +22,57 @@ namespace TabletJobs.com
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+            {
+                BindServiceCategories();
                 BindCaregivers();
+            }
+        }
+
+        private void BindServiceCategories()
+        {
+            const string sql = @"
+SELECT ServiceCategoryID, ServiceName
+FROM [sqladmin].[ServiceCategories]
+WHERE IsActive = 1
+ORDER BY DisplayOrder, ServiceName;";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                ddlServiceCategory.Items.Clear();
+                ddlServiceCategory.Items.Add(new ListItem("All Service Categories", "0"));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    ddlServiceCategory.Items.Add(new ListItem(
+                        Convert.ToString(row["ServiceName"]),
+                        Convert.ToString(row["ServiceCategoryID"])));
+                }
+            }
         }
 
         private void BindCaregivers()
         {
             const string sql = @"
-SELECT CaregiverID, FullName, Age, Gender, ContactNumber, City,
-       RecruiterName, VerificationStatus
-FROM [sqladmin].[CaregiverProfiles]
+SELECT cp.CaregiverID, cp.FullName, cp.Age, cp.Gender, cp.ContactNumber,
+       cp.City, cp.RecruiterName, cp.VerificationStatus
+FROM [sqladmin].[CaregiverProfiles] cp
 WHERE (@Search = ''
-       OR ISNULL(FullName,'') LIKE @LikeSearch
-       OR ISNULL(ContactNumber,'') LIKE @LikeSearch
-       OR ISNULL(City,'') LIKE @LikeSearch
-       OR ISNULL(RecruiterName,'') LIKE @LikeSearch)
-ORDER BY CaregiverID DESC;";
+       OR ISNULL(cp.FullName,'') LIKE @LikeSearch
+       OR ISNULL(cp.ContactNumber,'') LIKE @LikeSearch
+       OR ISNULL(cp.City,'') LIKE @LikeSearch
+       OR ISNULL(cp.RecruiterName,'') LIKE @LikeSearch)
+  AND (@ServiceCategoryID = 0
+       OR EXISTS
+          (SELECT 1
+           FROM [sqladmin].[CaregiverServices] cs
+           WHERE cs.CaregiverID = cp.CaregiverID
+             AND cs.ServiceCategoryID = @ServiceCategoryID))
+ORDER BY cp.CaregiverID DESC;";
 
             DataTable dt = new DataTable();
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -44,6 +81,11 @@ ORDER BY CaregiverID DESC;";
             {
                 cmd.Parameters.Add("@Search", SqlDbType.NVarChar, 200).Value = SearchText;
                 cmd.Parameters.Add("@LikeSearch", SqlDbType.NVarChar, 202).Value = "%" + SearchText + "%";
+
+                int serviceCategoryId = 0;
+                int.TryParse(ddlServiceCategory.SelectedValue, out serviceCategoryId);
+                cmd.Parameters.Add("@ServiceCategoryID", SqlDbType.Int).Value = serviceCategoryId;
+
                 da.Fill(dt);
             }
 
@@ -62,6 +104,7 @@ ORDER BY CaregiverID DESC;";
         {
             txtSearch.Text = "";
             SearchText = "";
+            ddlServiceCategory.SelectedIndex = 0;
             dpCaregivers.SetPageProperties(0, dpCaregivers.PageSize, false);
             pnlDetails.Visible = false;
             BindCaregivers();
@@ -80,12 +123,22 @@ ORDER BY CaregiverID DESC;";
         private void LoadDetails(int id)
         {
             const string sql = @"
-SELECT CaregiverID, RecruiterName, ServiceCategory, FullName, Age, Gender,
-       ContactNumber, City, PresentAreaID, LanguagesKnown, Qualification,
-       Experience, DutyPreference, ExpectedSalary, PreferredWorkAreas,
-       JoiningAvailability, VerificationStatus, CreatedDate, Remarks
-FROM [sqladmin].[CaregiverProfiles]
-WHERE CaregiverID = @ID;";
+SELECT cp.CaregiverID, cp.RecruiterName,
+       STUFF((
+           SELECT ', ' + sc.ServiceName
+           FROM [sqladmin].[CaregiverServices] cs
+           INNER JOIN [sqladmin].[ServiceCategories] sc
+               ON sc.ServiceCategoryID = cs.ServiceCategoryID
+           WHERE cs.CaregiverID = cp.CaregiverID
+           ORDER BY sc.DisplayOrder, sc.ServiceName
+           FOR XML PATH(''), TYPE
+       ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS ServiceCategory,
+       cp.FullName, cp.Age, cp.Gender, cp.ContactNumber, cp.City,
+       cp.PresentAreaID, cp.LanguagesKnown, cp.Qualification,
+       cp.Experience, cp.DutyPreference, cp.ExpectedSalary, cp.PreferredWorkAreas,
+       cp.JoiningAvailability, cp.VerificationStatus, cp.CreatedDate, cp.Remarks
+FROM [sqladmin].[CaregiverProfiles] cp
+WHERE cp.CaregiverID = @ID;";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(sql, con))
@@ -184,5 +237,6 @@ WHERE CaregiverID = @ID;";
             lblMessage.Text = Server.HtmlEncode(message);
             lblMessage.CssClass = success ? "cg-message" : "cg-message cg-error";
         }
+       
     }
 }

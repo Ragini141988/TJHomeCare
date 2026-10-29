@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TabletJobs.com {
+namespace TJHomeCare {
     
     
     public partial class CaregiverList {
@@ -20,6 +20,15 @@ namespace TabletJobs.com {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        
+        /// <summary>
+        /// ddlServiceCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlServiceCategory;
         
         /// <summary>
         /// btnSearch control.

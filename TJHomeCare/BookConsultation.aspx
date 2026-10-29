@@ -151,12 +151,15 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="consultation-results-page">
-
+        <div>
         <a class="consultation-back-link"
            href="<%= ResolveUrl("~/") %>">
             &#8592; Back to TJ Home Care
-        </a>
-
+        </a> </div><div>
+        <a class="consultation-back-link"
+           href="<%= ResolveUrl("~/OnlineConsultations.aspx") %>">
+            &#8592; Back to Online Consultation
+        </a></div>
         <div class="consultation-results-heading">
             <h1>
                 <asp:Literal ID="litHeading" runat="server" />

@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="AdminManagement.aspx" />
     <Content Include="BookConsultation.aspx" />
     <Content Include="CancellationRefundPolicy.aspx" />
     <Content Include="CandidateDetails.aspx" />
@@ -136,6 +137,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="EditRequirements.aspx" />
+    <Content Include="EditReview.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FindJobs.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -187,12 +189,20 @@
     <Content Include="Images\tjhomecare.jpeg" />
     <Content Include="Images\tjhomecare02.jpeg" />
     <Content Include="InquirySubmitted.aspx" />
+    <Content Include="ManageReviews.aspx" />
     <Content Include="OnlineConsultations.aspx" />
     <Content Include="PostRequirement.aspx" />
     <Content Include="Pricing.aspx" />
     <Content Include="PrivacyPolicy.aspx" />
     <Content Include="RequirementDetails.aspx" />
     <Content Include="Review.aspx" />
+    <Compile Include="AdminManagement.aspx.cs">
+      <DependentUpon>AdminManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminManagement.aspx.designer.cs">
+      <DependentUpon>AdminManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BookConsultation.aspx.cs">
       <DependentUpon>BookConsultation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -242,6 +252,13 @@
     <Compile Include="EditRequirements.aspx.designer.cs">
       <DependentUpon>EditRequirements.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EditReview.aspx.cs">
+      <DependentUpon>EditReview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditReview.aspx.designer.cs">
+      <DependentUpon>EditReview.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FindJobs.aspx.cs">
       <DependentUpon>FindJobs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -269,6 +286,13 @@
     </Compile>
     <Compile Include="InquirySubmitted.aspx.designer.cs">
       <DependentUpon>InquirySubmitted.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageReviews.aspx.cs">
+      <DependentUpon>ManageReviews.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageReviews.aspx.designer.cs">
+      <DependentUpon>ManageReviews.aspx</DependentUpon>
     </Compile>
     <Compile Include="OnlineConsultations.aspx.cs">
       <DependentUpon>OnlineConsultations.aspx</DependentUpon>
@@ -364,6 +388,7 @@
     <Compile Include="Thankyou.aspx.designer.cs" />
     <Content Include="UserRegistration.aspx" />
     <Content Include="viewcaregiverdetails.aspx" />
+    <Content Include="ViewJobs.aspx" />
     <Content Include="ViewPostedRequirement.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
     <Content Include="WebForm1.aspx" />
@@ -462,6 +487,13 @@
     </Compile>
     <Compile Include="viewcaregiverdetails.aspx.designer.cs">
       <DependentUpon>viewcaregiverdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewJobs.aspx.cs">
+      <DependentUpon>ViewJobs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewJobs.aspx.designer.cs">
+      <DependentUpon>ViewJobs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewPostedRequirement.aspx.cs">
       <DependentUpon>ViewPostedRequirement.aspx</DependentUpon>

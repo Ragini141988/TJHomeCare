@@ -129,8 +129,12 @@ namespace TJHomeCare
                 rptProfessionals.DataBind();
 
                 ShowMessage(
-                    "No active, verified professionals are registered " +
-                    "for this consultation category. Please check again later.");
+    "Explore our qualified professionals and book an online consultation from the comfort of your home." +
+    "<br/><br/>" +
+    "<strong>Qualified Professionals Will Be Available Soon!</strong>" +
+    "<br/><br/>" +
+    "We’re currently onboarding qualified and verified professionals in this category. Please check back soon for availability."
+);
             }
         }
 

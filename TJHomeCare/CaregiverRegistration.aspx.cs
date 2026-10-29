@@ -68,11 +68,16 @@ FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
                         txtContactNumber.Text = Convert.ToString(dr["ContactNumber"]);
                         SetDropDownValue(ddlCity, Convert.ToString(dr["City"]));
                         hdnPresentAreaID.Value = dr["PresentAreaID"] == DBNull.Value ? "" : Convert.ToString(dr["PresentAreaID"]);
+                        txtPresentArea.Text =
+                                   Server.HtmlEncode(
+                                       GetPreferredWorkAreaNames(dr["PresentAreaID"].ToString()));
                         SetDropDownValue(ddlQualification, Convert.ToString(dr["Qualification"]));
                         SetDropDownValue(ddlExperience, Convert.ToString(dr["Experience"]));
                         txtExpectedSalary.Text = Convert.ToString(dr["ExpectedSalary"]);
                         SetDropDownValue(ddlJoiningAvailability, Convert.ToString(dr["JoiningAvailability"]));
-                        txtPreferredWorkAreas.Text = Convert.ToString(dr["PreferredWorkAreas"]);
+                        txtPreferredWorkAreas.Text = Server.HtmlEncode(
+                                       GetPreferredWorkAreaNames(Convert.ToString(dr["PreferredWorkAreas"])));
+                        hdnPreferredWorkAreaIDs.Value = Convert.ToString(dr["PreferredWorkAreas"]);
                         txtRemarks.Text = Convert.ToString(dr["Remarks"]);
                         SetCheckBoxValues(cblLanguages, Convert.ToString(dr["LanguagesKnown"]));
                         SetCheckBoxValues(cblDutyPreference, Convert.ToString(dr["DutyPreference"]));
@@ -1152,6 +1157,137 @@ WHERE PlaceID = @PlaceID;";
         protected void ddlCity_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+        private string GetPreferredWorkAreaNames(string preferredAreaIDs)
+        {
+            if (string.IsNullOrWhiteSpace(preferredAreaIDs))
+                return "-";
+
+
+            string[] idArray =
+                preferredAreaIDs.Split(
+                    new[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries);
+
+
+            List<int> placeIDs =
+                new List<int>();
+
+
+            foreach (string idText in idArray)
+            {
+                int placeID;
+
+                if (int.TryParse(idText.Trim(), out placeID))
+                {
+                    if (!placeIDs.Contains(placeID))
+                    {
+                        placeIDs.Add(placeID);
+                    }
+                }
+            }
+
+
+            if (placeIDs.Count == 0)
+                return "-";
+
+
+            using (SqlConnection con =
+                new SqlConnection(connectionString))
+            {
+                List<string> parameterNames =
+                    new List<string>();
+
+
+                using (SqlCommand cmd =
+                    new SqlCommand())
+                {
+                    cmd.Connection = con;
+
+
+                    for (int i = 0; i < placeIDs.Count; i++)
+                    {
+                        string parameterName =
+                            "@PlaceID" + i;
+
+                        parameterNames.Add(parameterName);
+
+                        cmd.Parameters.Add(
+                            parameterName,
+                            SqlDbType.Int)
+                            .Value = placeIDs[i];
+                    }
+
+
+                    string sql = @"
+                SELECT PlaceID, PlaceName
+                FROM [sqladmin].[LocalPlaces]
+                WHERE PlaceID IN (" +
+                        string.Join(",", parameterNames) + @")
+                ORDER BY OrderColumn ASC, PlaceName ASC";
+
+
+                    cmd.CommandText = sql;
+
+
+                    con.Open();
+
+
+                    Dictionary<int, string> placeNames =
+                        new Dictionary<int, string>();
+
+
+                    using (SqlDataReader areaReader =
+                        cmd.ExecuteReader())
+                    {
+                        while (areaReader.Read())
+                        {
+                            int placeID =
+                                Convert.ToInt32(
+                                    areaReader["PlaceID"]);
+
+
+                            string placeName =
+                                areaReader["PlaceName"].ToString();
+
+
+                            if (!placeNames.ContainsKey(placeID))
+                            {
+                                placeNames.Add(
+                                    placeID,
+                                    placeName);
+                            }
+                        }
+                    }
+
+
+                    List<string> names =
+                        new List<string>();
+
+
+                    // Keep the same order as the IDs
+                    // stored in PreferredWorkAreas
+
+                    foreach (int placeID in placeIDs)
+                    {
+                        string placeName;
+
+                        if (placeNames.TryGetValue(
+                            placeID,
+                            out placeName))
+                        {
+                            names.Add(placeName);
+                        }
+                    }
+
+
+                    if (names.Count == 0)
+                        return "-";
+
+
+                    return string.Join(", ", names);
+                }
+            }
         }
     }
 }
