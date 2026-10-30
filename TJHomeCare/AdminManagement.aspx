@@ -144,6 +144,14 @@
                     Manage Consultants
                 </a>
             </article>
+            <article class="admin-manage-card">
+    <div class="admin-manage-icon" aria-hidden="true">✓</div>
+    <h2>Consultation Bookings</h2>
+    <p>View customer bookings for online consultations, check the selected consultant's profile, and track booking requests.</p>
+    <a class="admin-manage-link" href="<%= ResolveUrl("~/ConsultationBookingsView.aspx") %>">
+        View Consultation Bookings
+    </a>
+</article>
         </section>
     </main>
 </asp:Content>

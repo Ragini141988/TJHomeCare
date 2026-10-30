@@ -107,6 +107,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="AdminManagement.aspx" />
+    <Content Include="ApplyJob.aspx" />
     <Content Include="BookConsultation.aspx" />
     <Content Include="CancellationRefundPolicy.aspx" />
     <Content Include="CandidateDetails.aspx" />
@@ -114,6 +115,8 @@
     <Content Include="CaregiverList.aspx" />
     <Content Include="CaregiverRegistration.aspx" />
     <Content Include="ConsultationBooking.aspx" />
+    <Content Include="ConsultationBookingDetails.aspx" />
+    <Content Include="ConsultationBookingsView.aspx" />
     <Content Include="Consultation\dermo.jpeg" />
     <Content Include="Consultation\dietician.jpeg" />
     <Content Include="Consultation\dietician_1200x675.jpg" />
@@ -203,6 +206,13 @@
     <Compile Include="AdminManagement.aspx.designer.cs">
       <DependentUpon>AdminManagement.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ApplyJob.aspx.cs">
+      <DependentUpon>ApplyJob.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ApplyJob.aspx.designer.cs">
+      <DependentUpon>ApplyJob.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BookConsultation.aspx.cs">
       <DependentUpon>BookConsultation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -244,6 +254,20 @@
     </Compile>
     <Compile Include="ConsultationBooking.aspx.designer.cs">
       <DependentUpon>ConsultationBooking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationBookingDetails.aspx.cs">
+      <DependentUpon>ConsultationBookingDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingDetails.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationBookingsView.aspx.cs">
+      <DependentUpon>ConsultationBookingsView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingsView.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingsView.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditRequirements.aspx.cs">
       <DependentUpon>EditRequirements.aspx</DependentUpon>
@@ -388,6 +412,7 @@
     <Compile Include="Thankyou.aspx.designer.cs" />
     <Content Include="UserRegistration.aspx" />
     <Content Include="viewcaregiverdetails.aspx" />
+    <Content Include="ViewJobApplications.aspx" />
     <Content Include="ViewJobs.aspx" />
     <Content Include="ViewPostedRequirement.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
@@ -487,6 +512,13 @@
     </Compile>
     <Compile Include="viewcaregiverdetails.aspx.designer.cs">
       <DependentUpon>viewcaregiverdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewJobApplications.aspx.cs">
+      <DependentUpon>ViewJobApplications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewJobApplications.aspx.designer.cs">
+      <DependentUpon>ViewJobApplications.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewJobs.aspx.cs">
       <DependentUpon>ViewJobs.aspx</DependentUpon>

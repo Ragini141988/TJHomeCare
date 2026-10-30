@@ -22,6 +22,7 @@ namespace TJHomeCare
             if (!IsPostBack)
             {
                 LoadJobs();
+                LoadTotalApplied();
             }
         }
 
@@ -74,5 +75,28 @@ namespace TJHomeCare
                     Server.UrlEncode(requirementId));
             }
         }
+
+        private void LoadTotalApplied()
+        {
+            try
+            {
+                string query = @"
+            SELECT COUNT(*)
+            FROM [sqladmin].[JobApplications];";
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    int totalApplied = Convert.ToInt32(cmd.ExecuteScalar());
+                    lblTotalApplied.Text = totalApplied.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                lblTotalApplied.Text = "0";
+            }
+        }
+
     }
 }

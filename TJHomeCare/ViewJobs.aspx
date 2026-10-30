@@ -169,10 +169,29 @@
                 <p>Explore caregiver opportunities and apply for a suitable job.</p>
             </div>
 
-            <div class="jobs-count">
+            <%--<div class="jobs-count">
                 Total Jobs:
                 <asp:Label ID="lblTotalJobs" runat="server" Text="0" />
-            </div>
+            </div>--%>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+
+   <div class="jobs-count">
+    <asp:HyperLink
+        ID="lnkTotalApplied"
+        runat="server"
+        NavigateUrl="~/ViewJobApplications.aspx"
+        Style="color: #1769aa; text-decoration: none;">
+        Total Applied:
+        <asp:Label ID="lblTotalApplied" runat="server" Text="0" />
+    </asp:HyperLink>
+</div>
+
+    <div class="jobs-count">
+        Total Jobs:
+        <asp:Label ID="lblTotalJobs" runat="server" Text="0" />
+    </div>
+
+</div>
         </div>
 
         <asp:Label ID="lblMessage" runat="server"
