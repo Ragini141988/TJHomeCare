@@ -48,7 +48,7 @@ namespace TabletJobs.com
                 con.Open();
                 const string sql = @"SELECT CaregiverID, RecruiterName, ServiceCategory, FullName, Age, Gender,
 ContactNumber, City, PresentAreaID, LanguagesKnown, Qualification, Experience,
-DutyPreference, ExpectedSalary, PreferredWorkAreas, JoiningAvailability, Remarks
+DutyPreference, ExpectedSalary, PreferredWorkAreas, JoiningAvailability, Remarks,RegistrationNumber
 FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -79,6 +79,7 @@ FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
                                        GetPreferredWorkAreaNames(Convert.ToString(dr["PreferredWorkAreas"])));
                         hdnPreferredWorkAreaIDs.Value = Convert.ToString(dr["PreferredWorkAreas"]);
                         txtRemarks.Text = Convert.ToString(dr["Remarks"]);
+                        txtRegistration.Text = Convert.ToString(dr["Remarks"]);
                         SetCheckBoxValues(cblLanguages, Convert.ToString(dr["LanguagesKnown"]));
                         SetCheckBoxValues(cblDutyPreference, Convert.ToString(dr["DutyPreference"]));
                     }
@@ -376,6 +377,7 @@ FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
 
             byte[] photoBytes = null;
 
+            byte[] photoBytes3 = null;
             byte[] photoBytes1 = null;
             string profilePhotoName = null;
 
@@ -497,6 +499,64 @@ FROM [sqladmin].[CaregiverProfiles] WHERE CaregiverID=@CaregiverID;";
                 }
 
             }
+
+
+            if (fupRegistration.HasFile)
+            {
+
+
+
+                // Maximum 2 MB
+                if (fupRegistration.PostedFile.ContentLength >
+                    2 * 1024 * 1024)
+                {
+                    ShowMessage(
+                        "Registration photo must be less than or equal to 2 MB.",
+                        false);
+
+                    return;
+                }
+
+
+                string registrationExtension =
+                    Path.GetExtension(
+                        fupRegistration.FileName)
+                    .ToLowerInvariant();
+
+
+                string[] allowedregistrationExtensions =
+                {
+        ".jpg",
+        ".jpeg",
+        ".png"
+    };
+
+
+                if (Array.IndexOf(
+                    allowedregistrationExtensions,
+                    registrationExtension) < 0)
+                {
+                    ShowMessage(
+                        "Only JPG, JPEG and PNG files are allowed for Aadhar Photo.",
+                        false);
+
+                    return;
+                }
+
+
+                // Read Aadhar Photo
+
+
+                using (BinaryReader reader =
+                    new BinaryReader(
+                        fupRegistration.PostedFile.InputStream))
+                {
+                    photoBytes3 =
+                        reader.ReadBytes(
+                            fupRegistration.PostedFile.ContentLength);
+                }
+
+            }
             // =========================================================
             // CHECKBOX VALUES
             // =========================================================
@@ -609,7 +669,8 @@ BEGIN
         JoiningAvailability=@JoiningAvailability,
         ProfilePhoto=COALESCE(@ProfilePhoto, ProfilePhoto),
         ProfilePhotoName=COALESCE(@ProfilePhotoName, ProfilePhotoName),
-        Remarks=@Remarks, AadharPhoto=COALESCE(@AadharPhoto, AadharPhoto)
+        Remarks=@Remarks,RegistrationNumber = @RegistrationNumber , AadharPhoto=COALESCE(@AadharPhoto, AadharPhoto),
+RegistrationPhoto = COALESCE(@RegistrationPhoto, RegistrationPhoto)
     WHERE CaregiverID=@CaregiverID;
     SELECT @CaregiverID;
 END
@@ -619,12 +680,12 @@ BEGIN
     (RecruiterName, ServiceCategory, FullName, Age, Gender, ContactNumber, City,
      PresentAreaID, LanguagesKnown, Qualification, Experience, DutyPreference,
      ExpectedSalary, PreferredWorkAreas, JoiningAvailability, ProfilePhoto,
-     ProfilePhotoName, VerificationStatus, Remarks, CreatedDate, AadharPhoto)
+     ProfilePhotoName, VerificationStatus, Remarks,RegistrationNumber, CreatedDate, AadharPhoto,RegistrationPhoto)
     VALUES
     (@RecruiterName, @ServiceCategory, @FullName, @Age, @Gender, @ContactNumber, @City,
      @PresentAreaID, @LanguagesKnown, @Qualification, @Experience, @DutyPreference,
      @ExpectedSalary, @PreferredWorkAreas, @JoiningAvailability, @ProfilePhoto,
-     @ProfilePhotoName, 'Pending', @Remarks, GETDATE(), @AadharPhoto);
+     @ProfilePhotoName, 'Pending', @Remarks,@RegistrationNumber, GETDATE(), @AadharPhoto,@RegistrationPhoto);
     SELECT CAST(SCOPE_IDENTITY() AS INT);
 END
 ";
@@ -876,6 +937,20 @@ END
 
 
                                 // =====================================
+                                // Registration
+                                // =====================================
+
+                                cmd.Parameters.Add(
+                                    "@RegistrationNumber",
+                                    SqlDbType.NVarChar,
+                                    1000)
+                                    .Value =
+                                    string.IsNullOrWhiteSpace(
+                                        txtRegistration.Text)
+                                    ? (object)DBNull.Value
+                                    : txtRegistration.Text.Trim();
+
+                                // =====================================
                                 // AADHAR PHOTO - MANDATORY
                                 // =====================================
 
@@ -891,6 +966,25 @@ END
                                 aadharParameter.Value =
                                    photoBytes1 != null
                                     ? (object)photoBytes1
+                                    : DBNull.Value;
+
+
+                                // =====================================
+                                // Registration PHOTO - Optional
+                                // =====================================
+
+                                SqlParameter RegistrationParameter =
+                                    cmd.Parameters.Add(
+                                        "@RegistrationPhoto",
+                                        SqlDbType.VarBinary,
+                                        -1);
+
+
+
+
+                                RegistrationParameter.Value =
+                                   photoBytes3 != null
+                                    ? (object)photoBytes3
                                     : DBNull.Value;
 
                                 // =====================================
@@ -1131,7 +1225,7 @@ WHERE PlaceID = @PlaceID;";
 
             txtPreferredWorkAreas.Text = "";
             txtRemarks.Text = "";
-
+            txtRegistration.Text = "";
             foreach (ListItem item in cblServiceCategory.Items)
                 item.Selected = false;
 

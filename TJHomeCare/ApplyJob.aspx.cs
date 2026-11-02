@@ -118,6 +118,17 @@ namespace TJHomeCare
                     "Please enter a valid 10-digit mobile number.";
                 return;
             }
+            if (string.IsNullOrEmpty(ddlGender.SelectedValue))
+            {
+                lblMessage.Text = "Please select your gender.";
+                return;
+            }
+
+            if (string.IsNullOrEmpty(ddlApplicantAge.SelectedValue))
+            {
+                lblMessage.Text = "Please select your age.";
+                return;
+            }
 
             try
             {
@@ -175,26 +186,30 @@ namespace TJHomeCare
                     }
 
                     // Step 3: Insert the application
-                    string insertQuery = @"
-                INSERT INTO [sqladmin].[JobApplications]
-                (
-                    RequirementID,
-                    CaregiverID,
-                    ApplicantName,
-                    ApplicantMobile,
-                    ApplicationStatus
-                )
-                VALUES
-                (
-                    @RequirementID,
-                    @CaregiverID,
-                    @ApplicantName,
-                    @ApplicantMobile,
-                    'Pending'
-                )";
 
-                    using (SqlCommand cmd =
-                        new SqlCommand(insertQuery, con))
+                    string insertQuery = @"
+    INSERT INTO [sqladmin].[JobApplications]
+    (
+        RequirementID,
+        CaregiverID,
+        ApplicantName,
+        ApplicantMobile,
+        Gender,
+        ApplicantAge,
+        ApplicationStatus
+    )
+    VALUES
+    (
+        @RequirementID,
+        @CaregiverID,
+        @ApplicantName,
+        @ApplicantMobile,
+        @Gender,
+        @ApplicantAge,
+        'Pending'
+    )";
+
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, con))
                     {
                         cmd.Parameters.AddWithValue(
                             "@RequirementID", RequirementID);
@@ -208,6 +223,12 @@ namespace TJHomeCare
 
                         cmd.Parameters.AddWithValue(
                             "@ApplicantMobile", mobile);
+
+                        cmd.Parameters.AddWithValue(
+                            "@Gender", ddlGender.SelectedValue);
+
+                        cmd.Parameters.AddWithValue(
+                            "@ApplicantAge", ddlApplicantAge.SelectedValue);
 
                         cmd.ExecuteNonQuery();
                     }

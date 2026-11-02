@@ -772,12 +772,16 @@
 </a>--%>
         <div style="display:flex; align-items:center; gap:30px; flex-wrap:nowrap;">
 
-    <a class="tj-view-requirement"
+    <%--<a class="tj-view-requirement"
        href='<%# ResolveUrl("~/RequirementDetails.aspx?id=" + Eval("RequirementID")) %>'>
         View Requirement
         <i class="fa-solid fa-arrow-right"></i>
-    </a>
-
+    </a>--%>
+<a class="tj-view-requirement"
+   href='<%# ResolveUrl("~/ViewJobs.aspx?id=" + Eval("RequirementID")) %>'>
+    View Job & Apply
+    <i class="fa-solid fa-arrow-right"></i>
+</a>
    
 
 </div>       

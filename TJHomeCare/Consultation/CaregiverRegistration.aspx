@@ -329,6 +329,9 @@
                             Value="Prasanna" />
                         <asp:ListItem Text="Divya"
                             Value="Divya" />
+
+                         <asp:ListItem Text="Keerthi"
+                            Value="Keerthi" />
                         
 
                     </asp:DropDownList>
@@ -580,8 +583,17 @@
                 </div>
 
             </div>
+              <div class="form-group">
+             <label class="form-label">
+                       Registration Number 
+                    </label>
 
-
+                    <asp:TextBox ID="txtregistration"
+                        runat="server"
+                        CssClass="form-control"
+                        MaxLength="200">
+                    </asp:TextBox>
+                  </div>
             <!-- LANGUAGE -->
 
             <div class="section-title">
@@ -643,6 +655,14 @@
                         <asp:ListItem>ANM</asp:ListItem>
                         <asp:ListItem>GNM</asp:ListItem>
                         <asp:ListItem>B.Sc Nursing</asp:ListItem>
+                         <asp:ListItem>MBBS MD (Gynecology) </asp:ListItem>
+ <asp:ListItem>MBBS MD (Dermatology)</asp:ListItem>
+ <asp:ListItem>MBBS DVL </asp:ListItem>
+ <asp:ListItem>MBBS DGO</asp:ListItem>
+ <asp:ListItem>MBBS MS MCh (Urology)</asp:ListItem> 
+ <asp:ListItem>MBBS </asp:ListItem>
+ <asp:ListItem>BPT</asp:ListItem>
+ <asp:ListItem>MPT</asp:ListItem>
                         <asp:ListItem>Other</asp:ListItem>
 
                     </asp:DropDownList>
@@ -707,7 +727,7 @@
                         <asp:ListItem>12 Hours Day</asp:ListItem>
                         <asp:ListItem>12 Hours Night</asp:ListItem>
                         <asp:ListItem>24 Hours Live-in</asp:ListItem>
-
+                         <asp:ListItem>Flexiable</asp:ListItem>
                     </asp:CheckBoxList>
 
                     <asp:CustomValidator
@@ -752,7 +772,21 @@
 
                 </div>
 
+                    <div class="form-group">
 
+                    <label class="form-label">
+                       Registration Number 
+                    </label>
+
+                    <asp:TextBox ID="txtRegistration"
+                        runat="server"
+                        CssClass="form-control"
+                        MaxLength="200">
+                    </asp:TextBox>
+
+                  
+
+                </div>
                 <div class="form-group">
 
                     <label class="form-label">
@@ -849,7 +883,7 @@
                 <div class="form-group">
 
                     <label class="form-label">
-                        Remarks
+                         Conditions Treated
                     </label>
 
                     <asp:TextBox
@@ -877,6 +911,31 @@
 
                     <asp:FileUpload
                         ID="fupaadhar"
+                        runat="server"
+                        CssClass="form-control"
+                        accept=".jpg,.jpeg,.png" />
+
+                    <small>
+                        JPG / JPEG / PNG. Maximum 2 MB.
+                    </small>
+
+                </div>
+
+
+              
+
+            </div>
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Registration Photo 
+                    </label>
+
+                    <asp:FileUpload
+                        ID="fupRegistration"
                         runat="server"
                         CssClass="form-control"
                         accept=".jpg,.jpeg,.png" />

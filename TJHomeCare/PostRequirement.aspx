@@ -273,6 +273,67 @@
 .customer-area a:hover {
     color: #064e5a;
 }
+.how-it-works {
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8fbff;
+    border: 1px solid #e2eaf3;
+    border-radius: 10px;
+    line-height: 1.7;
+}
+
+.how-it-works h3 {
+    color: #174a7c;
+    font-size: 19px;
+    margin: 15px 0 10px;
+    font-weight: 700;
+}
+
+.how-it-works ol,
+.how-it-works ul {
+    padding-left: 22px;
+}
+
+.how-it-works li {
+    margin-bottom: 8px;
+}
+
+.placement-plan {
+    background: #ffffff;
+    border: 1px solid #dce5ef;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+}
+
+.placement-plan > strong {
+    color: #174a7c;
+    font-size: 16px;
+}
+
+.placement-plan ul {
+    margin-bottom: 0;
+}
+
+.brand-tagline {
+    text-align: center;
+    font-weight: bold;
+    color: #174a7c;
+    font-size: 17px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dce5ef;
+}
+
+@media (max-width: 576px) {
+    .how-it-works {
+        padding: 14px;
+    }
+
+    .how-it-works h3 {
+        font-size: 17px;
+    }
+}
 </style>
 </asp:Content>
 
@@ -291,7 +352,51 @@
     <div class="req-card">
                       
         <h1 class="page-title">TJ HOME CARE – Post Your Requirement</h1>
-        <div class="page-subtitle">Tell us what you need. Share your details to help us understand your home care requirements.</div>
+
+
+
+<div class="how-it-works">
+    <h3>How TJ Home Care Works</h3>
+
+    <ol>
+        <li><strong>Post Your Requirement:</strong> Submit your requirement online, call us, or WhatsApp us.</li>
+        <li><strong>Candidate Matching:</strong> Candidates apply directly, or our team shortlists suitable profiles.</li>
+        <li><strong>Video Interview:</strong> Interview and select candidates through Zoom.</li>
+        <li><strong>Choose Your Plan & Pay:</strong> Select your preferred placement plan and complete payment.</li>
+        <li><strong>Contact Sharing:</strong> Contact details are shared with both parties after payment.</li>
+        <li><strong>Direct Joining:</strong> The selected candidate joins your home. Optional TJ Home Care staff-assisted joining is available at an additional charge of ₹1,499.</li>
+    </ol>
+
+    <h3>Our Placement Plans</h3>
+
+    <div class="placement-plan">
+        <strong>Standard Plan</strong>
+        <ul>
+            <li>Placement Fee: 15 days' agreed salary + GST</li>
+            <li>1 Free Replacement within 3 months</li>
+        </ul>
+    </div>
+
+    <div class="placement-plan">
+        <strong>Premium Plan</strong>
+        <ul>
+            <li>Placement Fee: 1 month's agreed salary + GST</li>
+            <li>3 Free Replacements within 6 months</li>
+        </ul>
+    </div>
+
+    <h3>Our Joining Guarantee</h3>
+
+    <p>
+        If the selected candidate fails to join, we will arrange an
+        alternative within <strong>7 working days</strong> or provide a
+        <strong>100% refund of placement charges</strong>, as per our policy.
+    </p>
+
+    <div class="brand-tagline">
+        TJ Home Care – Trusted Hands for Every Home.
+    </div>
+</div>
 
         <!-- SERVICE & LOCATION DETAILS -->
         <div class="section-title">Service & Location Details</div>

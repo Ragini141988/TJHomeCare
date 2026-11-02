@@ -359,7 +359,53 @@
     }
 }
 
+.job-apply-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e9edf2;
+}
 
+.job-apply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 25px;
+    background: #1769aa;
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none !important;
+    border-radius: 7px;
+    transition: all 0.3s ease;
+    min-width: 145px;
+    box-shadow: 0 3px 8px rgba(23, 105, 170, 0.18);
+}
+
+.job-apply-btn:hover {
+    background: #104d80;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(23, 105, 170, 0.25);
+}
+
+.job-apply-btn i {
+    font-size: 13px;
+}
+
+@media (max-width: 576px) {
+    .job-apply-wrapper {
+        justify-content: stretch;
+    }
+
+    .job-apply-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}
     </style>
 
 </asp:Content>
@@ -441,16 +487,23 @@
                                 </span>
                             </div>
 
-                            <div class="requirement-detail">
-                                <span class="detail-label">
-                                    <i class="fa-solid fa-calendar"></i>
-                                    Posted On
-                                </span>
-                                <span class="detail-value">
-                                    <%#: DisplayDate(Eval("CreatedDate")) %>
-                                </span>
-                            </div>
+                           <div class="requirement-detail">
+    <span class="detail-label">
+        <i class="fa-solid fa-calendar"></i>
+        Posted On
+    </span>
+    <span class="detail-value">
+        <%#: DisplayDate(Eval("CreatedDate")) %>
+    </span>
+</div>
 
+<div class="job-apply-wrapper">
+    <a class="job-apply-btn"
+       href='<%# ResolveUrl("~/ApplyJob.aspx?id=" + Eval("RequirementID")) %>'>
+        Apply Now
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>
                         </div>
                          <div class="share-social mt-2 border-top pt-1 mb-3">
                 <div class="share-social-title text-center fw-semibold mb-1 small">Share With Your Friends</div>

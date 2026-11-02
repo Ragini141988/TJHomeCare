@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TJHomeCare
-{
-
-
-    public partial class ApplyJob
-    {
-
+namespace TJHomeCare {
+    
+    
+    public partial class ApplyJob {
+        
         /// <summary>
         /// lblMessage control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
-
+        
         /// <summary>
         /// lblService control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblService;
-
+        
         /// <summary>
         /// lblLocation control.
         /// </summary>
@@ -40,7 +38,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblLocation;
-
+        
         /// <summary>
         /// lblDutyTime control.
         /// </summary>
@@ -49,7 +47,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDutyTime;
-
+        
         /// <summary>
         /// lblBudget control.
         /// </summary>
@@ -58,7 +56,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBudget;
-
+        
         /// <summary>
         /// lblApplicantName control.
         /// </summary>
@@ -67,7 +65,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblApplicantName;
-
+        
         /// <summary>
         /// txtApplicantName control.
         /// </summary>
@@ -76,7 +74,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtApplicantName;
-
+        
         /// <summary>
         /// lblApplicantMobile control.
         /// </summary>
@@ -85,7 +83,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblApplicantMobile;
-
+        
         /// <summary>
         /// txtApplicantMobile control.
         /// </summary>
@@ -94,7 +92,43 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtApplicantMobile;
-
+        
+        /// <summary>
+        /// lblGender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGender;
+        
+        /// <summary>
+        /// ddlGender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGender;
+        
+        /// <summary>
+        /// lblApplicantAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblApplicantAge;
+        
+        /// <summary>
+        /// ddlApplicantAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlApplicantAge;
+        
         /// <summary>
         /// btnApply control.
         /// </summary>
@@ -103,7 +137,7 @@ namespace TJHomeCare
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnApply;
-
+        
         /// <summary>
         /// lnkBack control.
         /// </summary>

@@ -99,7 +99,42 @@ Apply for Job
                     MaxLength="10"
                     TextMode="SingleLine" />
             </div>
+            
 
+<!-- Gender -->
+<div class="form-group">
+    <asp:Label ID="lblGender" runat="server"
+        AssociatedControlID="ddlGender"
+        Text="Gender" />
+
+    <asp:DropDownList ID="ddlGender" runat="server"
+        CssClass="form-control">
+        <asp:ListItem Text="-- Select Gender --" Value="" />
+        <asp:ListItem Text="Male" Value="Male" />
+        <asp:ListItem Text="Female" Value="Female" />
+        <asp:ListItem Text="Other" Value="Other" />
+    </asp:DropDownList>
+</div>
+
+<!-- Age -->
+<div class="form-group">
+    <asp:Label ID="lblApplicantAge" runat="server"
+        AssociatedControlID="ddlApplicantAge"
+        Text="Your Age" />
+
+    <asp:DropDownList ID="ddlApplicantAge" runat="server"
+        CssClass="form-control">
+        <asp:ListItem Text="-- Select Your Age --" Value="" />
+        <asp:ListItem Text="18 Years - 20 Years" Value="18-20" />
+        <asp:ListItem Text="21 Years - 25 Years" Value="21-25" />
+        <asp:ListItem Text="26 Years - 30 Years" Value="26-30" />
+        <asp:ListItem Text="31 Years - 35 Years" Value="31-35" />
+        <asp:ListItem Text="36 Years - 40 Years" Value="36-40" />
+        <asp:ListItem Text="41 Years - 45 Years" Value="41-45" />
+        <asp:ListItem Text="46 Years - 50 Years" Value="46-50" />
+        <asp:ListItem Text="50+ Years" Value="50+" />
+    </asp:DropDownList>
+</div>
             <div class="apply-buttons">
 
                 <asp:Button ID="btnApply" runat="server"

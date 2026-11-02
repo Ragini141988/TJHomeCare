@@ -184,6 +184,15 @@ namespace TabletJobs.com {
         protected global::System.Web.UI.WebControls.TextBox txtExpectedSalary;
         
         /// <summary>
+        /// txtRegistration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRegistration;
+        
+        /// <summary>
         /// ddlJoiningAvailability control.
         /// </summary>
         /// <remarks>
@@ -236,6 +245,15 @@ namespace TabletJobs.com {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fupaadhar;
+        
+        /// <summary>
+        /// fupRegistration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fupRegistration;
         
         /// <summary>
         /// btnSave control.

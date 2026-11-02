@@ -369,7 +369,7 @@
                               <a class="tj-view-requirement"
    href='<%# ResolveUrl("~/RequirementDetails.aspx?id=" +
        Eval("RequirementID")) %>'>
-    View Full Details
+    View Full Details & Apply
     <i class="fa-solid fa-arrow-right"></i>
 </a>
                         </div>

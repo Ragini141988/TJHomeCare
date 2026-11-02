@@ -159,6 +159,47 @@
                 font-size: 14px;
             }
         }
+        .consultation-how-it-works {
+    max-width: 1100px;
+    margin: 25px auto 35px;
+    padding: 22px 25px;
+    background: #f8fbff;
+    border: 1px solid #e2eaf3;
+    border-radius: 12px;
+    line-height: 1.7;
+}
+
+.consultation-how-it-works h3 {
+    color: #174a7c;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.consultation-how-it-works ol {
+    padding-left: 23px;
+    margin-bottom: 0;
+}
+
+.consultation-how-it-works li {
+    margin-bottom: 12px;
+    color: #444;
+}
+
+.consultation-how-it-works li strong {
+    color: #174a7c;
+}
+
+@media (max-width: 576px) {
+    .consultation-how-it-works {
+        padding: 16px;
+        margin: 18px 10px;
+    }
+
+    .consultation-how-it-works h3 {
+        font-size: 18px;
+    }
+}
     </style>
 </asp:Content>
 
@@ -177,7 +218,53 @@
                 Get guidance, expert advice and personalised support with TJ Home Care.
             </p>
         </div>
+       
+<!-- How Online Consultations Work -->
+<div class="consultation-how-it-works">
 
+    <h3>How Online Consultations Work</h3>
+
+    <ol>
+        <li>
+            <strong>Choose Consultation:</strong>
+            Select your required consultation category, including Doctors,
+            Dietitians, Psychologists, Physiotherapists, Legal Consultants
+            and Financial Counsellors.
+        </li>
+
+        <li>
+            <strong>Book Consultation:</strong>
+            Enter your details and preferred appointment date and time.
+        </li>
+
+        <li>
+            <strong>Pay Online:</strong>
+            Complete your consultation payment securely.
+        </li>
+
+        <li>
+            <strong>Professional Assignment:</strong>
+            TJ Home Care assigns a qualified, available professional
+            based on your requirements.
+        </li>
+
+        <li>
+            <strong>Booking Confirmation:</strong>
+            Receive your booking details via WhatsApp or email.
+            Our team will call you to coordinate a convenient appointment
+            time, share your consultation link and assist you throughout
+            the online consultation process.
+        </li>
+
+        <li>
+            <strong>Consult Online:</strong>
+            Connect with your assigned professional and receive expert
+            guidance and recommendations. For doctor consultations,
+            receive a digital prescription whenever medically appropriate.
+        </li>
+    </ol>
+
+</div>
         <!-- CONSULTATION SERVICES -->
         <div class="consultation-grid">
 

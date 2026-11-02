@@ -19,9 +19,24 @@ namespace TJHomeCare
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //if (!IsPostBack)
+            //{
+            //    LoadJobs();
+            //    LoadTotalApplied();
+            //}
             if (!IsPostBack)
             {
-                LoadJobs();
+                int requirementId;
+
+                if (int.TryParse(Request.QueryString["id"], out requirementId))
+                {
+                    LoadJobs(requirementId);
+                }
+                else
+                {
+                    LoadJobs();
+                }
+
                 LoadTotalApplied();
             }
         }
@@ -30,19 +45,24 @@ namespace TJHomeCare
         {
 
             string query = @"
-    SELECT
-        p.RequirementID,
-        sc.ServiceName AS Service,
-        p.City,
-        p.Area,
-        p.DutyTime,
-        p.PreferredLanguage,
-        p.Budget,
-        p.JoiningDate
-    FROM [sqladmin].[PostRequirements] p
-    LEFT JOIN [sqladmin].[ServiceCategories] sc
-        ON TRY_CONVERT(INT, p.Service) = sc.ServiceCategoryID
-    ORDER BY p.RequirementID DESC";
+  SELECT
+    p.RequirementID,
+    sc.ServiceName AS Service,
+    p.City,
+    L.PlaceName AS Area,
+    p.DutyTime,
+    p.PreferredLanguage,
+    p.Budget,
+    p.JoiningDate
+FROM [sqladmin].[PostRequirements] p
+
+LEFT JOIN [sqladmin].[ServiceCategories] sc
+    ON TRY_CONVERT(INT, p.Service) = sc.ServiceCategoryID
+
+LEFT JOIN [sqladmin].[LocalPlaces] L
+    ON p.PresentAreaID = L.PlaceID
+
+ORDER BY p.RequirementID DESC;";
 
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -62,6 +82,50 @@ namespace TJHomeCare
             }
         }
 
+        //New Method
+
+        private void LoadJobs(int requirementId)
+        {
+            string query = @"
+SELECT
+    p.RequirementID,
+    sc.ServiceName AS Service,
+    p.City,
+    L.PlaceName AS Area,
+    p.DutyTime,
+    p.PreferredLanguage,
+    p.Budget,
+    p.JoiningDate
+FROM [sqladmin].[PostRequirements] p
+LEFT JOIN [sqladmin].[ServiceCategories] sc
+    ON TRY_CONVERT(INT, p.Service) = sc.ServiceCategoryID
+LEFT JOIN [sqladmin].[LocalPlaces] L
+    ON p.PresentAreaID = L.PlaceID
+
+WHERE p.RequirementID = @RequirementID
+ORDER BY p.RequirementID DESC";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@RequirementID", requirementId);
+
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+
+                    da.Fill(dt);
+
+                    lblTotalJobs.Text = dt.Rows.Count.ToString();
+
+                    rptJobs.DataSource = dt;
+                    rptJobs.DataBind();
+
+                    pnlNoJobs.Visible = dt.Rows.Count == 0;
+                }
+            }
+        }
+        //Close New Method
         protected void rptJobs_ItemCommand(
             object source, RepeaterCommandEventArgs e)
         {
