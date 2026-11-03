@@ -194,6 +194,8 @@
     <Content Include="InquirySubmitted.aspx" />
     <Content Include="ManageReviews.aspx" />
     <Content Include="OnlineConsultations.aspx" />
+    <Content Include="OnlineDieticianRegistration.aspx" />
+    <Content Include="OnlineGynaceologistRegistration.aspx" />
     <Content Include="PostRequirement.aspx" />
     <Content Include="Pricing.aspx" />
     <Content Include="PrivacyPolicy.aspx" />
@@ -324,6 +326,20 @@
     </Compile>
     <Compile Include="OnlineConsultations.aspx.designer.cs">
       <DependentUpon>OnlineConsultations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OnlineDieticianRegistration.aspx.cs">
+      <DependentUpon>OnlineDieticianRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OnlineDieticianRegistration.aspx.designer.cs">
+      <DependentUpon>OnlineDieticianRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OnlineGynaceologistRegistration.aspx.cs">
+      <DependentUpon>OnlineGynaceologistRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OnlineGynaceologistRegistration.aspx.designer.cs">
+      <DependentUpon>OnlineGynaceologistRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="PostRequirement.aspx.cs">
       <DependentUpon>PostRequirement.aspx</DependentUpon>

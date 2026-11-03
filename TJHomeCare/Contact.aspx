@@ -1,5 +1,40 @@
 <%@ Page Title="Contact Us - TJ Homecare" Language="C#" MasterPageFile="~/Site.master" 
     AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="TJHomeCare.Contact" %>
+<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+     <style>
+.contact-section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.office-details {
+    margin-top: 20px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.office-details h4 {
+    color: #0d6efd;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.office-details p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 12px;
+}
+
+.office-details a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+</Style>
+</asp:Content>
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 
 <section class="inner-hero contact-hero"><div class="container"><span class="eyebrow">GET IN TOUCH</span><h1>Contact Us</h1><p>We're here to help you find the right caregiver for your loved ones.</p></div></section>
@@ -14,8 +49,39 @@
     <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div><strong>Hyderabad Address</strong><span>A13/03, North East Business Center<br />Errum Manzil, Khairtabad<br />Hyderabad – 500004</span></div></div>
     <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-phone"></i></div><div><strong>Hyderabad Phone</strong><span><a href="tel:+919704797476">9704797476</a><br /><a href="tel:+917989788410">7989788410</a></span></div></div>
     <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-phone"></i></div><div><strong>Call Us</strong><span><a href="tel:+918074660555">+91 8074660555</a><br /><a href="tel:+917013107986">+91 7013107986</a></span></div></div>
-    <a class="btn btn-primary contact-call" href="tel:+917013107986"><i class="fa-solid fa-phone"></i> Call TJ Homecare</a>
-  </div>
+  
+
+    
+
+    <div class="office-details">
+        <h4>Andhra Pradesh (Registered Office)</h4>
+
+        <p>
+            <strong>TJ Corporation</strong><br />
+            Room No. 7 &amp; 8, First Floor,<br />
+            D.No. 10-1-12, Ward No. 11,<br />
+            Railway Road,<br />
+            Kavali - 524201<br />
+            SPSR Nellore District,<br />
+            Andhra Pradesh, India<br />
+        </p>
+
+        <p>
+            <i class="fa-solid fa-phone"></i>
+            <strong>Phone:</strong>
+            <a href="tel:+919059724821">+91 9059724821</a>
+        </p>
+
+        <p>
+            <i class="fa-solid fa-file-invoice"></i>
+            <strong>GST:</strong> 37ARRPM1229P3Z0
+        </p>
+    
+    <div class="contact-section">
+    <a class="btn btn-primary contact-call" href="tel:+917013107986" style="color:white;">
+        <i class="fa-solid fa-phone"></i> Call TJ Home Care
+    </a>
+</div></div>
 
   <div class="contact-form-card">
     <span class="eyebrow">SEND AN ENQUIRY</span><h2>How can we help?</h2><p class="form-intro">Share your requirements and our team can contact you about the appropriate home care service.</p>
