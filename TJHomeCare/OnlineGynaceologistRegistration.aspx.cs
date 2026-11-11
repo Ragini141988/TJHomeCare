@@ -34,9 +34,9 @@ namespace TJHomeCare
                 if (EditCaregiverID > 0)
                 {
                     LoadCaregiverForEdit(EditCaregiverID);
-                    btnSave.Text = "Update Caregiver";
+                    btnSave.Text = "Update Doctor";
                     btnClear.Text = "Cancel";
-                    Page.Title = "Edit Caregiver";
+                    Page.Title = "Edit Doctor";
                 }
             }
         }
@@ -79,7 +79,7 @@ FROM [sqladmin].[GynecologistProfiles] WHERE CaregiverID=@CaregiverID;";
                                        GetPreferredWorkAreaNames(Convert.ToString(dr["PreferredWorkAreas"])));
                         hdnPreferredWorkAreaIDs.Value = Convert.ToString(dr["PreferredWorkAreas"]);
                         txtRemarks.Text = Convert.ToString(dr["Remarks"]);
-                        txtRegistration.Text = Convert.ToString(dr["Remarks"]);
+                        txtRegistration.Text = Convert.ToString(dr["RegistrationNumber"]);
                         SetCheckBoxValues(cblLanguages, Convert.ToString(dr["LanguagesKnown"]));
                         SetCheckBoxValues(cblDutyPreference, Convert.ToString(dr["DutyPreference"]));
                     }
@@ -1078,7 +1078,7 @@ END
 
                             if (EditCaregiverID > 0)
                             {
-                                Response.Redirect("CaregiverList.aspx", false);
+                                Response.Redirect("DoctorList.aspx", false);
                                 Context.ApplicationInstance.CompleteRequest();
                                 return;
                             }
@@ -1197,7 +1197,7 @@ WHERE PlaceID = @PlaceID;";
         {
             if (EditCaregiverID > 0)
             {
-                Response.Redirect("CaregiverList.aspx", false);
+                Response.Redirect("DoctorList.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }

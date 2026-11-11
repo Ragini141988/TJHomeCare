@@ -16,7 +16,8 @@ namespace TJHomeCare
             get
             {
                 return ConfigurationManager
-                    .ConnectionStrings["hospi2yp_tabletjobssConnectionString_V02"]
+                    .ConnectionStrings[
+                    "hospi2yp_tabletjobssConnectionString_V02"]
                     .ConnectionString;
             }
         }
@@ -29,7 +30,6 @@ namespace TJHomeCare
             }
         }
 
-
         private void LoadProfessionals()
         {
             int serviceId;
@@ -39,70 +39,98 @@ namespace TJHomeCare
                 || serviceId <= 0)
             {
                 litHeading.Text = "Online Consultation";
-                ShowMessage("Please select a valid consultation category.");
+
+                ShowMessage(
+                    "Please select a valid consultation category.");
+
                 return;
             }
 
             DataTable dt = new DataTable();
 
             string query = @"
-        SELECT
-            C.CaregiverID,
-            C.FullName,
-            SC.ServiceName,
-            COALESCE(
-                NULLIF(ServiceList.ServiceCategory, ''),
-                C.ServiceCategory
-            ) AS ServiceCategory,
-            C.City,
-            L.PlaceName AS PresentArea,
-            C.Experience,
-            C.LanguagesKnown,
-            C.ProfilePhoto,C.ProfilePhotoName,Qualification,DutyPreference,SC.ServiceCategoryID
-        FROM [sqladmin].[CaregiverProfiles] C
+                SELECT
+                    C.CaregiverID,
+                    C.FullName,
+                    SC.ServiceName,
 
-        INNER JOIN [sqladmin].[ServiceCategories] SC
-            ON SC.ServiceCategoryID = @ServiceCategoryID
-           AND SC.IsActive = 1
+                    COALESCE(
+                        NULLIF(ServiceList.ServiceCategory, ''),
+                        C.ServiceCategory
+                    ) AS ServiceCategory,
 
-        OUTER APPLY
-        (
-            SELECT STUFF
-            (
+                    C.City,
+                    L.PlaceName AS PresentArea,
+                    C.Experience,
+                    C.LanguagesKnown,
+                    C.ProfilePhoto,
+                    C.ProfilePhotoName,
+                    C.Qualification,
+                    C.DutyPreference,
+C.Remarks,
+                    SC.ServiceCategoryID
+
+                FROM [sqladmin].[GynecologistProfiles] C
+
+                INNER JOIN [sqladmin].[ServiceCategories] SC
+                    ON SC.ServiceCategoryID = @ServiceCategoryID
+                    AND SC.IsActive = 1
+
+                OUTER APPLY
                 (
-                    SELECT ', ' + SC2.ServiceName
-                    FROM [sqladmin].[CaregiverServices] CS2
-                    INNER JOIN [sqladmin].[ServiceCategories] SC2
-                        ON SC2.ServiceCategoryID = CS2.ServiceCategoryID
-                    WHERE CS2.CaregiverID = C.CaregiverID
-                      AND SC2.IsActive = 1
-                      AND CS2.ServiceCategoryID = @ServiceCategoryID
-                    ORDER BY SC2.DisplayOrder, SC2.ServiceName
-                    FOR XML PATH(''), TYPE
-                ).value('.', 'NVARCHAR(MAX)'),
-                1, 2, ''
-            ) AS ServiceCategory
-        ) AS ServiceList
+                    SELECT STUFF
+                    (
+                        (
+                            SELECT ', ' + SC2.ServiceName
 
-        LEFT JOIN [sqladmin].[LocalPlaces] L
-            ON C.PresentAreaID = L.PlaceID
+                            FROM [sqladmin].[DoctorServices] CS2
 
-        WHERE C.IsActive = 1
-        
-          AND EXISTS
-          (
-              SELECT 1
-              FROM [sqladmin].[CaregiverServices] CS
-              WHERE CS.CaregiverID = C.CaregiverID
-                AND CS.ServiceCategoryID = @ServiceCategoryID
-          )
+                            INNER JOIN [sqladmin].[ServiceCategories] SC2
+                                ON SC2.ServiceCategoryID =
+                                   CS2.ServiceCategoryID
 
-        ORDER BY C.CreatedDate DESC, C.CaregiverID DESC;";
+                            WHERE CS2.CaregiverID = C.CaregiverID
+                                AND SC2.IsActive = 1
+                                AND CS2.ServiceCategoryID =
+                                    @ServiceCategoryID
+
+                            ORDER BY SC2.DisplayOrder, SC2.ServiceName
+
+                            FOR XML PATH(''), TYPE
+                        ).value('.', 'NVARCHAR(MAX)'),
+
+                        1, 2, ''
+
+                    ) AS ServiceCategory
+
+                ) AS ServiceList
+
+                LEFT JOIN [sqladmin].[LocalPlaces] L
+                    ON C.PresentAreaID = L.PlaceID
+
+                WHERE C.IsActive = 1
+
+                AND EXISTS
+                (
+                    SELECT 1
+
+                    FROM [sqladmin].[DoctorServices] CS
+
+                    WHERE CS.CaregiverID = C.CaregiverID
+                        AND CS.ServiceCategoryID = @ServiceCategoryID
+                )
+
+                ORDER BY C.CreatedDate DESC, C.CaregiverID DESC;
+            ";
 
             using (SqlConnection con =
                 new SqlConnection(ConnectionString))
-            using (SqlCommand cmd = new SqlCommand(query, con))
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+
+            using (SqlCommand cmd =
+                new SqlCommand(query, con))
+
+            using (SqlDataAdapter da =
+                new SqlDataAdapter(cmd))
             {
                 cmd.Parameters.Add(
                     "@ServiceCategoryID",
@@ -129,15 +157,18 @@ namespace TJHomeCare
                 rptProfessionals.DataBind();
 
                 ShowMessage(
-    "Explore our qualified professionals and book an online consultation from the comfort of your home." +
-    "<br/><br/>" +
-    "<strong>Qualified Professionals Will Be Available Soon!</strong>" +
-    "<br/><br/>" +
-    "We’re currently onboarding qualified and verified professionals in this category. Please check back soon for availability."
-);
+                    "Qualified Professionals Will Be Available Soon!" +
+                    "<br/><br/>" +
+                    "We are currently onboarding qualified and " +
+                    "verified professionals in this category. " +
+                    "Please check back soon for availability."
+                );
             }
         }
 
+        // -----------------------------------------
+        // DISPLAY DEFAULT VALUES
+        // -----------------------------------------
 
         protected string DisplayValue(object value)
         {
@@ -150,6 +181,40 @@ namespace TJHomeCare
                 ? "Not provided"
                 : result;
         }
+
+        // -----------------------------------------
+        // PROFESSIONAL INITIALS
+        // -----------------------------------------
+
+        protected string GetInitials(object value)
+        {
+            if (value == null || value == DBNull.Value)
+                return "TJ";
+
+            string name = Convert.ToString(value).Trim();
+
+            if (String.IsNullOrEmpty(name))
+                return "TJ";
+
+            string[] parts = name.Split(
+                new char[] { ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 1)
+            {
+                return parts[0].Substring(
+                    0, 1).ToUpperInvariant();
+            }
+
+            return (
+                parts[0].Substring(0, 1) +
+                parts[parts.Length - 1].Substring(0, 1)
+            ).ToUpperInvariant();
+        }
+
+        // -----------------------------------------
+        // EXPERIENCE
+        // -----------------------------------------
 
         protected string FormatExperience(object value)
         {
@@ -173,9 +238,12 @@ namespace TJHomeCare
                     (years == 1 ? " year" : " years");
             }
 
-            // Supports text values such as "6 years".
             return result;
         }
+
+        // -----------------------------------------
+        // CHECK PROFILE PHOTO
+        // -----------------------------------------
 
         protected bool HasProfilePhoto(
             object photo, object photoName)
@@ -199,6 +267,10 @@ namespace TJHomeCare
                     Convert.ToString(photoName));
         }
 
+        // -----------------------------------------
+        // RESOLVE PROFILE PHOTO
+        // -----------------------------------------
+
         protected string ResolveProfilePhoto(
             object photo, object photoName)
         {
@@ -206,8 +278,6 @@ namespace TJHomeCare
 
             if (bytes != null && bytes.Length > 0)
             {
-                // Change image/jpeg if your stored files use
-                // a different image format.
                 return "data:image/jpeg;base64," +
                     Convert.ToBase64String(bytes);
             }
@@ -238,9 +308,31 @@ namespace TJHomeCare
                 return path;
             }
 
-            // Treat a plain filename as a file in Images.
             return ResolveUrl("~/Images/" + path);
         }
+
+        
+        // -----------------------------------------
+        // CONSULTATION FEE
+        // -----------------------------------------
+
+        protected string GetConsultationFee(object service)
+        {
+            string serviceName = Convert.ToString(service)
+                .ToLowerInvariant();
+
+            if (serviceName.Contains("diet"))
+                return "₹499 + applicable GST, if any";
+
+            if (serviceName.Contains("psych"))
+                return "₹699 + applicable GST, if any";
+
+            return "₹999 + applicable GST, if any";
+        }
+
+        // -----------------------------------------
+        // MESSAGE
+        // -----------------------------------------
 
         private void ShowMessage(string message)
         {

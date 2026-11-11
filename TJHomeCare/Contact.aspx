@@ -53,30 +53,58 @@
 
     
 
-    <div class="office-details">
-        <h4>Andhra Pradesh (Registered Office)</h4>
+  <div class="office-details">
+    <h4>TJ HOME CARE</h4>
+    <p><strong>Operated by Sunshine Enterprises</strong></p>
 
-        <p>
-            <strong>TJ Corporation</strong><br />
-            Room No. 7 &amp; 8, First Floor,<br />
-            D.No. 10-1-12, Ward No. 11,<br />
-            Railway Road,<br />
-            Kavali - 524201<br />
-            SPSR Nellore District,<br />
-            Andhra Pradesh, India<br />
-        </p>
+    <h5>Principal Place of Business</h5>
+    <p>
+        <strong>Sunshine Enterprises</strong><br />
+        D.No. 32-1, Mahendra Plots,<br />
+        Gayatri Nagar,<br />
+        Kavali - 524201,<br />
+        SPSR Nellore District,<br />
+        Andhra Pradesh, India.
+    </p>
 
-        <p>
-            <i class="fa-solid fa-phone"></i>
-            <strong>Phone:</strong>
-            <a href="tel:+919059724821">+91 9059724821</a>
-        </p>
+    <h5>Additional Place of Business</h5>
+    <p>
+        <strong>TJ Corporation</strong><br />
+        Room No. 7 &amp; 8, First Floor,<br />
+        D.No. 10-1-12, Ward No. 11,<br />
+        Railway Road,<br />
+        Kavali - 524201,<br />
+        SPSR Nellore District,<br />
+        Andhra Pradesh, India.
+    </p>
 
-        <p>
-            <i class="fa-solid fa-file-invoice"></i>
-            <strong>GST:</strong> 37ARRPM1229P3Z0
-        </p>
-    
+    <h5>Contact Information</h5>
+
+    <p>
+        <i class="fa-solid fa-phone"></i>
+        <strong>Phone:</strong>
+        <a href="tel:+919059724821">+91 9059724821</a>
+    </p>
+
+    <p>
+        <i class="fa-solid fa-envelope"></i>
+        <strong>Email:</strong>
+        <a href="mailto:care@tjhomecare.com">care@tjhomecare.com</a>
+    </p>
+
+    <p>
+        <i class="fa-solid fa-globe"></i>
+        <strong>Website:</strong>
+        <a href="https://www.tjhomecare.com" target="_blank">
+            www.tjhomecare.com
+        </a>
+    </p>
+
+    <p>
+        <i class="fa-solid fa-file-invoice"></i>
+        <strong>GSTIN:</strong> 37ARRPM1229P3Z0
+    </p>
+
     <div class="contact-section">
     <a class="btn btn-primary contact-call" href="tel:+917013107986" style="color:white;">
         <i class="fa-solid fa-phone"></i> Call TJ Home Care

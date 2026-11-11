@@ -105,10 +105,76 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppliedJobs.aspx.cs">
+      <DependentUpon>AppliedJobs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppliedJobs.aspx.designer.cs">
+      <DependentUpon>AppliedJobs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeNursingEnquiries.aspx.cs">
+      <DependentUpon>HomeNursingEnquiries.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeNursingEnquiries.aspx.designer.cs">
+      <DependentUpon>HomeNursingEnquiries.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Homenursinglandingpage.aspx.cs">
+      <DependentUpon>Homenursinglandingpage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Homenursinglandingpage.aspx.designer.cs">
+      <DependentUpon>Homenursinglandingpage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Response.aspx.cs">
+      <DependentUpon>Response.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Response.aspx.designer.cs">
+      <DependentUpon>Response.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm3.aspx.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm3.aspx.designer.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webhook.aspx.cs">
+      <DependentUpon>Webhook.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Webhook.aspx.designer.cs">
+      <DependentUpon>Webhook.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ZaakpayGateway.cs" />
+    <Compile Include="ZaakpayRedirectV2.aspx.cs">
+      <DependentUpon>ZaakpayRedirectV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ZaakpayRedirectV2.aspx.designer.cs">
+      <DependentUpon>ZaakpayRedirectV2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ZaakpayReturnV2.aspx.cs">
+      <DependentUpon>ZaakpayReturnV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ZaakpayReturnV2.aspx.designer.cs">
+      <DependentUpon>ZaakpayReturnV2.aspx</DependentUpon>
+    </Compile>
     <Content Include="About.aspx" />
     <Content Include="AdminManagement.aspx" />
+    <Content Include="AppliedJobs.aspx" />
     <Content Include="ApplyJob.aspx" />
     <Content Include="BookConsultation.aspx" />
+    <Content Include="BookConsultationV2.aspx" />
     <Content Include="CancellationRefundPolicy.aspx" />
     <Content Include="CandidateDetails.aspx" />
     <Content Include="Candidates.aspx" />
@@ -116,7 +182,13 @@
     <Content Include="CaregiverRegistration.aspx" />
     <Content Include="ConsultationBooking.aspx" />
     <Content Include="ConsultationBookingDetails.aspx" />
+    <Content Include="ConsultationBookingDetailsV2.aspx" />
+    <Content Include="ConsultationBookingManageV2.aspx" />
+    <Content Include="ConsultationBookingSuccessV2.aspx" />
     <Content Include="ConsultationBookingsView.aspx" />
+    <Content Include="ConsultationBookingV2.aspx" />
+    <Content Include="ConsultationBookingV2.sql" />
+    <Content Include="ConsultationPaymentV2.aspx" />
     <Content Include="Consultation\dermo.jpeg" />
     <Content Include="Consultation\dietician.jpeg" />
     <Content Include="Consultation\dietician_1200x675.jpg" />
@@ -139,6 +211,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="DoctorList.aspx" />
     <Content Include="EditRequirements.aspx" />
     <Content Include="EditReview.aspx" />
     <Content Include="favicon.ico" />
@@ -155,6 +228,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="HomeCareEnquiry.aspx" />
     <Content Include="HomeCareEnquiryAdmin.aspx" />
+    <Content Include="HomeNursingEnquiries.aspx" />
+    <Content Include="Homenursinglandingpage.aspx" />
     <Content Include="HomePage.aspx" />
     <Content Include="Images\babycaretaker.jpeg" />
     <Content Include="Images\babycaretaker01.jpeg" />
@@ -199,7 +274,9 @@
     <Content Include="PostRequirement.aspx" />
     <Content Include="Pricing.aspx" />
     <Content Include="PrivacyPolicy.aspx" />
+    <Content Include="README-SETUP.txt" />
     <Content Include="RequirementDetails.aspx" />
+    <Content Include="Response.aspx" />
     <Content Include="Review.aspx" />
     <Compile Include="AdminManagement.aspx.cs">
       <DependentUpon>AdminManagement.aspx</DependentUpon>
@@ -221,6 +298,13 @@
     </Compile>
     <Compile Include="BookConsultation.aspx.designer.cs">
       <DependentUpon>BookConsultation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BookConsultationV2.aspx.cs">
+      <DependentUpon>BookConsultationV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BookConsultationV2.aspx.designer.cs">
+      <DependentUpon>BookConsultationV2.aspx</DependentUpon>
     </Compile>
     <Compile Include="CancellationRefundPolicy.aspx.cs">
       <DependentUpon>CancellationRefundPolicy.aspx</DependentUpon>
@@ -264,12 +348,54 @@
     <Compile Include="ConsultationBookingDetails.aspx.designer.cs">
       <DependentUpon>ConsultationBookingDetails.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConsultationBookingDetailsV2.aspx.cs">
+      <DependentUpon>ConsultationBookingDetailsV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingDetailsV2.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingDetailsV2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationBookingManageV2.aspx.cs">
+      <DependentUpon>ConsultationBookingManageV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingManageV2.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingManageV2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationBookingSuccessV2.aspx.cs">
+      <DependentUpon>ConsultationBookingSuccessV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingSuccessV2.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingSuccessV2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConsultationBookingsView.aspx.cs">
       <DependentUpon>ConsultationBookingsView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ConsultationBookingsView.aspx.designer.cs">
       <DependentUpon>ConsultationBookingsView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationBookingV2.aspx.cs">
+      <DependentUpon>ConsultationBookingV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationBookingV2.aspx.designer.cs">
+      <DependentUpon>ConsultationBookingV2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultationPaymentV2.aspx.cs">
+      <DependentUpon>ConsultationPaymentV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultationPaymentV2.aspx.designer.cs">
+      <DependentUpon>ConsultationPaymentV2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DoctorList.aspx.cs">
+      <DependentUpon>DoctorList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DoctorList.aspx.designer.cs">
+      <DependentUpon>DoctorList.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditRequirements.aspx.cs">
       <DependentUpon>EditRequirements.aspx</DependentUpon>
@@ -432,8 +558,14 @@
     <Content Include="ViewJobs.aspx" />
     <Content Include="ViewPostedRequirement.aspx" />
     <Content Include="viewregisteredcaregiver.aspx" />
+    <Content Include="web.config-zaakpay-snippet.xml" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Images\Dermatology.webp" />
+    <Content Include="WebForm2.aspx" />
+    <Content Include="WebForm3.aspx" />
+    <Content Include="Webhook.aspx" />
+    <Content Include="ZaakpayRedirectV2.aspx" />
+    <Content Include="ZaakpayReturnV2.aspx" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

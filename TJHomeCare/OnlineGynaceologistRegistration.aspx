@@ -651,6 +651,10 @@
  <asp:ListItem>MBBS </asp:ListItem>
  <asp:ListItem>BPT</asp:ListItem>
  <asp:ListItem>MPT</asp:ListItem>
+                        <asp:ListItem>Bsc Nutrition </asp:ListItem>
+                        <asp:ListItem>Msc Nutrition</asp:ListItem>
+                         <asp:ListItem>M.A./M.Sc. Psychology</asp:ListItem> 
+ <asp:ListItem>M.Phil. Clinical Psychology</asp:ListItem>
                         <asp:ListItem>Other</asp:ListItem>
 
                     </asp:DropDownList>

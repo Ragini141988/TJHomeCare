@@ -1,0 +1,9 @@
+<!-- Merge these entries into your EXISTING <appSettings> section. Do not add a second <appSettings> section. -->
+<add key="ConsultationPaymentMode" value="Zaakpay" />
+<add key="ZaakpayEnvironment" value="Staging" />
+<add key="ZaakpayMerchantIdentifier" value="PASTE_ROTATED_STAGING_MERCHANT_IDENTIFIER_HERE" />
+<add key="ZaakpaySecretKey" value="PASTE_ROTATED_STAGING_GENERATED_KEY_HERE" />
+<add key="ZaakpayReturnUrl" value="https://YOUR-DOMAIN/ZaakpayReturnV2.aspx" />
+<!-- Staging uses mode=0. Live uses mode=1 and LIVE-only credentials. -->
+<!-- Do not put the Seamless-flow PublicKey or Encryption Key ID in this Redirect Flow config. -->
+<!-- Never commit real keys or web.config to a public source repository. -->
