@@ -154,6 +154,20 @@
     <Compile Include="Webhook.aspx.designer.cs">
       <DependentUpon>Webhook.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ZaakpayCheckStatus .aspx.cs">
+      <DependentUpon>ZaakpayCheckStatus .aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ZaakpayCheckStatus .aspx.designer.cs">
+      <DependentUpon>ZaakpayCheckStatus .aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ZaakpayChecksumTest.aspx.cs">
+      <DependentUpon>ZaakpayChecksumTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ZaakpayChecksumTest.aspx.designer.cs">
+      <DependentUpon>ZaakpayChecksumTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ZaakpayGateway.cs" />
     <Compile Include="ZaakpayRedirectV2.aspx.cs">
       <DependentUpon>ZaakpayRedirectV2.aspx</DependentUpon>
@@ -564,6 +578,8 @@
     <Content Include="WebForm2.aspx" />
     <Content Include="WebForm3.aspx" />
     <Content Include="Webhook.aspx" />
+    <Content Include="ZaakpayCheckStatus .aspx" />
+    <Content Include="ZaakpayChecksumTest.aspx" />
     <Content Include="ZaakpayRedirectV2.aspx" />
     <Content Include="ZaakpayReturnV2.aspx" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />

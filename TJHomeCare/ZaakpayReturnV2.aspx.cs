@@ -82,7 +82,12 @@ namespace TJHomeCare
 
                 if (!ZaakpayGateway.VerifyResponseChecksum(Request.Form, checksumSecret))
                 {
-                    SaveVerificationFailure(orderId, "Zaakpay response checksum did not match.");
+                    string diag = ZaakpayGateway.DiagnoseResponseChecksum(Request.Form, checksumSecret);
+                    var fields = new StringBuilder();
+                    foreach (string k in Request.Form.AllKeys)
+                        if (k != null && !k.Equals("checksum", StringComparison.OrdinalIgnoreCase))
+                            fields.Append(k).Append("=").Append(Request.Form[k]).Append("&");
+                    SaveVerificationFailure(orderId, "Checksum mismatch. " + diag + " | " + fields);
                     RedirectToPayment(token, "verify");
                     return;
                 }
@@ -200,7 +205,7 @@ namespace TJHomeCare
                 WHERE MerchantOrderID=@OrderID AND GatewayName=N'Zaakpay'
                   AND PaymentStatus<>N'Paid';", con))
             {
-                cmd.Parameters.Add("@Response", SqlDbType.NVarChar, 1000).Value = note;
+                cmd.Parameters.Add("@Response", SqlDbType.NVarChar, -1).Value = note;
                 cmd.Parameters.Add("@OrderID", SqlDbType.NVarChar, 100).Value = orderId;
                 con.Open();
                 cmd.ExecuteNonQuery();

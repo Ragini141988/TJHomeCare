@@ -106,7 +106,7 @@ namespace TJHomeCare
                 values.Add("currency", "INR");
                 values.Add("merchantIdentifier", merchant);
                 values.Add("merchantIpAddress", GetClientIpAddress());
-                values.Add("mode", String.Equals(environment, "Live", StringComparison.OrdinalIgnoreCase) ? "1" : "0");
+                values.Add("mode", "0");
                 values.Add("orderId", orderId);
                 values.Add("productDescription", "TJ Home Care Online Consultation");
                 values.Add("purpose", "0");

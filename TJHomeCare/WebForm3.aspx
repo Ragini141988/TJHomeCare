@@ -13,7 +13,7 @@
     const string StagingUrl = "https://zaakstaging.zaakpay.com/api/paymentTransact/V13";
     const string LiveUrl    = "https://api.zaakpay.com/api/paymentTransact/V13";
     // Must be on the same domain as the Website URL saved in dashboard > Integration Urls
-    const string ReturnUrl  = "https://tjhomecare.com/Response.aspx";
+    const string ReturnUrl  = "https://tjhomecare.com/ZaakpayReturnV2.aspx";
     // ================================================================
 
     protected void btnPay_Click(object sender, EventArgs e)
@@ -22,7 +22,7 @@
         {
             { "merchantIdentifier", MerchantId },
             { "orderId", "TJ" + DateTime.Now.ToString("yyyyMMddHHmmss") },
-            { "amount", "1000" },               // paise => Rs 10.00
+            { "amount", "118" },               // paise => Rs 10.00
             { "currency", "INR" },
             { "buyerEmail", txtEmail.Text.Trim() },
             { "buyerFirstName", txtName.Text.Trim() },
