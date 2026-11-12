@@ -509,7 +509,7 @@
 
                     <a class="consultation-booking-btn"
                        href='<%# ResolveUrl(
-                           "~/ConsultationBooking.aspx?caregiverId="
+                           "~/ConsultationBookingV2.aspx?caregiverId="
                            + Eval("CaregiverID")
                            + "&serviceId="
                            + Eval("ServiceCategoryID")) %>'>

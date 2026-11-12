@@ -1,0 +1,1 @@
+If your Visual Studio ASP.NET Web Application regenerates designer files automatically, use the designer generated from ConsultationPaymentV2.aspx instead of manually including this file. Do not add duplicate designer declarations.

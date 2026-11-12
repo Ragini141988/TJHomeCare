@@ -1,1 +1,6 @@
-namespace TJHomeCare { public partial class ZaakpayReturnV2 { } }
+namespace TJHomeCare
+{
+    public partial class ZaakpayReturnV2
+    {
+    }
+}

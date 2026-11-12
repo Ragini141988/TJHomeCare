@@ -133,6 +133,7 @@ namespace TJHomeCare
             }
 
             string apiStatus = GetValue(root, "status");
+            string dataSuccess = GetNestedValue(root, "data", "success");
             string messageCode = GetNestedValue(root, "message", "code");
             string messageText = GetNestedValue(root, "message", "text");
 
@@ -140,7 +141,7 @@ namespace TJHomeCare
             object ordersObject;
             if (data == null || !data.TryGetValue("orders", out ordersObject))
             {
-                ShowResult("API status: " + apiStatus + "\r\nMessage code: " + messageCode + "\r\nMessage: " + messageText + "\r\nNo transaction order details were returned. No booking data was changed.", true);
+                ShowResult("API status: " + apiStatus + "\r\nData success: " + dataSuccess + "\r\nMessage code: " + messageCode + "\r\nMessage: " + messageText + "\r\nNo transaction order details were returned. No booking data was changed.", true);
                 return;
             }
 
@@ -153,7 +154,7 @@ namespace TJHomeCare
             Dictionary<string, object> order = first as Dictionary<string, object>;
             if (order == null)
             {
-                ShowResult("API status: " + apiStatus + "\r\nMessage code: " + messageCode + "\r\nMessage: " + messageText + "\r\nNo transaction was found for this order ID. No booking data was changed.", true);
+                ShowResult("API status: " + apiStatus + "\r\nData success: " + dataSuccess + "\r\nMessage code: " + messageCode + "\r\nMessage: " + messageText + "\r\nNo transaction was found for this order ID. No booking data was changed.", true);
                 return;
             }
 
@@ -188,6 +189,7 @@ namespace TJHomeCare
 
             StringBuilder output = new StringBuilder();
             output.Append("Zaakpay API status: ").Append(apiStatus).Append("\r\n");
+            output.Append("API data success: ").Append(dataSuccess).Append("\r\n");
             output.Append("API message code: ").Append(messageCode).Append("\r\n");
             output.Append("API message: ").Append(messageText).Append("\r\n\r\n");
             output.Append("Merchant Order ID: ").Append(actualOrderId).Append("\r\n");

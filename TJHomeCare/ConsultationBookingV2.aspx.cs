@@ -33,10 +33,11 @@ namespace TJHomeCare
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            txtAppointmentTime.Attributes["step"] = "60";
             if (!IsPostBack)
             {
                 txtAppointmentDate.Attributes["min"] = DateTime.Today.ToString("yyyy-MM-dd");
-                txtAppointmentTime.Attributes["step"] = "1800";
+               
                 LoadConsultationDetails();
             }
         }

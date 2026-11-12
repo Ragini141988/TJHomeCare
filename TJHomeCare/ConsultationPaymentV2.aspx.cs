@@ -10,7 +10,8 @@ namespace TJHomeCare
 {
     public partial class ConsultationPaymentV2 : Page
     {
-        private string Token { get { return (Request.QueryString["t"] ?? "").Trim(); } }
+        private string Token { get { return (Request.QueryString["t"] ?? String.Empty).Trim(); } }
+
         private string ConnectionString
         {
             get
@@ -19,6 +20,12 @@ namespace TJHomeCare
                 if (settings == null) throw new ConfigurationErrorsException("Connection string hospi2yp_tabletjobssConnectionString_V02 was not found.");
                 return settings.ConnectionString;
             }
+        }
+
+        private sealed class LatestAttempt
+        {
+            public string OrderID;
+            public string Status;
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -35,7 +42,7 @@ namespace TJHomeCare
                 return;
             }
 
-            string sql = @"
+            const string sql = @"
                 SELECT B.BookingID, B.BookingReference, B.CustomerName, B.AppointmentDate,
                        B.AppointmentTime, B.ConsultationFee, B.GSTPercent, B.GSTAmount,
                        B.TotalAmount, B.PaymentStatus, CP.FullName, SC.ServiceName
@@ -46,6 +53,7 @@ namespace TJHomeCare
 
             try
             {
+                string bookingStatus;
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
@@ -59,60 +67,185 @@ namespace TJHomeCare
                             pnlPayment.Visible = false;
                             return;
                         }
+
                         lblBookingReference.Text = HttpUtility.HtmlEncode(Convert.ToString(r["BookingReference"]));
                         lblProfessional.Text = HttpUtility.HtmlEncode(Convert.ToString(r["FullName"]));
                         lblService.Text = HttpUtility.HtmlEncode(Convert.ToString(r["ServiceName"]));
                         lblCustomer.Text = HttpUtility.HtmlEncode(Convert.ToString(r["CustomerName"]));
-                        DateTime d = Convert.ToDateTime(r["AppointmentDate"]);
-                        lblAppointment.Text = d.ToString("ddd, dd MMM yyyy") + " at " + HttpUtility.HtmlEncode(Convert.ToString(r["AppointmentTime"]));
+                        DateTime appointmentDate = Convert.ToDateTime(r["AppointmentDate"]);
+                        lblAppointment.Text = appointmentDate.ToString("ddd, dd MMM yyyy") + " at " + HttpUtility.HtmlEncode(Convert.ToString(r["AppointmentTime"]));
                         lblFee.Text = Money(Convert.ToDecimal(r["ConsultationFee"]));
                         lblGstPercent.Text = Convert.ToDecimal(r["GSTPercent"]).ToString("0.##");
                         lblGst.Text = Money(Convert.ToDecimal(r["GSTAmount"]));
                         lblTotal.Text = Money(Convert.ToDecimal(r["TotalAmount"]));
-
-                        string status = Convert.ToString(r["PaymentStatus"]);
-                        if (String.Equals(status, "Paid", StringComparison.OrdinalIgnoreCase))
-                        {
-                            Response.Redirect(ResolveUrl("~/ConsultationBookingSuccessV2.aspx?t=" + HttpUtility.UrlEncode(Token)), false);
-                            Context.ApplicationInstance.CompleteRequest();
-                            return;
-                        }
+                        bookingStatus = Convert.ToString(r["PaymentStatus"]);
                     }
                 }
 
-                string mode = (ConfigurationManager.AppSettings["ConsultationPaymentMode"] ?? "Disabled").Trim();
-                string result = (Request.QueryString["result"] ?? String.Empty).Trim();
-                if (result == "failed") ShowError("The payment was not completed. You may try again or contact TJ Home Care.");
-                else if (result == "verify") ShowError("We could not verify the payment response. No payment has been marked as successful. Please contact TJ Home Care with your booking reference.");
+                if (String.Equals(bookingStatus, "Paid", StringComparison.OrdinalIgnoreCase))
+                {
+                    RedirectToSuccess();
+                    return;
+                }
 
-                if (String.Equals(mode, "Demo", StringComparison.OrdinalIgnoreCase))
+                string mode = (ConfigurationManager.AppSettings["ConsultationPaymentMode"] ?? "Disabled").Trim();
+                LatestAttempt latest = GetLatestAttempt();
+
+                if (latest != null && String.Equals(latest.Status, "Paid", StringComparison.OrdinalIgnoreCase))
                 {
-                    btnDemoPay.Visible = true;
-                    btnZaakpayPay.Visible = false;
-                    lblModeMessage.Text = "TEST MODE: no real payment will be collected. The button below records a simulated payment only.";
+                    // A previously verified attempt should already have confirmed the booking.
+                    // Run the same status check to safely repair any interrupted database update.
+                    CheckLatestStatusAndRespond(latest, false);
+                    return;
                 }
-                else if (String.Equals(mode, "Zaakpay", StringComparison.OrdinalIgnoreCase))
+
+                if (latest != null && IsUnresolved(latest.Status))
                 {
-                    btnDemoPay.Visible = false;
-                    bool configured = IsZaakpayConfigured();
-                    btnZaakpayPay.Visible = configured;
-                    btnZaakpayPay.Enabled = configured;
-                    lblModeMessage.Text = configured
-                        ? "You will be redirected to Zaakpay's secure hosted checkout. Do not refresh the page while the payment request is starting."
-                        : "Zaakpay configuration is incomplete. Please contact the website administrator.";
+                    ShowPendingControls("A previous payment request is awaiting confirmation. Do not make another payment. Select Check Payment Status below.");
+                    return;
                 }
-                else
-                {
-                    btnDemoPay.Visible = false;
-                    btnZaakpayPay.Visible = false;
-                    lblModeMessage.Text = "Online payment is currently disabled. Please contact TJ Home Care.";
-                }
+
+                ShowPayControls(mode);
+                string result = (Request.QueryString["result"] ?? String.Empty).Trim();
+                if (result == "failed" || (latest != null && String.Equals(latest.Status, "Failed", StringComparison.OrdinalIgnoreCase)))
+                    ShowError("Zaakpay confirmed that the previous payment was not completed. You may try again.");
+                else if (result == "verify")
+                    ShowError("We could not confirm the previous payment yet. Please check its status before trying again.");
             }
             catch (Exception)
             {
                 ShowError("Unable to load payment details. Please try again later.");
                 pnlPayment.Visible = false;
             }
+        }
+
+        protected void btnCheckStatus_Click(object sender, EventArgs e)
+        {
+            if (Token.Length != 32)
+            {
+                ShowError("This payment link is invalid.");
+                ShowPendingControls("Please contact TJ Home Care with your booking reference.");
+                return;
+            }
+
+            try
+            {
+                LatestAttempt latest = GetLatestAttempt();
+                if (latest == null || String.IsNullOrEmpty(latest.OrderID))
+                {
+                    ShowError("No Zaakpay payment attempt was found for this booking.");
+                    ShowPayControls((ConfigurationManager.AppSettings["ConsultationPaymentMode"] ?? "Disabled").Trim());
+                    return;
+                }
+                CheckLatestStatusAndRespond(latest, true);
+            }
+            catch (Exception)
+            {
+                ShowError("Zaakpay could not be reached right now. Do not make another payment. Please try Check Payment Status again shortly.");
+                ShowPendingControls("The previous payment is still unresolved. A new payment is disabled to prevent a duplicate charge.");
+            }
+        }
+
+        private void CheckLatestStatusAndRespond(LatestAttempt latest, bool showMessages)
+        {
+            string merchant = (ConfigurationManager.AppSettings["ZaakpayMerchantIdentifier"] ?? String.Empty).Trim();
+            string secret = (ConfigurationManager.AppSettings["ZaakpaySecretKey"] ?? String.Empty).Trim();
+            string environment = (ConfigurationManager.AppSettings["ZaakpayEnvironment"] ?? String.Empty).Trim();
+            if (merchant.Length == 0 || secret.Length == 0 || environment.Length == 0)
+                throw new ConfigurationErrorsException("Zaakpay is not fully configured.");
+
+            ZaakpayReconcileResult result = ZaakpayPaymentReconciler.CheckAndUpdate(
+                ConnectionString, latest.OrderID, merchant, secret, environment);
+
+            if (String.Equals(result.State, "Paid", StringComparison.OrdinalIgnoreCase))
+            {
+                RedirectToSuccess();
+                return;
+            }
+
+            if (String.Equals(result.State, "Failed", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowError("Zaakpay confirmed that this payment failed. You may retry the payment.");
+                ShowPayControls((ConfigurationManager.AppSettings["ConsultationPaymentMode"] ?? "Disabled").Trim());
+                return;
+            }
+
+            if (showMessages) ShowError("Zaakpay has not confirmed the final result yet. Please do not pay again.");
+            ShowPendingControls("The payment status is pending or requires review. Check again shortly, or contact TJ Home Care. A new payment is disabled for your safety.");
+        }
+
+        private LatestAttempt GetLatestAttempt()
+        {
+            const string sql = @"
+                SELECT TOP 1 P.MerchantOrderID, P.PaymentStatus
+                FROM [sqladmin].[ConsultationBookingPayments] P
+                INNER JOIN [sqladmin].[ConsultationBookings] B ON B.BookingID=P.BookingID
+                WHERE B.PublicToken=@Token AND P.GatewayName=N'Zaakpay'
+                ORDER BY P.PaymentID DESC;";
+
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.Add("@Token", SqlDbType.NVarChar, 64).Value = Token;
+                con.Open();
+                using (SqlDataReader r = cmd.ExecuteReader())
+                {
+                    if (!r.Read()) return null;
+                    LatestAttempt latest = new LatestAttempt();
+                    latest.OrderID = Convert.ToString(r["MerchantOrderID"]);
+                    latest.Status = Convert.ToString(r["PaymentStatus"]);
+                    return latest;
+                }
+            }
+        }
+
+        private static bool IsUnresolved(string status)
+        {
+            return String.Equals(status, "Initiated", StringComparison.OrdinalIgnoreCase) ||
+                   String.Equals(status, "Processing", StringComparison.OrdinalIgnoreCase) ||
+                   String.Equals(status, "VerificationFailed", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void ShowPayControls(string mode)
+        {
+            btnCheckStatus.Visible = false;
+            btnCheckStatus.Enabled = false;
+
+            if (String.Equals(mode, "Demo", StringComparison.OrdinalIgnoreCase))
+            {
+                btnDemoPay.Visible = true;
+                btnZaakpayPay.Visible = false;
+                lblModeMessage.Text = HttpUtility.HtmlEncode("TEST MODE: no real payment will be collected. The button below records a simulated payment only.");
+                lblPaymentNote.Text = HttpUtility.HtmlEncode("Demo transactions are for layout and workflow testing only. They are not proof of actual customer payment.");
+            }
+            else if (String.Equals(mode, "Zaakpay", StringComparison.OrdinalIgnoreCase))
+            {
+                btnDemoPay.Visible = false;
+                bool configured = IsZaakpayConfigured();
+                btnZaakpayPay.Visible = configured;
+                btnZaakpayPay.Enabled = configured;
+                lblModeMessage.Text = HttpUtility.HtmlEncode(configured
+                    ? "You will be redirected to Zaakpay's secure hosted checkout. Do not refresh the page while the payment request is starting."
+                    : "Zaakpay configuration is incomplete. Please contact the website administrator.");
+                lblPaymentNote.Text = HttpUtility.HtmlEncode("Your booking is confirmed only after TJ Home Care verifies the transaction directly with Zaakpay.");
+            }
+            else
+            {
+                btnDemoPay.Visible = false;
+                btnZaakpayPay.Visible = false;
+                lblModeMessage.Text = HttpUtility.HtmlEncode("Online payment is currently disabled. Please contact TJ Home Care.");
+                lblPaymentNote.Text = String.Empty;
+            }
+        }
+
+        private void ShowPendingControls(string message)
+        {
+            btnDemoPay.Visible = false;
+            btnZaakpayPay.Visible = false;
+            btnCheckStatus.Visible = true;
+            btnCheckStatus.Enabled = true;
+            lblModeMessage.Text = HttpUtility.HtmlEncode(message);
+            lblPaymentNote.Text = HttpUtility.HtmlEncode("A new payment is temporarily disabled until the earlier Zaakpay transaction is confirmed as failed or successful.");
         }
 
         protected void btnZaakpayPay_Click(object sender, EventArgs e)
@@ -144,13 +277,31 @@ namespace TJHomeCare
                                 cmd.Parameters.Add("@Token", SqlDbType.NVarChar, 64).Value = Token;
                                 using (SqlDataReader r = cmd.ExecuteReader())
                                 {
-                                    if (!r.Read()) throw new Exception("Booking not found.");
+                                    if (!r.Read()) throw new InvalidOperationException("Booking not found.");
                                     if (String.Equals(Convert.ToString(r["PaymentStatus"]), "Paid", StringComparison.OrdinalIgnoreCase))
-                                        throw new Exception("This booking is already paid.");
+                                        throw new InvalidOperationException("This booking is already paid.");
                                     bookingId = Convert.ToInt32(r["BookingID"]);
                                     amount = Convert.ToDecimal(r["TotalAmount"]);
                                 }
                             }
+
+                            // Serialize attempts for this booking and prevent a second charge
+                            // while the latest Zaakpay attempt is unresolved.
+                            using (SqlCommand cmd = new SqlCommand(@"
+                                SELECT TOP 1 PaymentStatus
+                                FROM [sqladmin].[ConsultationBookingPayments] WITH (UPDLOCK, HOLDLOCK)
+                                WHERE BookingID=@BookingID AND GatewayName=N'Zaakpay'
+                                ORDER BY PaymentID DESC;", con, tran))
+                            {
+                                cmd.Parameters.Add("@BookingID", SqlDbType.Int).Value = bookingId;
+                                object previous = cmd.ExecuteScalar();
+                                if (previous != null && previous != DBNull.Value && IsUnresolved(Convert.ToString(previous)))
+                                    throw new InvalidOperationException("A previous payment is still being verified. Use Check Payment Status before trying again.");
+                            }
+
+                            long amountPaisa = Convert.ToInt64(Math.Round(amount * 100M, 0, MidpointRounding.AwayFromZero));
+                            if (amountPaisa < 100 || amountPaisa > 10000000)
+                                throw new InvalidOperationException("The amount is outside Zaakpay's permitted transaction range.");
 
                             using (SqlCommand cmd = new SqlCommand(@"
                                 INSERT INTO [sqladmin].[ConsultationBookingPayments]
@@ -162,7 +313,9 @@ namespace TJHomeCare
                                 cmd.Parameters.Add("@BookingID", SqlDbType.Int).Value = bookingId;
                                 cmd.Parameters.Add("@OrderID", SqlDbType.NVarChar, 100).Value = orderId;
                                 SqlParameter p = cmd.Parameters.Add("@Amount", SqlDbType.Decimal);
-                                p.Precision = 10; p.Scale = 2; p.Value = amount;
+                                p.Precision = 10;
+                                p.Scale = 2;
+                                p.Value = amount;
                                 cmd.ExecuteNonQuery();
                             }
 
@@ -174,7 +327,7 @@ namespace TJHomeCare
                             {
                                 cmd.Parameters.Add("@OrderID", SqlDbType.NVarChar, 100).Value = orderId;
                                 cmd.Parameters.Add("@BookingID", SqlDbType.Int).Value = bookingId;
-                                if (cmd.ExecuteNonQuery() != 1) throw new Exception("Booking could not be updated.");
+                                if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("Booking could not be updated.");
                             }
                             tran.Commit();
                         }
@@ -189,6 +342,17 @@ namespace TJHomeCare
                 Response.Redirect(ResolveUrl("~/ZaakpayRedirectV2.aspx?o=" + HttpUtility.UrlEncode(orderId)), false);
                 Context.ApplicationInstance.CompleteRequest();
             }
+            catch (InvalidOperationException ex)
+            {
+                ShowError(ex.Message);
+                try
+                {
+                    LatestAttempt latest = GetLatestAttempt();
+                    if (latest != null && IsUnresolved(latest.Status))
+                        ShowPendingControls("A previous payment is still being verified. Please check its status before trying again.");
+                }
+                catch { }
+            }
             catch (Exception)
             {
                 ShowError("We could not create the Zaakpay payment request. Please retry or contact TJ Home Care.");
@@ -199,7 +363,9 @@ namespace TJHomeCare
         {
             string merchant = (ConfigurationManager.AppSettings["ZaakpayMerchantIdentifier"] ?? String.Empty).Trim();
             string secret = (ConfigurationManager.AppSettings["ZaakpaySecretKey"] ?? String.Empty).Trim();
+            string environment = (ConfigurationManager.AppSettings["ZaakpayEnvironment"] ?? String.Empty).Trim();
             return merchant.Length > 0 && secret.Length > 0 &&
+                   environment.Length > 0 &&
                    merchant.IndexOf("REPLACE", StringComparison.OrdinalIgnoreCase) < 0 &&
                    secret.IndexOf("REPLACE", StringComparison.OrdinalIgnoreCase) < 0;
         }
@@ -245,7 +411,7 @@ namespace TJHomeCare
                                 cmd.Parameters.Add("@Token", SqlDbType.NVarChar, 64).Value = Token;
                                 using (SqlDataReader r = cmd.ExecuteReader())
                                 {
-                                    if (!r.Read()) throw new Exception("Booking not found.");
+                                    if (!r.Read()) throw new InvalidOperationException("Booking not found.");
                                     bookingId = Convert.ToInt32(r["BookingID"]);
                                     amount = Convert.ToDecimal(r["TotalAmount"]);
                                 }
@@ -263,7 +429,9 @@ namespace TJHomeCare
                                 cmd.Parameters.Add("@OrderID", SqlDbType.NVarChar, 100).Value = "DEMO-ORDER-" + bookingId.ToString();
                                 cmd.Parameters.Add("@TransactionID", SqlDbType.NVarChar, 100).Value = tx;
                                 SqlParameter p = cmd.Parameters.Add("@Amount", SqlDbType.Decimal);
-                                p.Precision = 10; p.Scale = 2; p.Value = amount;
+                                p.Precision = 10;
+                                p.Scale = 2;
+                                p.Value = amount;
                                 cmd.ExecuteNonQuery();
                             }
                         }
@@ -274,12 +442,11 @@ namespace TJHomeCare
                                 cmd.Parameters.Add("@Token", SqlDbType.NVarChar, 64).Value = Token;
                                 object current = cmd.ExecuteScalar();
                                 if (current == null || current == DBNull.Value || !String.Equals(Convert.ToString(current), "Paid", StringComparison.OrdinalIgnoreCase))
-                                    throw new Exception("Payment could not be recorded.");
+                                    throw new InvalidOperationException("Payment could not be recorded.");
                             }
                         }
                         tran.Commit();
-                        Response.Redirect(ResolveUrl("~/ConsultationBookingSuccessV2.aspx?t=" + HttpUtility.UrlEncode(Token)), false);
-                        Context.ApplicationInstance.CompleteRequest();
+                        RedirectToSuccess();
                     }
                     catch
                     {
@@ -290,11 +457,20 @@ namespace TJHomeCare
             }
         }
 
+        private void RedirectToSuccess()
+        {
+            Response.Redirect(ResolveUrl("~/ConsultationBookingSuccessV2.aspx?t=" + HttpUtility.UrlEncode(Token)), false);
+            Context.ApplicationInstance.CompleteRequest();
+        }
+
         private static string Money(decimal value)
         {
             return "₹" + value.ToString("N2", CultureInfo.GetCultureInfo("en-IN"));
         }
 
-        private void ShowError(string message) { lblError.Text = HttpUtility.HtmlEncode(message); }
+        private void ShowError(string message)
+        {
+            lblError.Text = HttpUtility.HtmlEncode(message);
+        }
     }
 }

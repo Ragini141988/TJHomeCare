@@ -169,6 +169,7 @@
       <DependentUpon>ZaakpayChecksumTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="ZaakpayGateway.cs" />
+    <Compile Include="ZaakpayPaymentReconciler.cs" />
     <Compile Include="ZaakpayRedirectV2.aspx.cs">
       <DependentUpon>ZaakpayRedirectV2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -183,6 +184,7 @@
     <Compile Include="ZaakpayReturnV2.aspx.designer.cs">
       <DependentUpon>ZaakpayReturnV2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ZaakpayStatusClient.cs" />
     <Content Include="About.aspx" />
     <Content Include="AdminManagement.aspx" />
     <Content Include="AppliedJobs.aspx" />
@@ -203,6 +205,7 @@
     <Content Include="ConsultationBookingV2.aspx" />
     <Content Include="ConsultationBookingV2.sql" />
     <Content Include="ConsultationPaymentV2.aspx" />
+    <Content Include="ConsultationPaymentV2.aspx.designer.notes.txt" />
     <Content Include="Consultation\dermo.jpeg" />
     <Content Include="Consultation\dietician.jpeg" />
     <Content Include="Consultation\dietician_1200x675.jpg" />
@@ -289,6 +292,7 @@
     <Content Include="Pricing.aspx" />
     <Content Include="PrivacyPolicy.aspx" />
     <Content Include="README-SETUP.txt" />
+    <Content Include="README.txt" />
     <Content Include="RequirementDetails.aspx" />
     <Content Include="Response.aspx" />
     <Content Include="Review.aspx" />

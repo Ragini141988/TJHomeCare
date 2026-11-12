@@ -15,6 +15,8 @@ namespace TJHomeCare
         protected global::System.Web.UI.WebControls.Label lblTotal;
         protected global::System.Web.UI.WebControls.Label lblModeMessage;
         protected global::System.Web.UI.WebControls.Button btnZaakpayPay;
+        protected global::System.Web.UI.WebControls.Button btnCheckStatus;
         protected global::System.Web.UI.WebControls.Button btnDemoPay;
+        protected global::System.Web.UI.WebControls.Label lblPaymentNote;
     }
 }
